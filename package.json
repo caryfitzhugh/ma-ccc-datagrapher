@@ -1,0 +1,35 @@
+{
+  "name": "rails-fixture",
+  "version": "0.0.0",
+  "description": "Fixture for developing NYCCSC data products",
+  "author": "bnoon",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NYCCSC/rails-fixture"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "react-hot-loader": "^1.1.6",
+    "webpack": "^1.7.0",
+    "webpack-dev-server": "1.7.0"
+  },
+  "dependencies": {
+    "babel-core": "^4.6.6",
+    "babel-loader": "^4.0.0",
+    "bundle-loader": "^0.5.3",
+    "css-loader": "^0.9.1",
+    "d3": "^3.5.5",
+    "extract-text-webpack-plugin": "^0.3.8",
+    "file-loader": "^0.8.1",
+    "immutable": "^3.6.2",
+    "json-loader": "^0.5.1",
+    "react": "^0.12.2",
+    "react-d3-components": "file:vendor/react-d3-components",
+    "style-loader": "^0.8.3",
+    "superagent": "^0.21.0",
+    "url-loader": "^0.5.5"
+  }
+}
