@@ -51,7 +51,8 @@ Object.keys(extensionDefs).forEach(function(k) {
   option.value = k;
   extSelect.appendChild(option);
 });
-document.getElementById("extension-selector").appendChild(extSelect);
+parentDiv.innerHTML = '<label>Select an extension: </label>';
+parentDiv.appendChild(extSelect);
 
 </script>
 <!-- End _doc_extension.html.erb -->
