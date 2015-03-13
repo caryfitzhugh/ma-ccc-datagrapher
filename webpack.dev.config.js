@@ -30,7 +30,7 @@ module.exports = {
       { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader','css-loader')},
-      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
+      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=32768'},
       { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
       { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file-loader' },
