@@ -4,6 +4,9 @@ var React = require('react'),
     request = require('superagent'),
     {ScatterPlot, LinePlot} = require('react-d3-components');
 
+// This is loaded for the side-effect of getting the css file loading onto the page.
+var css = require('./stnchart.css');
+
 var s1 = require('../hcnstns.json').features.map(
       (f)=>{
         return [f.id,f.properties];
