@@ -32,7 +32,7 @@ var seasons = new Immutable.OrderedMap([
 
 
 
-var n12089Component = React.createClass({
+var n1577Component = React.createClass({
 
   propTypes: {
     init: React.PropTypes.object
@@ -276,7 +276,7 @@ var StnChart = React.createClass({
 
 
 module.exports = function(el,opts) {
-  let rx = React.createElement(n12089Component,{init:{}});
+  let rx = React.createElement(n1577Component,{init:{}});
   let rc = React.render(rx,el);
   return rc.currentState;
 };
