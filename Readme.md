@@ -46,3 +46,11 @@ When creating a new extension, you will add a file to `src/docJS/` and modify th
 
 Currently the filenames map to the last component of the `docURI` in vivo.
 
+##Example Extension##
+There is an example extension called "hello" that demonstrates several points:
+
+* Vanilla javascript that just puts some html elements on the page.
+* Loads a css document
+* Loads an image onto the page.  The full size logo is loaded directly, the small logo is embedded in the webpacked javascript.
+* Structures the source into a subdirectory (`/helloworld`) with extra files.  The `index.js` file is loaded when the directory is `require`d.
+
