@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-  devtool: 'hidden-source-map',
+  // devtool: 'hidden-source-map',
   entry: {
     main: [
       './src/loader'
@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: __dirname + '/assets/',
     filename: 'loader.js',
-    publicPath: '/assets/'
+    publicPath: '/assets/data/'
   },
   plugins: [
     new ExtractTextPlugin('[name].css'),

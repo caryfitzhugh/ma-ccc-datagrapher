@@ -124,7 +124,7 @@ var n12089Component = React.createClass({
     request.post('http://data.rcc-acis.org/StnData')
       .send(reqParams)
       .accept('json')
-      .end((res) => {
+      .end((err,res) => {
         this.setState({
           params: params,
           results: res.body,
@@ -239,12 +239,13 @@ var StnChart = React.createClass({
 
   render() {
     if (this.props.data) {
-      let xAccessor = (row) => { return new Date(row[0]); },
+      let xAccessor = (row) => { return +(row[0].slice(0,4)); },
+          xAxis = {label:"Year",tickFormat: (t) => {return ""+t;}},
           yAccessor = (row) => { return +row[1]; },
           data = [{label:"MinT",values:this.props.data.data.filter((d)=>{return d[1] != 'M';})}];
 
       let toolTip = (x,y) => {
-        return ""+x.getUTCFullYear()+": "+y+"°";
+        return ""+x+": "+y+'°';
       };
 
       let chart = <ScatterPlot
@@ -253,7 +254,7 @@ var StnChart = React.createClass({
         height={400}
         margin={{top: 10, bottom: 50, left: 50, right: 10}}
         x={xAccessor}
-        // xAxis={{label:"Year"}}
+        xAxis={xAxis}
         y={yAccessor}
         // yAxis={{label:"Temperature"}}
         tooltipHtml={toolTip}

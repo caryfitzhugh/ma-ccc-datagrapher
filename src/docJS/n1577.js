@@ -110,12 +110,12 @@ var n1577Component = React.createClass({
         elemLabel = seasons.get(season)+" Total Precipitation"
         break;
       case "snow":
-        elem.vX = 10; elem.vN = 0; elem.reduce = "mean";
-        elemLabel = seasons.get(season)+" Average Daily Snowfall"
+        elem.vX = 10; elem.vN = 0; elem.reduce = "max";
+        elemLabel = seasons.get(season)+" Maximum Daily Snowfall"
         break;
       case "snwd":
-        elem.vX = 11; elem.vN = 0; elem.reduce = "mean";
-        elemLabel = seasons.get(season)+" Average Daily Snowdepth"
+        elem.vX = 11; elem.vN = 0; elem.reduce = "max";
+        elemLabel = seasons.get(season)+" Maximum Daily Snowdepth"
         break;
       default:
     }
@@ -124,7 +124,7 @@ var n1577Component = React.createClass({
     request.post('http://data.rcc-acis.org/StnData')
       .send(reqParams)
       .accept('json')
-      .end((res) => {
+      .end((err,res) => {
         this.setState({
           params: params,
           results: res.body,
@@ -197,8 +197,8 @@ var n1577Component = React.createClass({
                   }}
                 >
                   <option key="pcpn" value="pcpn">Total Precipitation</option>
-                  <option key="snow" value="snow">Average Daily Snowfall</option>
-                  <option key="snwd" value="snwd">Average Daily Snowdepth</option>
+                  <option key="snow" value="snow">Maximum Daily Snowfall</option>
+                  <option key="snwd" value="snwd">Maximum Daily Snowdepth</option>
                 </select>
               </fieldset>
 
@@ -239,7 +239,8 @@ var StnChart = React.createClass({
 
   render() {
     if (this.props.data) {
-      let xAccessor = (row) => { return new Date(row[0]); },
+      let xAccessor = (row) => { return +(row[0].slice(0,4)); },
+          xAxis = {label:"Year",tickFormat: (t) => {return ""+t;}},
           yAccessor = (row) => {
             if (row[1] == "T") {
               return 0.0;
@@ -250,7 +251,7 @@ var StnChart = React.createClass({
           data = [{label:"MinT",values:this.props.data.data.filter((d)=>{return d[1] != 'M';})}];
 
       let toolTip = (x,y) => {
-        return ""+x.getUTCFullYear()+": "+y+'"';
+        return ""+x+": "+y+'"';
       };
 
       let chart = <ScatterPlot
@@ -259,7 +260,7 @@ var StnChart = React.createClass({
         height={400}
         margin={{top: 10, bottom: 50, left: 50, right: 10}}
         x={xAccessor}
-        // xAxis={{label:"Year"}}
+        xAxis={xAxis}
         y={yAccessor}
         // yAxis={{label:"Temperature"}}
         tooltipHtml={toolTip}

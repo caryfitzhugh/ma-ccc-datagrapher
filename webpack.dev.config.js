@@ -14,7 +14,7 @@ module.exports = {
   output: {
     path: __dirname + '/assets/',
     filename: 'loader.js',
-    publicPath: '/assets/'
+    publicPath: '/assets/data/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
