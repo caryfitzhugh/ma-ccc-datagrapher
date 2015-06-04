@@ -12,10 +12,10 @@ module.exports = {
     common: ['react','immutable','d3','superagent','react-d3-components']
   },
   output: {
-    path: __dirname + '/assets/',
+    path: __dirname + '/public/',
     filename: 'loader.js',
     chunkFilename: '[name].js',
-    publicPath: '/assets/data/'
+    publicPath: '/dataproduct/'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
