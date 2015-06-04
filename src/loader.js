@@ -1,8 +1,8 @@
 import React from 'react';
 
 let extensionDefs = {
-  n12089: require("bundle?lazy&name=stnTemp!./docJS/n12089"),
-  n1577: require("bundle?lazy&name=stnPrcp!./docJS/n1577"),
+  n12089: require("bundle?lazy&name=stnTemp!./docJS/stnTemp"),
+  n1577: require("bundle?lazy&name=stnPrcp!./docJS/stnPrcp"),
 };
 
 let uri = document.baseURI.split('/');
