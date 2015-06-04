@@ -279,9 +279,4 @@ var StnChart = React.createClass({
 
 
 
-module.exports = function(el,opts) {
-  let rx = React.createElement(n1577Component,{init:{}});
-  let rc = React.render(rx,el);
-  return rc.currentState;
-};
-
+export default n1577Component;

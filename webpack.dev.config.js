@@ -7,7 +7,7 @@ module.exports = {
     main: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/only-dev-server',
-      './src/loader'
+      './src/dev_loader'
     ],
     common: ['react','immutable','d3','superagent','react-d3-components']
   },

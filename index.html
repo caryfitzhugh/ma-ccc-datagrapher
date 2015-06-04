@@ -1,66 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" class="no-js">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title> NYCCSC</title>
-</head>
-<body>
-<div id="extension-selector"></div>
-
-<div id="main-container" class="container">
-
-  <div id="content" class="col-md-9 show-document">
-
-    <div id="document" class="document">
-
-      <div id="maps-selected" style="display:none;">
-        <span id='http://nyclimateclearinghouse.org/individual/n12089'></span>
-      </div>
-      <hr>
-
-<!-- Loaded in _doc_extension.html.erb -->
-      <div id="document-extension"></div>
-
-      </div>
-
-<script src="/assets/common.bundle.js"></script>
-<script src="/assets/loader.js"></script>
-
-<!-- override with extension selection code -->
-<script type="text/javascript">
-
-var parentDiv = document.getElementById("extension-selector");
-var extSelect = document.createElement("select");
-
-extSelect.appendChild(document.createElement("option"))
-extSelect.onchange = function(e) {
-  var extName = e.target.value;
-  if (extName == "") return;
-  extensionDefs[extName](function(ext) {
-    var extState = ext(document.getElementById("document-extension"),{});
-    console.log(extState());
-  })
-};
-
-
-Object.keys(extensionDefs).forEach(function(k) {
-  var option = document.createElement("option");
-  option.text = k;
-  option.value = k;
-  extSelect.appendChild(option);
-});
-parentDiv.innerHTML = '<label>Select an extension: </label>';
-parentDiv.appendChild(extSelect);
-
-</script>
-<!-- End _doc_extension.html.erb -->
-
-    </div>
-
-    <hr>
-
-</div>
-
-</body>
+<html>
+  <head>
+    <title>NYCCSC</title>
+  </head>
+  <body>
+  	<div id='product'></div>
+  	<hr>
+    <div id='root'></div>
+  </body>
+  <script src="/assets/data/common.bundle.js"></script>
+  <script src="/assets/data/loader.js"></script>
 </html>

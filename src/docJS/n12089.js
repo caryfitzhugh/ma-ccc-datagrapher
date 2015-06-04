@@ -106,15 +106,15 @@ var n12089Component = React.createClass({
     let elem = p[0];
     switch (params.get("element")) {
       case "maxt": 
-        elem.vX = 1; elem.vN = 0;
+        elem.vX = 1; elem.vN = 0; elem.maxmissing = 3;
         elemLabel = seasons.get(season)+" Average Daily Maximum Temperature"
         break;
       case "mint":
-        elem.vX = 2; elem.vN = 0;
+        elem.vX = 2; elem.vN = 0; elem.maxmissing = 3;
         elemLabel = seasons.get(season)+" Average Daily Minimum Temperature"
         break;
       case "avgt":
-        elem.vX = 43; elem.vN = 0;
+        elem.vX = 43; elem.vN = 0; elem.maxmissing = 3;
         elemLabel = seasons.get(season)+" Average Daily Temperature"
         break;
       default:
@@ -256,11 +256,11 @@ var StnChart = React.createClass({
         x={xAccessor}
         xAxis={xAxis}
         y={yAccessor}
-        // yAxis={{label:"Temperature"}}
+        yAxis={{label:"Temperature"}}
         tooltipHtml={toolTip}
         />;
 
-      return <div>
+      return  <div>
         <h3 style={{textAlign: "center"}}>{this.props.elemName}</h3>
         <h4 style={{textAlign: "center"}}>{this.props.stnName}</h4>
         {chart}
@@ -272,10 +272,4 @@ var StnChart = React.createClass({
 });
 
 
-
-module.exports = function(el,opts) {
-  let rx = React.createElement(n12089Component,{init:{}});
-  let rc = React.render(rx,el);
-  return rc.currentState;
-};
-
+export default n12089Component;
