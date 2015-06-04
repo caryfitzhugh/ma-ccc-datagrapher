@@ -121,7 +121,7 @@ var n12089Component = React.createClass({
     }
     reqParams.elems = [elem];
     reqParams.sdate = p[1];
-    request.post('http://data.rcc-acis.org/StnData')
+    request.post('/data_product_proxy/acis_station_data')
       .send(reqParams)
       .accept('json')
       .end((err,res) => {
