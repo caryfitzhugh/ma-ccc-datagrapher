@@ -12,6 +12,7 @@ module.exports = {
   output: {
     path: __dirname + '/assets/',
     filename: 'loader.js',
+    chunkFilename: '[name].js',
     publicPath: '/assets/data/'
   },
   plugins: [

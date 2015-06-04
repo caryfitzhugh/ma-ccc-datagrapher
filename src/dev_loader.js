@@ -2,8 +2,8 @@ import React from 'react';
 import Immutable from 'immutable';
 
 let dataExtns = {
-  stnTemp: require("bundle?lazy!./docJS/n12089"),
-  stnPrcp: require("bundle?lazy!./docJS/n1577"),
+  stnTemp: require("bundle?lazy&name=stnTemp!./docJS/n12089"),
+  stnPrcp: require("bundle?lazy&name=stnPrcp!./docJS/n1577"),
 };
 
 React.render(
