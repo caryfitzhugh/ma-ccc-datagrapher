@@ -20,7 +20,8 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin('common', 'common.bundle.js')
   ],
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['', '.js'],
+    alias: {context$: '../context'},
   },
   module: {
     loaders: [

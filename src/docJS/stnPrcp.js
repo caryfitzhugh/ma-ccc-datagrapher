@@ -12,6 +12,8 @@ var s1 = require('../hcnstns.json').features.map(
         return [f.id,f.properties];
       });
 
+var StnData = require('context').StnData;
+
 var stns = new Immutable.OrderedMap(s1);
 var seasons = new Immutable.OrderedMap([
     ["ANN","Annual"],
@@ -121,7 +123,7 @@ var n1577Component = React.createClass({
     }
     reqParams.elems = [elem];
     reqParams.sdate = p[1];
-    request.post('/data_product_proxy/acis_station_data')
+    request.post(StnData)
       .send(reqParams)
       .accept('json')
       .end((err,res) => {
