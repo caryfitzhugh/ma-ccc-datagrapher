@@ -1,38 +1,44 @@
+var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  // devtool: 'hidden-source-map',
+  devtool: 'source-map',
   entry: {
     main: [
-      './src/loader'
+      './src/index.js'
     ],
-    common: ['react','immutable','d3','superagent','react-d3-components']
+    common: ['react', 'd3', 'whatwg-fetch', 'react-d3-components', 'redux']
   },
   output: {
-    path: __dirname + '/public/',
+    path: path.join(__dirname, 'dataproduct'),
     filename: 'loader.js',
     chunkFilename: '[name].js',
     publicPath: '/dataproduct/'
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
+    new ExtractTextPlugin('style.css', { allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.bundle.js')
   ],
   resolve: {
     extensions: ['', '.js'],
-    alias: {context$: '../context'},
+    alias: {
+      react: path.join(__dirname, 'node_modules', 'react'),
+      'redux-devtools': path.join(__dirname,'node_modules','redux-devtools','lib'),
+      context$: '../dev_context'
+    }
   },
+  postcss: [
+    require('autoprefixer-core'),
+  ],
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
+      { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader','css-loader')},
-      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=32768'},
-      { test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url-loader?limit=10000&mimetype=application/font-woff'},
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url-loader?limit=10000&mimetype=application/octet-stream' },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file-loader' },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url-loader?limit=10000&mimetype=image/svg+xml' }
+      { test: /\.css$/, exclude: /node_modules/, 
+        loader: ExtractTextPlugin.extract('style-loader',
+          'css-loader?modules&importLoaders=1!postcss-loader')
+      },
     ]
   }
 };
