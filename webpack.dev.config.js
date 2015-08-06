@@ -1,6 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+// var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var cssimport = require('postcss-import');
 var autoprefixer = require('autoprefixer-core');
 
@@ -13,7 +13,7 @@ module.exports = {
       'webpack/hot/only-dev-server',
       './src/index.js'
     ],
-    common: ['react', 'd3', 'whatwg-fetch', 'react-d3-components', 'redux']
+    common: ['react', 'leaflet', 'd3', 'whatwg-fetch', 'react-d3-components', 'redux']
   },
   debug: true,
   output: {
@@ -50,7 +50,8 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader', exclude: /node_modules/  },
-      { test: /\.css$/, exclude: /node_modules/, 
+      { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
+      { test: /App.css$/, exclude: /node_modules/, 
         loaders: ['style-loader',
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','postcss-loader']
         // loader: ExtractTextPlugin.extract('style-loader',

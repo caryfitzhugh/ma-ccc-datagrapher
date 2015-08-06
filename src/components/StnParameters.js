@@ -3,10 +3,10 @@ import {seasons,elems} from '../constants/stn';
 
 export default class StnParameters extends React.Component {
   static propTypes = {
-    station: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    stations: PropTypes.object.isRequired,
+    shownStns: PropTypes.array.isRequired,
+    shownSeasons: PropTypes.array.isRequired,
     update: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -22,13 +22,27 @@ export default class StnParameters extends React.Component {
   }
 
   render() {
-    const s = this.props.station, params = this.props.params;
-    const stations = s.stations;
-    const stnOptions = s.shownStns.map((sid) => 
+    const stations = this.props.stations;
+    const stnOptions = this.props.shownStns.map((sid) => 
       ( <option key={sid} value={sid}>{stations.get(sid).name}</option>));
 
-    const seasonOptions = [];
-    seasons.forEach((v,k) => {seasonOptions.push(<option key={k} value={k}>{v}</option>)});
+    let seasonField;
+    if (this.props.shownSeasons.length > 1) {
+      const seasonOptions = this.props.shownSeasons.map((s) => (
+        <option key={s} value={s}>{seasons.get(s)}</option>
+      ));
+      seasonField = (
+        <fieldset style={{border:"none"}} >
+          <label style={{display:"block", margin:"5px 0px"}} >Season: </label>
+          <select
+            value={this.props.season}
+            onChange={this.handleSeason}
+          >
+            {seasonOptions}
+          </select>
+        </fieldset>
+      );
+    }
 
     const elemOptions = this.props.shownElems.map((elem) => 
       (<option key={elem} value={elem}>{elems.get(elem).label}</option>));
@@ -39,7 +53,7 @@ export default class StnParameters extends React.Component {
         <fieldset style={{border:"none"}} >
           <label style={{display:"block", margin:"5px 0px"}} >Station: </label>
           <select
-            value={params.sid}
+            value={this.props.sid}
             onChange={this.handleStation}
            >
             {stnOptions}
@@ -49,22 +63,14 @@ export default class StnParameters extends React.Component {
         <fieldset style={{border:"none"}} >
           <label style={{display:"block", margin:"5px 0px"}} >Element: </label>
           <select
-            value={params.element}
+            value={this.props.element}
             onChange={this.handleElement}
           >
             {elemOptions}
           </select>
         </fieldset>
 
-        <fieldset style={{border:"none"}} >
-          <label style={{display:"block", margin:"5px 0px"}} >Season: </label>
-          <select
-            value={params.season}
-            onChange={this.handleSeason}
-          >
-            {seasonOptions}
-          </select>
-        </fieldset>
+        {seasonField}
 
       </div>
     )

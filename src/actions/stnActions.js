@@ -1,10 +1,15 @@
 import 'whatwg-fetch'
 
 import {
-    SET_STATIONS,
-    SET_RESULTS,
+    APPEND_PANEL,
+    INSERT_PANEL,
+    DELETE_PANEL,
+    RECONCILE_PARAMS,
     SET_PARAMS,
-  } from '../constants/stnActionTypes';
+    SET_STATIONS,
+    SET_RESULT,
+    SET_PRODUCT
+  } from '../constants/actionTypes';
 
 import {elems} from '../constants/stn';
 
@@ -19,12 +24,45 @@ export function setStations(stations) {
   };
 }
 
-export function setResults(results) {
+export function appendPanel(param) {
   return {
-    type: SET_RESULTS,
-    payload: {
-      results
-    }
+    type: APPEND_PANEL,
+    payload: {param}
+  };
+}
+
+export function insertPanel(key) {
+  return {
+    type: INSERT_PANEL,
+    payload: {key}
+  }
+}
+
+export function deletePanel(key) {
+  return {
+    type: DELETE_PANEL,
+    payload: {key}
+  }
+}
+
+export function reconcileQuery(query) {
+  return {
+    type: RECONCILE_PARAMS,
+    payload: {query}
+  }
+}
+
+export function setChartType(key, product) {
+  return {
+    type: SET_PRODUCT,
+    payload: { key, product }
+  };
+}
+
+export function setResult(key, param, result) {
+  return {
+    type: SET_RESULT,
+    payload: { key, param, result }
   };
 }
 
@@ -38,16 +76,16 @@ function checkStatus(response) {
   }
 }
 
-export function fetchStnResults(params) {
-  console.log('fetchStnResults');
+export function fetchStnResults(key,param) {
+  console.log('fetchStnResults '+key+' '+param);
 
   return (dispatch, getState) => {
     console.log('start Fetch');
-    dispatch(setResults({}));
-    const { element, season, sid } = params;
-    const stn = getState().station.stations.get(sid);
+    dispatch(setResult(key,param,{}));
+    const { chart, element, season, sid } = param;
+    const stn = getState().geoms.hcnstns.get(sid);
 
-    const {label:elemLabel, ...elemParams} = elems.get(element);
+    const {label:elemLabel, acis} = elems.get(element);
     let reqParams = {edate: 'por', sid: stn.ghcn},
         p = {
           ANN: [{interval:[1],duration:1,maxmissing:30}, [1900]],
@@ -68,7 +106,7 @@ export function fetchStnResults(params) {
           Nov: [{interval:[1,0],duration:1,maxmissing:3}, [1900,11]],
           Dec: [{interval:[1,0],duration:1,maxmissing:3}, [1900,12]],
         }[season];
-    let elem = {...p[0], ...elemParams};
+    let elem = {...p[0], ...acis};
     reqParams.elems = [elem];
     reqParams.sdate = p[1];
     fetch(StnData,{
@@ -85,7 +123,7 @@ export function fetchStnResults(params) {
       return res.json();
     })
     .then(res => {
-      return dispatch(setResults(res));
+      return dispatch(setResult(key,param,res));
     })
     .catch(function(error) {
       console.log('request failed', error)

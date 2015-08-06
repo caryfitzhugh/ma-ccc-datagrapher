@@ -5,32 +5,35 @@ import {seasons,elems} from '../constants/stn';
 export default class StnChart {
 
   static propTypes = {
-    station: PropTypes.object.isRequired,
+    stations: PropTypes.object.isRequired,
+    sid: PropTypes.string.isRequired,
+    element: PropTypes.string.isRequired,
+    season: PropTypes.string.isRequired,
+    result: PropTypes.object.isRequired
   };
 
   render() {
-    console.log('StnChart render');
-    const s = this.props.station;
-    const params = this.props.params,
-          elemLabel = elems.get(params.element).label,
-          seasonLabel = seasons.get(params.season),
-          stationName = s.stations.get(params.sid).name;
+    // console.log('StnChart render');
+    const { stations, sid, element, season, result } = this.props;
+    const { label:titleElem, ttUnits } = elems.get(element),
+          titleSeason = seasons.get(season),
+          stationName = stations.get(sid).name;
     let chart;
-    if (s.results && s.results.data) {
-      const rawdata = s.results.data;
+    if (result && result.data) {
+      const rawdata = result.data;
       let xAccessor = (row) => { return +(row[0].slice(0,4)); },
-          xAxis = {label:"Year",tickFormat: (t) => {return ""+t;}},
+          xAxis = {label:'Year',tickFormat: (t) => {return ''+t;}},
           yAccessor = (row) => {
-            if (row[1] == "T") {
+            if (row[1] == 'T') {
               return 0.0;
             } else {
               return +row[1];
             }
           },
-          data = [{label:"MinT",values:rawdata.filter((d)=>{return d[1] != 'M';})}];
+          data = [{label:'MinT',values:rawdata.filter((d)=>{return d[1] != 'M';})}];
 
       let toolTip = (x,y) => {
-        return ""+x+": "+y+'"';
+        return ''+x+': '+y+ttUnits;
       };
 
       chart = <ScatterPlot
@@ -41,15 +44,15 @@ export default class StnChart {
         x={xAccessor}
         xAxis={xAxis}
         y={yAccessor}
-        // yAxis={{label:"Temperature"}}
+        // yAxis={{label:'Temperature'}}
         tooltipHtml={toolTip}
         />;
     } else {
       chart = <svg width={600} height={400} />;
     }
     return <div>
-      <h3 style={{textAlign: "center"}}>{seasonLabel + ' ' + elemLabel}</h3>
-      <h4 style={{textAlign: "center"}}>{stationName}</h4>
+      <h3 style={{textAlign: 'center'}}>{titleSeason + ' ' + titleElem}</h3>
+      <h4 style={{textAlign: 'center'}}>{stationName}</h4>
       {chart}
       </div>
   }
