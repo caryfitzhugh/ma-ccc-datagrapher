@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { createStore, combineReducers, applyMiddleware, bindActionCreators } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose, bindActionCreators } from 'redux';
+import { devTools, persistState } from 'redux-devtools';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/react';
+import loggerMiddleware from 'redux-logger';
 import { provide, connect } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
-// import { devTools, persistState } from 'redux-devtools';
-// import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
-
-// import DiffMonitor from 'redux-devtools-diff-monitor';
+import thunk from 'redux-thunk';
 
 import * as reducers from '../reducers';
 import * as stnActions from '../actions/stnActions';
@@ -15,26 +14,16 @@ import { chartDefs, parseURL } from '../constants/stn';
 
 import styles from "./App.css";
 
-function loggerMiddleware ({ getState }) {
-  return next => action => {
-    console.log('action', action)
-    console.log('state before', getState())
-    const result = next(action);
-    console.log('state after', getState());
-    return result;
-  }
-}
 
-const createStoreWithMiddleware = applyMiddleware(
-  thunkMiddleware,
-  loggerMiddleware,
-  // devTools(),
-  // persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
-)(createStore);
+const finalCreateStore = compose(
+  applyMiddleware(thunk),
+  applyMiddleware(loggerMiddleware),
+  devTools(),
+  createStore
+);
 
 const reducer = combineReducers(reducers);
-
-const store = createStoreWithMiddleware(reducer);
+const store = finalCreateStore(reducer);
 
 function fetchDataForPanels(panels, dispatch) {
   console.log('fetchDataForPanels');
@@ -124,6 +113,10 @@ export default class App extends Component {
     return (
       <div>
         {charts}
+        <DebugPanel top right bottom>
+          <DevTools store={store}
+                    monitor={LogMonitor} />
+        </DebugPanel>
       </div>
       );
   }
