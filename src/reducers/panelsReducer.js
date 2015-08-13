@@ -1,7 +1,6 @@
 import {
     SET_RESULT,
     SET_PRODUCT,
-    APPEND_PANEL,
     INSERT_PANEL,
     DELETE_PANEL,
     RECONCILE_PARAMS,
@@ -14,6 +13,7 @@ import { chartDefs, parseURL } from '../constants/stn';
   Each panel state contains:
     param: {
       chart,
+      geom,
       element,
       season,
       sid,
@@ -24,6 +24,7 @@ import { chartDefs, parseURL } from '../constants/stn';
       meta,
       data
     }
+    readyState: one of ['updated','valid','loading','ready']
 */
 const initialState = {
   panels: new Map(),
@@ -55,14 +56,6 @@ const actionHandlers = {
     panels = new Map([...panels]);
     panels.set(key,{ param, result: {new:1} });
     return {...state, panels};
-  },
-
-  [APPEND_PANEL]: (state, action) => {
-    let { panels, nextKey } = state;
-    panels = new Map([...panels]);
-    panels.set(nextKey,{ param: action.payload.param, result: {new:1} });
-    nextKey++;
-    return {panels, nextKey};
   },
 
   [INSERT_PANEL]: (state, action) => {

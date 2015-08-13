@@ -10,7 +10,7 @@ class Main extends React.Component {
     console.log('Main: render');
     return (
       <Router history={history}>
-        <Redirect from='/' to='/App?c=StnTemp/maxt/ANN/USH00300042/' />
+        <Redirect from='/' to='/App?c=Temp/stn/maxt/ANN/USH00300042/' />
         <Route path='/App' component={App}>
         </Route>
       </Router>

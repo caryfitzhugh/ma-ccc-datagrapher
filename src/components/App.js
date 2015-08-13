@@ -40,7 +40,7 @@ function fetchDataForPanels(panels, dispatch) {
   console.log('fetchDataForPanels');
   panels.forEach((panel,key) => {
     if (panel.result.new) {
-      dispatch(stnActions.fetchStnResults(key,panel.param));
+      dispatch(stnActions.fetchResults(key,panel.param));
     }
   });
 }
@@ -85,7 +85,7 @@ export default class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.panels != nextProps.panels) {
+    if (this.props.geoms != nextProps.geoms || this.props.panels != nextProps.panels) {
       fetchDataForPanels(nextProps.panels, this.props.dispatch);
     }
   }
@@ -102,6 +102,7 @@ export default class App extends Component {
     const { geoms, panels, dispatch } = this.props;
     const charts = [];
     panels.forEach((p,key) => {
+      const geom = geoms[p.param.geom] ? geoms[p.param.geom] : {};
       charts.push((
         <div className={styles.panel} key={key} >
           <SidePanel
@@ -112,10 +113,10 @@ export default class App extends Component {
           <StnPanel
             params={p.param}
             index={key}
-            geoms={geoms}
+            geom={geom.geojson}
+            meta={geom.meta}
             result={p.result}
-            update={::this.actions.fetchStnResults}
-            dispatch={dispatch}
+            update={::this.actions.fetchResults}
           />
         </div>
         ));

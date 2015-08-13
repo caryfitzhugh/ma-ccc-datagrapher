@@ -1,9 +1,8 @@
-export const SET_STATIONS = 'SET_STATIONS';
-export const SHOW_STATIONS = 'SHOW_STATIONS';
 export const SET_PARAMS = 'SET_PARAMS';
 export const SET_PRODUCT = 'SET_PRODUCT';
 export const SET_RESULT = 'SET_RESULT';
-export const APPEND_PANEL = 'APPEND_PANEL';
 export const INSERT_PANEL = 'INSERT_PANEL';
 export const DELETE_PANEL = 'DELETE_PANEL';
 export const RECONCILE_PARAMS = 'RECONCILE_PARAMS';
+export const REQUEST_GEOMDATA = 'REQUEST_GEOMDATA';
+export const SET_GEOJSON = 'SET_GEOJSON';

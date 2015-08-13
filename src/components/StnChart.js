@@ -2,10 +2,12 @@ import React, { PropTypes } from 'react';
 import {ScatterPlot, LinePlot} from 'react-d3-components';
 import {seasons,elems} from '../constants/stn';
 
+
 export default class StnChart {
 
   static propTypes = {
-    stations: PropTypes.object.isRequired,
+    meta: PropTypes.object,
+    geomType: PropTypes.string.isRequired,
     sid: PropTypes.string.isRequired,
     element: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
@@ -13,31 +15,36 @@ export default class StnChart {
   };
 
   render() {
-    // console.log('StnChart render');
-    const { stations, sid, element, season, result } = this.props;
+    console.log('StnChart render');
+    const { meta, geomType, sid, element, season, result } = this.props;
     const { label:titleElem, ttUnits } = elems.get(element),
-          titleSeason = seasons.get(season),
-          stationName = stations.get(sid).name;
+          titleSeason = seasons.get(season).title,
+          stationName = meta && meta.has(sid) ? meta.get(sid).name : 'loading';
     let chart;
     if (result && result.data) {
-      const rawdata = result.data;
-      let xAccessor = (row) => { return +(row[0].slice(0,4)); },
+      const data = [];
+      if (geomType == 'stn') {
+        result.data.forEach((d) => {
+          if (d[1] != 'M') data.push([+(d[0].slice(0,4)), d[1] == 'T' ? 0.0 : +d[1]]);
+        })
+      } else {
+        result.data.forEach((d) => {
+          const v = d[1][sid];
+          if (!!v && v == v) data.push([+(d[0].slice(0,4)), +v.toFixed(2)]);
+        })
+      }
+ 
+      let xAccessor = (row) => (row[0]),
           xAxis = {label:'Year',tickFormat: (t) => {return ''+t;}},
-          yAccessor = (row) => {
-            if (row[1] == 'T') {
-              return 0.0;
-            } else {
-              return +row[1];
-            }
-          },
-          data = [{label:'MinT',values:rawdata.filter((d)=>{return d[1] != 'M';})}];
+          yAccessor = (row) => (row[1]),
+          gdata = [{label:'MinT',values: data}];
 
       let toolTip = (x,y) => {
         return ''+x+': '+y+ttUnits;
       };
 
       chart = <ScatterPlot
-        data={data}
+        data={gdata}
         width={600}
         height={400}
         margin={{top: 10, bottom: 50, left: 50, right: 10}}

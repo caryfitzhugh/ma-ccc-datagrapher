@@ -1,35 +1,18 @@
 import 'whatwg-fetch'
 
 import {
-    APPEND_PANEL,
     INSERT_PANEL,
     DELETE_PANEL,
     RECONCILE_PARAMS,
     SET_PARAMS,
-    SET_STATIONS,
     SET_RESULT,
     SET_PRODUCT
   } from '../constants/actionTypes';
 
-import {elems} from '../constants/stn';
+import { fetchGeom } from './geomActions';
+import { buildQuery } from '../constants/stn';
 
-let StnData = require('context').StnData;
-
-export function setStations(stations) {
-  return {
-    type: SET_STATIONS,
-    payload: {
-      stations
-    }
-  };
-}
-
-export function appendPanel(param) {
-  return {
-    type: APPEND_PANEL,
-    payload: {param}
-  };
-}
+import { StnData, GridData } from 'context';
 
 export function insertPanel(key) {
   return {
@@ -76,40 +59,23 @@ function checkStatus(response) {
   }
 }
 
-export function fetchStnResults(key,param) {
-  console.log('fetchStnResults '+key+' '+param);
-
+export function fetchResults(key,param) {
   return (dispatch, getState) => {
-    console.log('start Fetch');
+    const { geom, sid } = param;
+    // check that geom is loaded
+    const geomInfo = getState().geoms[geom];
+    if (!geomInfo) {
+      return dispatch(fetchGeom(geom));
+    }
+    if (geomInfo.readyState == 'loading') {
+      return;
+    }
     dispatch(setResult(key,param,{}));
-    const { chart, element, season, sid } = param;
-    const stn = getState().geoms.hcnstns.get(sid);
 
-    const {label:elemLabel, acis} = elems.get(element);
-    let reqParams = {edate: 'por', sid: stn.ghcn},
-        p = {
-          ANN: [{interval:[1],duration:1,maxmissing:30}, [1900]],
-          MAM: [{interval:[1,0],duration:3,maxmissing:10}, [1900,5]],
-          JJA: [{interval:[1,0],duration:3,maxmissing:10}, [1900,8]],
-          SON: [{interval:[1,0],duration:3,maxmissing:10}, [1900,11]],
-          DJF: [{interval:[1,0],duration:3,maxmissing:10}, [1900,2]],
-          Jan: [{interval:[1,0],duration:1,maxmissing:3}, [1900,1]],
-          Feb: [{interval:[1,0],duration:1,maxmissing:3}, [1900,2]],
-          Mar: [{interval:[1,0],duration:1,maxmissing:3}, [1900,3]],
-          Apr: [{interval:[1,0],duration:1,maxmissing:3}, [1900,4]],
-          May: [{interval:[1,0],duration:1,maxmissing:3}, [1900,5]],
-          Jun: [{interval:[1,0],duration:1,maxmissing:3}, [1900,6]],
-          Jul: [{interval:[1,0],duration:1,maxmissing:3}, [1900,7]],
-          Aug: [{interval:[1,0],duration:1,maxmissing:3}, [1900,8]],
-          Sep: [{interval:[1,0],duration:1,maxmissing:3}, [1900,9]],
-          Oct: [{interval:[1,0],duration:1,maxmissing:3}, [1900,10]],
-          Nov: [{interval:[1,0],duration:1,maxmissing:3}, [1900,11]],
-          Dec: [{interval:[1,0],duration:1,maxmissing:3}, [1900,12]],
-        }[season];
-    let elem = {...p[0], ...acis};
-    reqParams.elems = [elem];
-    reqParams.sdate = p[1];
-    fetch(StnData,{
+    const reqParams = buildQuery(param, geomInfo.meta.get(sid));
+    const url = geom == 'stn' ? StnData : GridData;
+
+    fetch(url,{
       method: 'post',
       headers: {
         'Accept': 'application/json',

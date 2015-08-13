@@ -13,7 +13,7 @@ module.exports = {
       'webpack/hot/only-dev-server',
       './src/index.js'
     ],
-    common: ['react', 'leaflet', 'd3', 'whatwg-fetch', 'react-d3-components', 'redux']
+    common: ['react', 'd3', 'leaflet', 'whatwg-fetch', 'react-d3-components', 'redux']
   },
   debug: true,
   output: {

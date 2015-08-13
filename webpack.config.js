@@ -8,7 +8,7 @@ module.exports = {
     main: [
       './src/index.js'
     ],
-    common: ['react', 'd3', 'whatwg-fetch', 'react-d3-components', 'redux']
+    common: ['react', 'd3', 'leaflet', 'whatwg-fetch', 'react-d3-components', 'redux']
   },
   output: {
     path: path.join(__dirname, 'dataproduct'),

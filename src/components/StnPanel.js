@@ -4,7 +4,6 @@ import StnParameters from './StnParameters';
 import MiniMap from './MiniMap';
 import StnChart from './StnChart';
 import styles from './App.css';
-const hcnstns = require('../hcnstns.json');
 
 import { chartDefs } from '../constants/stn';
 
@@ -13,7 +12,8 @@ export default class StnPanel extends React.Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    geoms: PropTypes.object.isRequired,
+    geom: PropTypes.object,
+    meta: PropTypes.object,
     result: PropTypes.object,
     update: PropTypes.func.isRequired
   }
@@ -27,7 +27,9 @@ export default class StnPanel extends React.Component {
   }
   
   render () {
-    const {chart, element, season, sid, bbox} = this.props.params;
+    const {chart, geom, element, season, sid, bbox} = this.props.params;
+    const geomMeta = this.props.meta;
+    const geoJSON = this.props.geom;
     const { elems:elements, seasons } = chartDefs.get(chart);
 
     return (
@@ -35,8 +37,8 @@ export default class StnPanel extends React.Component {
         <div className={styles.chartInput}>
           <StnParameters
             className={styles.paramForm}
-            stations={this.props.geoms.hcnstns}
-            shownStns={this.props.geoms.shownStns}
+            geomType={geom}
+            meta={geomMeta}
             shownElems={elements}
             shownSeasons={seasons}
             element={element}
@@ -46,16 +48,18 @@ export default class StnPanel extends React.Component {
           />
           <MiniMap
             className={styles.miniMap}
-            geom={ hcnstns }
-            bbox={ bbox }
-            sid={ sid }
+            geomType={geom}
+            geoJSON={geoJSON}
+            bbox={bbox}
+            sid={sid}
             update={::this.updateMap}
           />
         </div>
         <StnChart
           className={styles.chartOutput}
+          geomType={geom}
           result={this.props.result}
-          stations={this.props.geoms.hcnstns}
+          meta={geomMeta}
           element={element}
           season={season}
           sid={sid}

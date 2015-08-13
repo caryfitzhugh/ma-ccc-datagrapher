@@ -23,7 +23,8 @@ export default class MiniMap extends Component {
 
   static propTypes = {
     // showGeom: PropTypes.string.isRequired,
-    geom: PropTypes.object.isRequired,
+    geomType: PropTypes.string.isRequired,
+    geoJSON: PropTypes.object,
     bbox: PropTypes.any.isRequired,
     sid: PropTypes.string.isRequired,
     update: PropTypes.func.isRequired,
@@ -32,7 +33,10 @@ export default class MiniMap extends Component {
   updateSid() {
     const sid = this.props.sid;
     this.layer.setStyle((f) => ({
-      fillColor: f.id == sid ? 'blue' : 'darkgrey',
+        fillColor: f.id == sid ? 'blue' : 'darkgrey',
+        weight: 1.5,
+        opacity: 0.6,
+        color: 'black'
     }));
     this.layer.eachLayer((l) => {
       if (l.feature.id == sid) {
@@ -43,7 +47,7 @@ export default class MiniMap extends Component {
 
   updateLayer() {
     const sid = this.props.sid;
-    const fl = this.layer = L.geoJson(this.props.geom,{
+    const fl = this.layer = L.geoJson(this.props.geoJSON,{
       pointToLayer: (geojson, latlng) => 
         new L.CircleMarker(latlng,
           {
@@ -54,8 +58,13 @@ export default class MiniMap extends Component {
             fill: true
           }
         ),
-      filter(f) {return true;},
-      style(f) {return {fillColor: f.id == sid ? 'blue' : 'darkgrey'}}
+      filter: (f) => (true),
+      style: (f) => ({
+        fillColor: f.id == sid ? 'blue' : 'darkgrey',
+        weight: 1.5,
+        opacity: 0.6,
+        color: 'black'
+      })
     });
 
     fl.on('mouseover', (e) => {
@@ -77,8 +86,10 @@ export default class MiniMap extends Component {
     });
     L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png',
       {subdomains: '0123', minZoom: 5.6, maxZoom: 10}).addTo(this.map);
-    this.updateLayer();
-    this.updateSid();
+    if (this.props.geoJSON) {
+      this.updateLayer();
+      this.updateSid();
+    }
   }
 
   componentWillUnmount() {
@@ -87,8 +98,11 @@ export default class MiniMap extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.sid != this.props.sid) {
-      this.updateSid();
+    if (this.props.geoJSON && !prevProps.geoJSON) {
+      this.updateLayer();
+      this.updateSid();      
+    } else {
+      if (prevProps.sid != this.props.sid) this.updateSid();
     }
   }
 
