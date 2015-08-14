@@ -1,12 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { createStore, combineReducers, applyMiddleware, compose, bindActionCreators } from 'redux';
-import { devTools, persistState } from 'redux-devtools';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/react';
-import loggerMiddleware from 'redux-logger';
-import { provide, connect } from 'react-redux';
-import thunk from 'redux-thunk';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import * as reducers from '../reducers';
 import * as stnActions from '../actions/stnActions';
 import SidePanel from './SidePanel';
 import StnPanel from './StnPanel';
@@ -14,16 +9,6 @@ import { chartDefs, parseURL } from '../constants/stn';
 
 import styles from "./App.css";
 
-
-const finalCreateStore = compose(
-  applyMiddleware(thunk),
-  applyMiddleware(loggerMiddleware),
-  devTools(),
-  createStore
-);
-
-const reducer = combineReducers(reducers);
-const store = finalCreateStore(reducer);
 
 function fetchDataForPanels(panels, dispatch) {
   console.log('fetchDataForPanels');
@@ -50,7 +35,6 @@ function updateQueryIfNeeded(panels,query,router) {
   }
 }
 
-@provide(store)
 @connect(state => {
   return {geoms: state.geoms, panels: state.panels.panels}
 })
@@ -113,10 +97,6 @@ export default class App extends Component {
     return (
       <div>
         {charts}
-        <DebugPanel top right bottom>
-          <DevTools store={store}
-                    monitor={LogMonitor} />
-        </DebugPanel>
       </div>
       );
   }
