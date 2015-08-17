@@ -3,11 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as stnActions from '../actions/stnActions';
-import SidePanel from './SidePanel';
 import StnPanel from './StnPanel';
-import { chartDefs, parseURL } from '../constants/stn';
-
-import styles from "./App.css";
+import { chartDefs } from '../constants/stn';
 
 
 function fetchDataForPanels(panels, dispatch) {
@@ -75,24 +72,13 @@ export default class App extends Component {
     const { geoms, panels, dispatch } = this.props;
     const charts = [];
     panels.forEach((p,key) => {
-      const geom = geoms[p.param.geom] ? geoms[p.param.geom] : {};
-      charts.push((
-        <div className={styles.panel} key={key} >
-          <SidePanel
-            current={p.param.chart}
-            index={key}
-            actions={this.actions}
-          />
-          <StnPanel
-            params={p.param}
-            index={key}
-            geom={geom.geojson}
-            meta={geom.meta}
-            result={p.result}
-            update={::this.actions.fetchResults}
-          />
-        </div>
-        ));
+      charts.push(
+        <StnPanel
+          key={key}
+          index={key}
+          panel={p}
+        />
+      );
     });
     return (
       <div>

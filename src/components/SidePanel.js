@@ -5,8 +5,10 @@ import styles from "./App.css";
 
 export default class SidePanel extends Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
-    actions: PropTypes.object.isRequired
+    current: PropTypes.string.isRequired,
+    setChartType: PropTypes.func.isRequired,
+    insertPanel: PropTypes.func.isRequired,
+    deletePanel: PropTypes.func.isRequired,
   };
 
   render() {
@@ -14,12 +16,12 @@ export default class SidePanel extends Component {
     const cButtons = [];
 
     chartDefs.forEach((def,key) => {
-      const cName = key == current ? styles.sideitemCurrent : styles.sideitem;
+      const cName = key == this.props.current ? styles.sideitemCurrent : styles.sideitem;
       cButtons.push(
         <div
           className={cName}
           key={key}
-          onClick={()=>{actions.setChartType(index,key)}}
+          onClick={()=>{this.props.setChartType(key);}}
         >{def.title}</div>
       );
     });
@@ -29,11 +31,11 @@ export default class SidePanel extends Component {
         {cButtons}
         <div
           className={styles.sideControl}
-          onClick={this.props.actions.insertPanel.bind(this,this.props.index)}
+          onClick={this.props.insertPanel}
         >Add</div>
         <div
           className={styles.sideControl}
-          onClick={this.props.actions.deletePanel.bind(this,this.props.index)}
+          onClick={this.props.deletePanel}
         >Remove</div>
       </div>
     );
