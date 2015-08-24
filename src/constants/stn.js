@@ -135,9 +135,7 @@ export let elems = new Map([
   ['snwd_1', {
     label:'Days with Snow Depth > 1"',
     yLabel: 'Days', ttUnits: '',
-    acis: {vX:11, vN:0, reduce:'cnt_gt_1'},
-    grid: {},
-    gYr: [1981,2015]}],
+    acis: {vX:11, vN:0, reduce:'cnt_gt_1'}}],
 // StnFrost
   ['grow_32', {
     label:'Growing Season Length (above 32°)',
@@ -181,7 +179,16 @@ export function buildQuery(params, meta) {
     p.sdate = s.smonth ? [1900,s.smonth] : [1900];
     elem = {...elem, ...e.acis};
   } else {
-    p.state = params.geom == 'state' ? 'pa,nj,nh,ma' : 'ny';
+    switch (params.geom) {
+      case 'state' :
+        p.state = 'pa,nj,nh,ma';
+        break;
+      case 'basin' :
+        p.state = 'oh,nj,me';
+        break;
+      default :
+        p.state = 'ny';
+    }
     p.grid = 21;
     p.sdate = s.smonth ? [e.gYr[0],s.smonth]: [e.gYr[0]];
     p.edate = s.smonth ? [e.gYr[1],s.smonth]: [e.gYr[1]];
@@ -198,21 +205,74 @@ function validateParams(def,params) {
   if (def.seasons.indexOf(params.season) == -1) { params.season = def.seasons[0]}
 }
 
+function nearestGeom(nSid, nGeom, pSid, pGeom) {
+  if (!pGeom && !pSid) {
+    if (nGeom && nGeom.ready) {
+      return nGeom.meta.has(nSid) ? nSid : [...nGeom.meta.keys()][0];
+    }
+    return '';
+  }
+  if (pGeom && pGeom.ready && nGeom && nGeom.ready) {
+    if (pGeom == nGeom) return nSid;
+    return nGeom.meta.has(nSid) ? nSid : [...nGeom.meta.keys()][0];
+  }
+  return '';
+}
+
+export function validateParam(param, prevParam, geoms) {
+  let { chart, geom, element, season, sid, bbox } = param;
+  if (['stn','state','county','basin'].indexOf(geom) == -1) geom = 'stn';
+  if (!chartDefs.has(chart)) chart = 'Temp';
+  let def = chartDefs.get(chart);
+  if (geom == 'stn') {
+    if (def.elems.indexOf(element) == -1) element = def.elems[0];
+  } else {
+    if (def.gElems.length == 0) {
+      chart = 'Temp';
+      def = chartDefs.get(chart);
+    }
+    if (def.gElems.indexOf(element) == -1) element = def.gElems[0];
+  }
+  if (def.seasons.indexOf(season) == -1) season = def.seasons[0];
+
+  if (!prevParam) sid = nearestGeom(sid, geoms[geom]);
+  else sid = nearestGeom(sid, geoms[geom], prevParam.sid, geoms[prevParam.geom]);
+
+  if (chart == param.chart &&
+      geom == param.geom &&
+      element == param.element &&
+      season == param.season &&
+      sid == param.sid &&
+      bbox == param.bbox) return param;
+  return { chart, geom, element, season, sid, bbox };
+}
+
+export function haveSameResults(p1,p2) {
+  if (!p2) return false;
+  const { chart, geom, element, season, sid, bbox } = p1;
+  if (p2.chart != chart) return false;
+  if (p2.geom != geom) return false;
+  if (p2.element != element) return false;
+  if (p2.season != season) return false;
+  if (geom == 'stn' && p2.sid != sid) return false;
+  return true;
+}
+
 const allSeasons = [ ...seasons.keys()];
 
 export const chartDefs = new Map([
   ['Temp', {
-      title: 'Station Temp',
+      title: 'Temp',
       elems: ['maxt', 'mint', 'avgt', 'gdd50', 'hdd65', 'cdd65'],
       seasons: allSeasons
   }],
   ['Prcp',{
-    title: 'Station Prcp',
+    title: 'Prcp',
     elems: ['pcpn','snow','snwd'],
     seasons: allSeasons
   }],
   ['TDays',{
-    title: 'Station Temp-Days',
+    title: 'Temp-Days',
     elems: ['tx90','tx95','tx100',
             'tn0','tn32',
             // 'tx90_3','tx95_3','tx100_3',
@@ -222,20 +282,21 @@ export const chartDefs = new Map([
     seasons: allSeasons
   }],
   ['PDays',{
-    title: 'Station Prcp-Days',
+    title: 'Prcp-Days',
     elems:['prcp_1', 'prcp_2', 'prcp_4', 'snwd_1',
            // 'prcp_lt01_run','prcp_lt1_run'
           ],
     seasons: allSeasons
   }],
   ['Frost',{
-    title: 'Station Frost',
+    title: 'Frost',
     elems:['grow_32'],
     seasons: ['ANN']
   }],
 ]);
 
 chartDefs.forEach((def,chart) => {
+  def.gElems = def.elems.filter((e) => (typeof elems.get(e).gYr != 'undefined'));
   def.validateParams = (params) => {
     validateParams(def,params);
   };

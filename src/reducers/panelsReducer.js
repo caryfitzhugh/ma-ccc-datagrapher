@@ -1,4 +1,7 @@
 import {
+    INVALIDATE_PARAM,
+    UPDATE_PARAM,
+    REQUEST_DATA,
     SET_RESULT,
     SET_PRODUCT,
     INSERT_PANEL,
@@ -19,19 +22,59 @@ import { chartDefs, parseURL } from '../constants/stn';
       sid,
       bbox
     }
-    results: {
-      new: flag to trigger fetch
+    result: {
       meta,
       data
     }
-    readyState: one of ['updated','valid','loading','ready']
+    ready: boolean
+    request: boolean
+    prevParam: optional {}
+
 */
 const initialState = {
   panels: new Map(),
+  requests: {},
   nextKey: 1
 };
 
 const actionHandlers = {
+  [INVALIDATE_PARAM]: (state, action) => {
+    let { panels } = state;
+    const { key, param } = action.payload,
+      cPanel = panels.get(key);
+    if (!cPanel) return state;
+
+    let nPanel = {...cPanel}
+    panels = new Map([...panels]);
+
+    if (!cPanel.ready) nPanel.param = param;
+    else nPanel = { ...cPanel, param, prevParam: cPanel.param, ready: false };
+    panels.set(key, nPanel);
+    return {...state, panels};
+  },
+
+  [UPDATE_PARAM]: (state, action) => {
+    let { panels } = state;
+    const { key, param } = action.payload,
+      cPanel = panels.get(key);
+    if (!cPanel) return state;
+
+    panels = new Map([...panels]);
+    panels.set(key,{ ...cPanel, param });
+    return {...state, panels};
+  },
+
+  [REQUEST_DATA]: (state, action) => {
+    let { panels } = state;
+    const { key } = action.payload,
+      cPanel = panels.get(key);
+    if (!cPanel) return state;
+
+    panels = new Map([...panels]);
+    panels.set(key,{ ...cPanel, request: true});
+    return {...state, panels};
+  },
+
   [SET_RESULT]: (state, action) => {
     let { panels } = state;
     const { key, param, result } = action.payload,
@@ -39,7 +82,7 @@ const actionHandlers = {
     if (!cPanel) return state;
 
     panels = new Map([...panels]);
-    panels.set(key,{ param, result });
+    panels.set(key,{ param, result, ready: true });
     return {...state, panels};
   },
 
@@ -87,24 +130,23 @@ const actionHandlers = {
     if (!query) { query = []; }
     if (!Array.isArray(query)) query = [query];
 
-    panels.forEach((val,k) => {
-      const pStr = chartDefs.get(val.param.chart).toString(val.param);
-      if (query[idx++] != pStr ) noChange=false;
+    panels.forEach((panel,key) => {
+      const pStr = chartDefs.get(panel.param.chart).toString(panel.param),
+        q = query[idx++];
+      if (q == pStr) {
+        newPanels.set(key,panel);
+      } else {
+        noChange=false;
+        newPanels.set(key,{param: parseURL(q), result: {}, ready: false})
+      }
     })
     if ( noChange && query.length == panels.size ) return state;
 
-    query.forEach((q) => {
-      let found = false;
-      panels.forEach((val,k) => {
-        const pStr = chartDefs.get(val.param.chart).toString(val.param);
-        if (pStr == q && !newPanels.has(k)) {
-          newPanels.set(k,val);
-          found = true;
-        }
-      });
-      if (!found) newPanels.set(nextKey++,{ param: parseURL(q), result: {new:1} });
-    })
-    return { panels: newPanels, nextKey };
+    for (; idx < query.length; idx++) {
+      newPanels.set(nextKey++,{ param: parseURL(query[idx]), result: {}, ready: false });
+    }
+
+    return { ...state, panels: newPanels, nextKey};
   }
 };
 

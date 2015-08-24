@@ -15,19 +15,22 @@ class StnPanel extends Component {
   static propTypes = {
     param: PropTypes.object.isRequired,
     result: PropTypes.object,
+    loading: PropTypes.bool,
     geom: PropTypes.object,
-    setChartType: PropTypes.func.isRequired,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
-    fetchResults: PropTypes.func.isRequired
+    // fetchResults: PropTypes.func.isRequired,
+    invalidateParam: PropTypes.func.isRequired,
   }
 
   updateParams(newParams) {
-    this.props.fetchResults({ ...this.props.param, ...newParams });
+    this.props.invalidateParam({ ...this.props.param, ...newParams })
+    // this.props.fetchResults();
   }
 
   updateMap(sid, bbox) {
-    this.props.fetchResults({ ...this.props.param, sid });
+    this.props.invalidateParam({ ...this.props.param, sid });
+    // this.props.fetchResults();
   }
   
   render () {
@@ -39,7 +42,7 @@ class StnPanel extends Component {
       <div className={styles.panel} >
         <SidePanel
           current={chart}
-          setChartType={this.props.setChartType}
+          updatePanel={::this.updateParams}
           insertPanel={this.props.insertPanel}
           deletePanel={this.props.deletePanel}
         />
@@ -73,6 +76,7 @@ class StnPanel extends Component {
             element={element}
             season={season}
             sid={sid}
+            ready={this.props.ready}
           />
         </div>
       </div>
@@ -92,10 +96,10 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
   return {
     ...panel,
     geom,
-    setChartType: (chart) => dispatchProps.setChartType(idx, chart),
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),
-    fetchResults: (param) => dispatchProps.fetchResults(idx, param),
+    // fetchResults: () => dispatchProps.fetchResults(idx),
+    invalidateParam: (param) => dispatchProps.invalidateParam(idx,param),
     };
 }
 

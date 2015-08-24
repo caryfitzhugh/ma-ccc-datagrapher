@@ -1,6 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+//var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var cssimport = require('postcss-import');
+var autoprefixer = require('autoprefixer-core');
 
 module.exports = {
   devtool: 'source-map',
@@ -14,10 +16,12 @@ module.exports = {
     path: path.join(__dirname, 'dataproduct'),
     filename: 'loader.js',
     chunkFilename: '[name].js',
-    publicPath: '/dataproduct/'
+    publicPath: '/dataproduct/',
+    pathinfo: true
   },
   plugins: [
-    new ExtractTextPlugin('style.css', { allChunks: true }),
+    new webpack.DefinePlugin({ __DEV__: 'false' }),
+    // new ExtractTextPlugin('style.css', { allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.bundle.js')
   ],
   resolve: {
@@ -35,9 +39,12 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.css$/, exclude: /node_modules/, 
-        loader: ExtractTextPlugin.extract('style-loader',
-          'css-loader?modules&importLoaders=1!postcss-loader')
+      { test: /App.css$/, exclude: /node_modules/, 
+        loaders: ['style-loader',
+          'css-loader?modules&importLoaders=1!postcss-loader']
+      // { test: /\.css$/, exclude: /node_modules/, 
+      //   loader: ExtractTextPlugin.extract('style-loader',
+      //     'css-loader?modules&importLoaders=1!postcss-loader')
       },
     ]
   }

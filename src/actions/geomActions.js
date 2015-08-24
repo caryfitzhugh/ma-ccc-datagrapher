@@ -70,12 +70,12 @@ export function fetchGeom(geoType) {
     })
     .then(checkStatus)
     .then(res => res.json())
+    .catch(function(error) {
+      console.log('request failed', error)
+    })
     .then(res => {
       if (geoType == 'stn') return dispatch(setGeoJson(geoType,res));
       return dispatch(setGeoJson(geoType,transformToGeoJSON(res)));
-    })
-    .catch(function(error) {
-      console.log('request failed', error)
     });
   }
 }

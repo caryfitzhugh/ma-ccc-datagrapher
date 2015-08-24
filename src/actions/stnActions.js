@@ -1,18 +1,34 @@
 import 'whatwg-fetch'
 
+
+import { fetchGeom } from './geomActions';
+import { buildQuery, validateParam, haveSameResults } from '../constants/stn';
+
+import { StnData, GridData } from 'context';
 import {
+    INVALIDATE_PARAM,
+    UPDATE_PARAM,
     INSERT_PANEL,
     DELETE_PANEL,
     RECONCILE_PARAMS,
-    SET_PARAMS,
+    REQUEST_DATA,
     SET_RESULT,
-    SET_PRODUCT
   } from '../constants/actionTypes';
 
-import { fetchGeom } from './geomActions';
-import { buildQuery } from '../constants/stn';
 
-import { StnData, GridData } from 'context';
+export function invalidateParam(key, param) {
+  return {
+    type: INVALIDATE_PARAM,
+    payload: { key, param }
+  };
+}
+
+export function updateParam(key, param) {
+  return {
+    type: UPDATE_PARAM,
+    payload: { key, param }
+  };
+}
 
 export function insertPanel(key) {
   return {
@@ -35,10 +51,10 @@ export function reconcileQuery(query) {
   }
 }
 
-export function setChartType(key, product) {
+function requestData(key) {
   return {
-    type: SET_PRODUCT,
-    payload: { key, product }
+    type: REQUEST_DATA,
+    payload: { key }
   };
 }
 
@@ -59,21 +75,40 @@ function checkStatus(response) {
   }
 }
 
-export function fetchResults(key,param) {
+export function fetchResults(key) {
   return (dispatch, getState) => {
-    const { geom, sid } = param;
-    // check that geom is loaded
-    const geomInfo = getState().geoms[geom];
-    if (!geomInfo) {
-      return dispatch(fetchGeom(geom));
-    }
-    if (geomInfo.readyState == 'loading') {
-      return;
-    }
-    dispatch(setResult(key,param,{}));
+    const panel = getState().panels.panels.get(key);
+    if (!panel || panel.ready) return;
 
-    const reqParams = buildQuery(param, geomInfo.meta.get(sid));
-    const url = geom == 'stn' ? StnData : GridData;
+    const param = panel.param
+    // check that geom is loaded
+    const geomInfo = getState().geoms[param.geom];
+    if (!geomInfo) {
+      return dispatch(fetchGeom(param.geom));
+    }
+    if (!geomInfo.ready) return;
+
+    const nParam = validateParam(param, panel.prevParam, getState().geoms);
+    if (nParam !== param) dispatch(updateParam(key,nParam))
+
+    // check for data in another panel
+    if (haveSameResults(nParam, panel.prevParam)) {
+      return dispatch(setResult(key,nParam,panel.result));
+    }
+
+    let done = false;
+    getState().panels.panels.forEach((val,k) => {
+      if (!done && val.ready && haveSameResults(nParam,val.param)) {
+        dispatch(setResult(key,nParam,val.result));
+        done = true;
+      }
+    })
+
+    if (done || panel.request) return;
+
+    dispatch(requestData(key));
+    const reqParams = buildQuery(nParam, geomInfo.meta.get(nParam.sid));
+    const url = nParam.geom == 'stn' ? StnData : GridData;
 
     fetch(url,{
       method: 'post',
@@ -89,7 +124,7 @@ export function fetchResults(key,param) {
       return res.json();
     })
     .then(res => {
-      return dispatch(setResult(key,param,res));
+      return dispatch(setResult(key,nParam,res));
     })
     .catch(function(error) {
       console.log('request failed', error)

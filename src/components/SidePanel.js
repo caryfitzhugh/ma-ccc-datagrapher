@@ -6,7 +6,7 @@ import styles from "./App.css";
 export default class SidePanel extends Component {
   static propTypes = {
     current: PropTypes.string.isRequired,
-    setChartType: PropTypes.func.isRequired,
+    updatePanel: PropTypes.func.isRequired,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
   };
@@ -21,7 +21,7 @@ export default class SidePanel extends Component {
         <div
           className={cName}
           key={key}
-          onClick={()=>{this.props.setChartType(key);}}
+          onClick={()=>{this.props.updatePanel({chart:key});}}
         >{def.title}</div>
       );
     });

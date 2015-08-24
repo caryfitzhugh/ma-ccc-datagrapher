@@ -10,8 +10,8 @@ import { chartDefs } from '../constants/stn';
 function fetchDataForPanels(panels, dispatch) {
   console.log('fetchDataForPanels');
   panels.forEach((panel,key) => {
-    if (panel.result.new) {
-      dispatch(stnActions.fetchResults(key,panel.param));
+    if (!panel.ready) {
+      dispatch(stnActions.fetchResults(key));
     }
   });
 }
@@ -19,7 +19,10 @@ function fetchDataForPanels(panels, dispatch) {
 function updateQueryIfNeeded(panels,query,router) {
   if (!query) { query = [] };
   if (!Array.isArray(query)) { query = [query]; }
-  let newQuery = [], dirty = false;
+  let newQuery = [], ready = true, dirty = false;
+  panels.forEach((panel,key) => {if (!panel.ready) ready = false;});
+  if (!ready) return;
+  
   panels.forEach((panel,key) => {
     const pStr = chartDefs.get(panel.param.chart).toString(panel.param);
 

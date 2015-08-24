@@ -5,8 +5,8 @@ var cssimport = require('postcss-import');
 var autoprefixer = require('autoprefixer-core');
 
 module.exports = {
-  // devtool: 'cheap-module-eval-source-map',
-  devtool: 'eval-source-map',
+devtool: 'cheap-module-eval-source-map',
+  // devtool: 'eval-source-map',
   entry: {
     main: [
       'webpack-dev-server/client?http://localhost:8080',
@@ -26,6 +26,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({ __DEV__: 'true' }),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.bundle.js')
   ],
   resolve: {

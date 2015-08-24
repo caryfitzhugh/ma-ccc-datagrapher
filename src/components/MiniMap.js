@@ -47,6 +47,10 @@ export default class MiniMap extends Component {
 
   updateLayer() {
     const sid = this.props.sid;
+    if (this.layer && this.map.hasLayer(this.layer)) {
+      this.map.removeLayer(this.layer);
+    }
+    this.geomType = this.props.geomType;
     const fl = this.layer = L.geoJson(this.props.geoJSON,{
       pointToLayer: (geojson, latlng) => 
         new L.CircleMarker(latlng,
@@ -98,7 +102,7 @@ export default class MiniMap extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.geoJSON && !prevProps.geoJSON) {
+    if (this.props.geoJSON && this.geomType != this.props.geomType) {
       this.updateLayer();
       this.updateSid();      
     } else {

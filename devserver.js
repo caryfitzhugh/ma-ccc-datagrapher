@@ -1,11 +1,11 @@
 // setup webpack-dev-server
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
+var config = require('./webpack.dev.config');
 
 var devServer = new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
-  hot: false,
+  hot: true,
   quiet: false,
   historyApiFallback: true
 });

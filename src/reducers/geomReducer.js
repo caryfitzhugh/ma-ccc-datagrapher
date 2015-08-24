@@ -10,7 +10,7 @@ import createReducer from './create-reducer';
     stn, state, county, basin: {
       geojson
       meta
-      readyState
+      ready
     }
 */
 const initialState = {};
@@ -18,7 +18,7 @@ const initialState = {};
 const actionHandlers = {
   [REQUEST_GEOMDATA]: (state, action) => {
     const { geoType } = action.payload;
-    return {...state, ...{[geoType]: {readyState: 'loading'}}}
+    return {...state, ...{[geoType]: {ready: false}}}
   },
 
   [SET_GEOJSON]: (state, action) => {
@@ -31,10 +31,10 @@ const actionHandlers = {
         return n1 < n2 ? -1 : n1 > n2 ? 1 : 0;
       });
       meta = new Map(items);
-      return {...state, ...{[geoType]: {geojson, meta, readyState: 'ready'}}};
+      return {...state, ...{[geoType]: {geojson, meta, ready: true}}};
     }
     else {
-      return {...state, ...{[geoType]: {readyState: 'error'}}};
+      return {...state, ...{[geoType]: {ready: false, error: true}}};
     }
   }
 };

@@ -1,16 +1,23 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { devTools } from 'redux-devtools';
 import thunk from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
 import * as reducers from '../reducers';
 
-const finalCreateStore = compose(
-  applyMiddleware(thunk),
-  applyMiddleware(loggerMiddleware),
-  devTools(),
-  createStore
-);
+let finalCreateStore;
+if (__DEV__) {
+  finalCreateStore = compose(
+    applyMiddleware(thunk),
+    applyMiddleware(loggerMiddleware),
+    require('redux-devtools').devTools(),
+    createStore
+  );
+} else {
+  finalCreateStore = compose(
+    applyMiddleware(thunk),
+    createStore
+  );
+}
 
 const reducer = combineReducers(reducers);
 
