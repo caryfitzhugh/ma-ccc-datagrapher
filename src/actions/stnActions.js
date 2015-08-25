@@ -10,7 +10,7 @@ import {
     UPDATE_PARAM,
     INSERT_PANEL,
     DELETE_PANEL,
-    RECONCILE_PARAMS,
+    QUERY_TO_PARAMS,
     REQUEST_DATA,
     SET_RESULT,
   } from '../constants/actionTypes';
@@ -44,9 +44,9 @@ export function deletePanel(key) {
   }
 }
 
-export function reconcileQuery(query) {
+export function changeQueryToParams(query) {
   return {
-    type: RECONCILE_PARAMS,
+    type: QUERY_TO_PARAMS,
     payload: {query}
   }
 }

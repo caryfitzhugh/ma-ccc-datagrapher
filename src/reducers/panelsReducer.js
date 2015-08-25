@@ -6,13 +6,16 @@ import {
     SET_PRODUCT,
     INSERT_PANEL,
     DELETE_PANEL,
-    RECONCILE_PARAMS,
+    QUERY_TO_PARAMS,
     SET_PARAMS,
   } from '../constants/actionTypes';
 import createReducer from './create-reducer';
 import { chartDefs, parseURL } from '../constants/stn';
 
 /*
+  State has:
+    panels (see below)
+    nextKey (integer)
   Each panel state contains:
     param: {
       chart,
@@ -33,7 +36,7 @@ import { chartDefs, parseURL } from '../constants/stn';
 */
 const initialState = {
   panels: new Map(),
-  nextKey: 1
+  nextKey: 1,
 };
 
 const actionHandlers = {
@@ -122,13 +125,10 @@ const actionHandlers = {
     return {...state, panels};
   },
 
-  [RECONCILE_PARAMS]: (state, action) => {
+  [QUERY_TO_PARAMS]: (state, action) => {
     let {panels, nextKey} = state,
       newPanels = new Map(), noChange=true, idx=0;
     let query = action.payload.query;
-    // if (!query) { query = []; }
-    if (!query) { query = ['Temp/stn/maxt/ANN/USH00300042/']; }
-    if (!Array.isArray(query)) query = [query];
 
     panels.forEach((panel,key) => {
       const pStr = chartDefs.get(panel.param.chart).toString(panel.param),

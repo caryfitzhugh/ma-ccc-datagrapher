@@ -16,26 +16,6 @@ function fetchDataForPanels(panels, dispatch) {
   });
 }
 
-function updateQueryIfNeeded(panels,query,history) {
-  if (!query) { query = [] };
-  if (!Array.isArray(query)) { query = [query]; }
-  let newQuery = [], ready = true, dirty = false;
-  panels.forEach((panel,key) => {if (!panel.ready) ready = false;});
-  if (!ready) return;
-  
-  panels.forEach((panel,key) => {
-    const pStr = chartDefs.get(panel.param.chart).toString(panel.param);
-
-    if (query[newQuery.length] != pStr) { dirty = true; }
-    newQuery.push(pStr);
-  })
-  if (dirty || newQuery.length != query.length) {
-    console.log('updating history');
-    history.replaceState(null,'/?c='+newQuery.join('&c='));
-    // router.transitionTo('/App','c='+newQuery.join('&c='));
-  }
-}
-
 @connect(state => {
   return {geoms: state.geoms, panels: state.panels.panels}
 })
@@ -48,11 +28,18 @@ export default class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.actions = bindActionCreators(stnActions, props.dispatch);
+    this.query = [];
   }
 
   locationChange(location) {
-    this.actions.reconcileQuery(location.query.c);
-    this.query = location.query.c;
+    let c = location.query.c;
+    if (!c) {
+      this.actions.changeQueryToParams(['Temp/stn/maxt/ANN/USH00304174/']);
+      return;
+    }
+    if (!Array.isArray(c)) c = [c];
+    if (this.query.length == c.length && this.query.every((p,i) => (p == c[i]))) return;
+    this.actions.changeQueryToParams(c);
   }
 
   componentDidMount() {
@@ -66,12 +53,18 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    updateQueryIfNeeded(this.props.panels, this.query, this.props.history);
-    // if ( this.props.isTransitioning ) {
-    //   this.actions.reconcileQuery(this.props.location.query.c);
-    // } else {
-    //   updateQueryIfNeeded(this.props.panels, this.props.location.query.c);
-    // }
+    const panels = this.props.panels;
+    let q = [], ready = true, dirty = false;
+    panels.forEach((panel,key) => {if (!panel.ready) ready = false;});
+    if (!ready) return;
+    
+    panels.forEach((panel,key) => {
+      q.push(chartDefs.get(panel.param.chart).toString(panel.param));
+    });
+    if (q.length == this.query.length && this.query.every((p,i) => (p == q[i]))) return;
+    console.log('updating history');
+    this.query = q;
+    this.props.history.pushState(null,'/?c='+q.join('&c='));
   }
 
   render() {
