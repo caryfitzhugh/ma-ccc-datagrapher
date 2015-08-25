@@ -16,7 +16,7 @@ function fetchDataForPanels(panels, dispatch) {
   });
 }
 
-function updateQueryIfNeeded(panels,query,router) {
+function updateQueryIfNeeded(panels,query,history) {
   if (!query) { query = [] };
   if (!Array.isArray(query)) { query = [query]; }
   let newQuery = [], ready = true, dirty = false;
@@ -31,7 +31,8 @@ function updateQueryIfNeeded(panels,query,router) {
   })
   if (dirty || newQuery.length != query.length) {
     console.log('updating history');
-    router.transitionTo('/App','c='+newQuery.join('&c='));
+    history.replaceState(null,'/?c='+newQuery.join('&c='));
+    // router.transitionTo('/App','c='+newQuery.join('&c='));
   }
 }
 
@@ -44,17 +45,18 @@ export default class App extends Component {
     dispatch: PropTypes.func.isRequired,
   };
 
-  static contextTypes = {
-    router: PropTypes.any
-  }
-
   constructor(props, context) {
     super(props, context);
     this.actions = bindActionCreators(stnActions, props.dispatch);
   }
 
+  locationChange(location) {
+    this.actions.reconcileQuery(location.query.c);
+    this.query = location.query.c;
+  }
+
   componentDidMount() {
-    this.actions.reconcileQuery(this.props.location.query.c);
+    this.unlisten = this.props.history.listen(::this.locationChange);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,11 +66,12 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if ( this.props.isTransitioning ) {
-      this.actions.reconcileQuery(this.props.location.query.c);
-    } else {
-      updateQueryIfNeeded(this.props.panels, this.props.location.query.c, this.context.router);
-    }
+    updateQueryIfNeeded(this.props.panels, this.query, this.props.history);
+    // if ( this.props.isTransitioning ) {
+    //   this.actions.reconcileQuery(this.props.location.query.c);
+    // } else {
+    //   updateQueryIfNeeded(this.props.panels, this.props.location.query.c);
+    // }
   }
 
   render() {

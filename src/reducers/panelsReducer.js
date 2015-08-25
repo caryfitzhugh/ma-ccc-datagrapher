@@ -33,7 +33,6 @@ import { chartDefs, parseURL } from '../constants/stn';
 */
 const initialState = {
   panels: new Map(),
-  requests: {},
   nextKey: 1
 };
 
@@ -127,7 +126,8 @@ const actionHandlers = {
     let {panels, nextKey} = state,
       newPanels = new Map(), noChange=true, idx=0;
     let query = action.payload.query;
-    if (!query) { query = []; }
+    // if (!query) { query = []; }
+    if (!query) { query = ['Temp/stn/maxt/ANN/USH00300042/']; }
     if (!Array.isArray(query)) query = [query];
 
     panels.forEach((panel,key) => {
