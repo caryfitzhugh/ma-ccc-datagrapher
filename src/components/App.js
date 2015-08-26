@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as stnActions from '../actions/stnActions';
 import StnPanel from './StnPanel';
 import { chartDefs } from '../constants/stn';
+import { BasePath } from 'context';
 
 
 function fetchDataForPanels(panels, dispatch) {
@@ -64,7 +65,7 @@ export default class App extends Component {
     if (q.length == this.query.length && this.query.every((p,i) => (p == q[i]))) return;
     console.log('updating history');
     this.query = q;
-    this.props.history.pushState(null,'/?c='+q.join('&c='));
+    this.props.history.pushState(null,BasePath+'?c='+q.join('&c='));
   }
 
   render() {

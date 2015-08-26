@@ -61,7 +61,7 @@ export function fetchGeom(geoType) {
     console.log('start fetchGeom',geoType);
     dispatch(requestGeoData(geoType));
 
-    fetch('/public/'+geoType+'.json',{
+    fetch('data/'+geoType+'.json',{
       method: 'get',
       headers: {
         'Accept': 'application/json',
