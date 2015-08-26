@@ -19,18 +19,15 @@ class StnPanel extends Component {
     geom: PropTypes.object,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
-    // fetchResults: PropTypes.func.isRequired,
     invalidateParam: PropTypes.func.isRequired,
   }
 
   updateParams(newParams) {
-    this.props.invalidateParam({ ...this.props.param, ...newParams })
-    // this.props.fetchResults();
+    this.props.invalidateParam({ ...this.props.param, ...newParams });
   }
 
   updateMap(sid, bbox) {
     this.props.invalidateParam({ ...this.props.param, sid });
-    // this.props.fetchResults();
   }
   
   render () {
@@ -98,7 +95,6 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
     geom,
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),
-    // fetchResults: () => dispatchProps.fetchResults(idx),
     invalidateParam: (param) => dispatchProps.invalidateParam(idx,param),
     };
 }

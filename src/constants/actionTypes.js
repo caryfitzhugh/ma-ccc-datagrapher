@@ -1,6 +1,5 @@
 export const INVALIDATE_PARAM = 'INVALIDATE_PARAM';
 export const UPDATE_PARAM = 'UPDATE_PARAM';
-export const SET_PRODUCT = 'SET_PRODUCT';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const SET_RESULT = 'SET_RESULT';
 export const INSERT_PANEL = 'INSERT_PANEL';

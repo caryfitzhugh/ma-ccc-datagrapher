@@ -8,17 +8,8 @@ import { chartDefs } from '../constants/stn';
 import { BasePath } from 'context';
 
 
-function fetchDataForPanels(panels, dispatch) {
-  console.log('fetchDataForPanels');
-  panels.forEach((panel,key) => {
-    if (!panel.ready) {
-      dispatch(stnActions.fetchResults(key));
-    }
-  });
-}
-
 @connect(state => {
-  return {geoms: state.geoms, panels: state.panels.panels}
+  return { geoms: state.geoms, panels: state.panels.panels, locationValid: state.panels.locationValid }
 })
 export default class App extends Component {
   static propTypes = {
@@ -29,17 +20,12 @@ export default class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.actions = bindActionCreators(stnActions, props.dispatch);
-    this.query = [];
   }
 
   locationChange(location) {
     let c = location.query.c;
-    if (!c) {
-      this.actions.changeQueryToParams(['Temp/stn/maxt/ANN/USH00304174/']);
-      return;
-    }
+    if (!c) c = ['Temp/stn/maxt/ANN/USH00300042/'];
     if (!Array.isArray(c)) c = [c];
-    if (this.query.length == c.length && this.query.every((p,i) => (p == c[i]))) return;
     this.actions.changeQueryToParams(c);
   }
 
@@ -47,25 +33,25 @@ export default class App extends Component {
     this.unlisten = this.props.history.listen(::this.locationChange);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.geoms != nextProps.geoms || this.props.panels != nextProps.panels) {
-      fetchDataForPanels(nextProps.panels, this.props.dispatch);
-    }
+  componentWillUnmount() {
+    this.unlisten();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const panels = this.props.panels;
-    let q = [], ready = true, dirty = false;
-    panels.forEach((panel,key) => {if (!panel.ready) ready = false;});
-    if (!ready) return;
-    
-    panels.forEach((panel,key) => {
-      q.push(chartDefs.get(panel.param.chart).toString(panel.param));
-    });
-    if (q.length == this.query.length && this.query.every((p,i) => (p == q[i]))) return;
-    console.log('updating history');
-    this.query = q;
-    this.props.history.pushState(null,BasePath+'?c='+q.join('&c='));
+  componentWillReceiveProps(nextProps) {
+    if (this.props.geoms != nextProps.geoms || this.props.panels != nextProps.panels) {
+      let q = [], allReady = true;
+      nextProps.panels.forEach((panel,key) => {
+        if (!panel.ready) {
+          allReady = false;
+          this.props.dispatch(stnActions.fetchResults(key));
+        } else {
+          q.push(chartDefs.get(panel.param.chart).toString(panel.param));
+        }
+      });
+      if (allReady && !nextProps.locationValid) {
+        this.props.history.pushState(null,BasePath+'?c='+q.join('&c='));
+      }
+    }
   }
 
   render() {
