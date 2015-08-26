@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {ScatterPlot, LinePlot} from 'react-d3-components';
-import {seasons,elems} from '../constants/stn';
+import {seasons,elems} from '../api';
 
 
 export default class StnChart {

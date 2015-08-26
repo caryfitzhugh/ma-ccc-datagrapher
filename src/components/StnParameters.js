@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {geoms,seasons,elems} from '../constants/stn';
+import {geoms,seasons,elems} from '../api';
 
 export default class StnParameters extends React.Component {
   static propTypes = {

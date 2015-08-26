@@ -9,7 +9,7 @@ import {
     SET_PARAMS,
   } from '../constants/actionTypes';
 import createReducer from './create-reducer';
-import { chartDefs, parseURL } from '../constants/stn';
+import { chartDefs, parseURL } from '../api';
 
 /*
   State has:

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import * as stnActions from '../actions/stnActions';
 import StnPanel from './StnPanel';
-import { chartDefs } from '../constants/stn';
+import { chartDefs } from '../api';
 import { BasePath } from 'context';
 
 

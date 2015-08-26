@@ -8,7 +8,7 @@ import MiniMap from './MiniMap';
 import StnChart from './StnChart';
 import styles from './App.css';
 
-import { chartDefs } from '../constants/stn';
+import { chartDefs } from '../api';
 
 class StnPanel extends Component {
 

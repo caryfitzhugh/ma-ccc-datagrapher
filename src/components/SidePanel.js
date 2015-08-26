@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { chartDefs } from '../constants/stn';
+import { chartDefs } from '../api';
 
 import styles from "./App.css";
 

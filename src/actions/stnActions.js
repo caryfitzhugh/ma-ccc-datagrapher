@@ -2,7 +2,7 @@ import 'whatwg-fetch'
 
 
 import { fetchGeom } from './geomActions';
-import { buildQuery, validateParam, haveSameResults } from '../constants/stn';
+import { buildQuery, validateParam, haveSameResults } from '../api';
 
 import { StnData, GridData } from 'context';
 import {
