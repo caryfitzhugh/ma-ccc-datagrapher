@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as stnActions from '../actions/stnActions';
-import StnPanel from './StnPanel';
+import * as panelActions from '../actions/panelActions';
+import Panel from './Panel';
 import { chartDefs } from '../api';
 import { BasePath } from 'context';
 
@@ -19,7 +19,7 @@ export default class App extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.actions = bindActionCreators(stnActions, props.dispatch);
+    this.actions = bindActionCreators(panelActions, props.dispatch);
   }
 
   locationChange(location) {
@@ -43,7 +43,7 @@ export default class App extends Component {
       nextProps.panels.forEach((panel,key) => {
         if (!panel.ready) {
           allReady = false;
-          this.props.dispatch(stnActions.fetchResults(key));
+          this.props.dispatch(panelActions.fetchResults(key));
         } else {
           q.push(chartDefs.get(panel.param.chart).toString(panel.param));
         }
@@ -59,7 +59,7 @@ export default class App extends Component {
     const charts = [];
     panels.forEach((p,key) => {
       charts.push(
-        <StnPanel
+        <Panel
           key={key}
           index={key}
           panel={p}

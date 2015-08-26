@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 
-import * as stnActions from '../actions/stnActions';
-import SidePanel from './SidePanel';
-import StnParameters from './StnParameters';
+import * as panelActions from '../actions/panelActions';
+import SideBar from './SideBar';
+import Parameters from './Parameters';
 import MiniMap from './MiniMap';
-import StnChart from './StnChart';
+import Chart from './Chart';
 import styles from './App.css';
 
 import { chartDefs } from '../api';
@@ -37,7 +37,7 @@ class StnPanel extends Component {
 
     return (
       <div className={styles.panel} >
-        <SidePanel
+        <SideBar
           current={chart}
           updatePanel={::this.updateParams}
           insertPanel={this.props.insertPanel}
@@ -45,7 +45,7 @@ class StnPanel extends Component {
         />
         <div className={styles.chart}>
           <div className={styles.chartInput}>
-            <StnParameters
+            <Parameters
               className={styles.paramForm}
               geomType={geom}
               meta={meta}
@@ -65,7 +65,7 @@ class StnPanel extends Component {
               update={::this.updateMap}
             />
           </div>
-          <StnChart
+          <Chart
             className={styles.chartOutput}
             geomType={geom}
             result={this.props.result}
@@ -99,5 +99,5 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
     };
 }
 
-export default connect(mapStateToProps, stnActions, mergeProps)(StnPanel);
+export default connect(mapStateToProps, panelActions, mergeProps)(StnPanel);
 
