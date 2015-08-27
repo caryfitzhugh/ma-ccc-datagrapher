@@ -107,18 +107,29 @@ export function fetchResults(key) {
     if (done || panel.request) return;
 
     dispatch(requestData(key));
-    const reqParams = buildQuery(nParam, geomInfo.meta.get(nParam.sid));
-    const url = nParam.geom == 'stn' ? StnData : GridData;
-
-    fetch(url,{
-      method: 'post',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(reqParams)
-    })
-    .then(checkStatus)
+    let req;
+    if (nParam.geom == 'stn') {
+      const reqParams = buildQuery(nParam, geomInfo.meta.get(nParam.sid));
+      req = fetch(StnData,{
+        method: 'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reqParams)
+      });
+    } else {
+      const url = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/'+
+        nParam.geom+'/'+nParam.element+'_'+nParam.season;
+      req = fetch(url,{
+        method:'get',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+    req.then(checkStatus)
     .then(res => {
       console.log('finish Fetch');
       return res.json();
