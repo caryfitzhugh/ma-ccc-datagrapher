@@ -192,6 +192,7 @@ export function buildQuery(params, meta) {
     p.grid = 21;
     p.sdate = s.smonth ? [e.gYr[0],s.smonth]: [e.gYr[0]];
     p.edate = s.smonth ? [e.gYr[1],s.smonth]: [e.gYr[1]];
+    if (params.season == 'DJF') p.sdate[0]++; // winter will start before POR
     elem.area_reduce = params.geom+'_mean';
     if (!s.smonth && e.gridY) { elem = {...elem, ...e.acis, ...e.gridY}; }
     else { elem = {...elem, ...e.acis, ...e.grid}; }
