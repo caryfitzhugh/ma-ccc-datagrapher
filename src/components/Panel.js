@@ -31,9 +31,10 @@ class StnPanel extends Component {
   }
   
   render () {
-    const { chart, geom, element, season, sid, bbox } = this.props.param;
-    const { geojson, meta } = this.props.geom;
-    const { elems:elements, seasons } = chartDefs.get(chart);
+    const { chart, geom, element, season, sid, bbox } = this.props.param,
+          { geojson, meta } = this.props.geom, cDef = chartDefs.get(chart),
+          seasons = cDef.seasons, 
+          elements = geom == 'stn' ? cDef.elems : cDef.gElems;
 
     return (
       <div className={styles.panel} >
