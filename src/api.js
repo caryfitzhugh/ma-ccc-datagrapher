@@ -114,19 +114,19 @@ export let elems = new Map([
     grid: {},
     gYr: [1981,2015]}],
 // StnPDays
-  ['prcp_1', {
+  ['pcpn_1', {
     label:'Days with Precipitation > 1"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_1'},
     grid: {},
     gYr: [1981,2015]}],
-  ['prcp_2', {
+  ['pcpn_2', {
     label:'Days with Precipitation > 2"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_2'},
     grid: {},
     gYr: [1981,2015]}],
-  ['prcp_4', {
+  ['pcpn_4', {
     label:'Days with Precipitation > 4"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_4'},
@@ -283,8 +283,8 @@ export const chartDefs = new Map([
   }],
   ['PDays',{
     title: 'Prcp-Days',
-    elems:['prcp_1', 'prcp_2', 'prcp_4', 'snwd_1',
-           // 'prcp_lt01_run','prcp_lt1_run'
+    elems:['pcpn_1', 'pcpn_2', 'pcpn_4', 'snwd_1',
+           // 'pcpn_lt01_run','pcpn_lt1_run'
           ],
     seasons: allSeasons
   }],
