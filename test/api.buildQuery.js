@@ -1,5 +1,5 @@
 import expect from 'expect';
-import { buildQuery } from '../src/constants/stn';
+import { buildQuery } from '../src/api';
 
 describe('api.buildQuery', () => {
   describe('Temp annual grid query', () => {
@@ -176,9 +176,9 @@ describe('api.buildQuery', () => {
       expect(q.elems[0].maxmissing).toBe(10);
     });
 
-    it('should handle DJF', () => {
+    it('should handle DJF on the next sYr for previous Dec in the POR', () => {
       q = buildQuery({...params, season: 'DJF'},{});
-      expect(q.sdate).toEqual([1895,2]);
+      expect(q.sdate).toEqual([1896,2]); // next year to handle previous DEC in the POR.
       expect(q.edate).toEqual([2015,2]);
       expect(q.elems[0].duration).toBe(3);
       expect(q.elems[0].maxmissing).toBe(10);
