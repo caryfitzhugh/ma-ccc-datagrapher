@@ -35,9 +35,9 @@ export let elems = new Map([
     gridY: {vX:98},
     gYr: [1895,2015]}],
   ['snow', {
-    label:'Maximum Daily Snowfall',
+    label:'Total Snowfall',
     yLabel: 'Inches', ttUnits: '"',
-    acis: {vX:10, vN:0, reduce:'max'}}],
+    acis: {vX:10, vN:0, reduce:'sum'}}],
   ['snwd', {
     label:'Maximum Daily Snowdepth',
     yLabel: 'Inches', ttUnits: '"',
