@@ -39,7 +39,7 @@ export default class StnChart {
       } else {
         result.data.forEach((d) => {
           const v = d[1][sid];
-          if (!!v && v == v) data.push([+(d[0].slice(0,4)), +v.toFixed(2)]);
+          if (typeof v != 'undefined' && v == v) data.push([+(d[0].slice(0,4)), +v.toFixed(2)]);
         })
       }
     }
