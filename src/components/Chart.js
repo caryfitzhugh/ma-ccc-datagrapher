@@ -21,7 +21,15 @@ export default class StnChart {
     const { label:titleElem, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,
           stationName = meta && meta.has(sid) ? meta.get(sid).name : 'loading';
-    let chart = <svg width={600} height={400} />;
+    let chart = <svg width={600} height={400} >
+                  <text x="50%" y="50%"
+                    alignmentBaseline="middle"
+                    textAnchor="middle"
+                    fontSize="150%">
+                    Loading…
+                  </text>
+                </svg>;
+
     const data = [];
     if (ready && result.data) {
       if (geomType == 'stn') {
@@ -56,6 +64,15 @@ export default class StnChart {
         // yAxis={{label:'Temperature'}}
         tooltipHtml={toolTip}
         />;
+    } else if (ready && result.data) {
+      chart = <svg width={600} height={400} >
+      <text x="50%" y="50%"
+        alignmentBaseline="middle"
+        textAnchor="middle"
+        fontSize="200%">
+        Insufficient Data Coverage
+        </text>
+      </svg>;
     }
 
     return <div>
