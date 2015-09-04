@@ -12,7 +12,7 @@ function pages() {
   ['state','county','basin'].forEach(function (geom) {
     api.seasons.forEach(function (_,season) {
       api.elems.forEach(function (def,element) {
-        if (def.gYr && season == 'DJF') lst.push({geom:geom,season:season,element:element});
+        if (def.gYr) lst.push({geom:geom,season:season,element:element});
       })
     })
   })
