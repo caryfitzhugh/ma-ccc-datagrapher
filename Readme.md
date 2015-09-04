@@ -1,56 +1,84 @@
-#Fixture to build data-product extensions for the NYCCSC web site#
+#Fixture to build and run data-product extensions for the NYCCSC web site
 
-##Instructions##
+##Demo
+[Running example](https://nyccsc.github.io/data-fixture/)
 
-You will need node.js installed with a recent npm.  I have tested this with node v0.10.36 and npm 2.4.1.
+##API
+
+The interface is defined by the url used on the page. There is one query field `c` that is repeated for each chart on the page.  The `c` field contains a `/` delimited set of parameters that define the data used for the chart.
+
+  * `prod` One of Temp, Prcp, TDays, PDays, or Frost.
+  * `area` The Geographic Unit used to present the data.  One of stn, state, county or basin.
+  * `elem` The Climate Variable presented on the chart.  See below.
+  * `season` The Time Span over which the data is summarized:
+    ANN, MAM, JJA, SON, DJF, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, or Dec.
+  * `sid` The Selected Identifier.  This is either the station id, state abbreviation, county fips or the basin HUC8 code.
+  * `bbox` The bounding box of the mini-map (not yet enabled).  Empty spans the full NY state.
+
+Any field that is missing will be replaced by a default.
+
+###Examples:
+
+Station data for the Albany Airport (Prcp, Max Temp, Min Temp):
+
+https://nyccsc.github.io/data-fixture/?c=Prcp/stn/pcpn/ANN/USH00300042/&c=Temp/stn/maxt/ANN/USH00300042/&c=Temp/stn/mint/ANN/USH00300042/
+
+Precipitation data for two counties:
+
+https://nyccsc.github.io/data-fixture/?c=Prcp/county/pcpn/ANN/36001/&c=Prcp/county/pcpn/ANN/36039/
+
+Maximum summer temperature and Minimum winter temperature for NY State:
+
+https://nyccsc.github.io/data-fixture/?c=Temp/state/maxt/JJA/NY/&c=Temp/state/mint/DJF/NY/
+
+  
+##Build Instructions
+
+You will need node.js installed with a recent npm.  I am currently using node v0.12.7 and npm 2.14.2.
 
 Clone this repo.
 ```
 git clone https://github.com/NYCCSC/data-fixture.git
 ```
 
-I have some changes to the `react-d3-components` module, so I put that in a `vendor` directory.
+I am vendoring in the latest Leaflet as it moves to 1.0.  I also need to adjust the `.css` file until I figure out how to get webpack to load a couple of images.  I am currently at commit `08d655fe66`, but master is probably fine.
+
+So do the following:
 
 ```
 cd data-fixture
 mkdir vendor
 cd vendor
-git clone https://github.com/bnoon/react-d3-components.git
-cd react-d3-components
-npm install
-cd ../../
+git clone https://github.com/Leaflet/Leaflet.git
+cd Leaflet
+npm install .
+```
+
+Make the following modification to the `dist/leaflet.css` file:
+
+```
+diff --git a/dist/leaflet.css b/dist/leaflet.css
+index 346fab9..9fe9ea3 100644
+--- a/dist/leaflet.css
++++ b/dist/leaflet.css
+@@ -304,12 +304,12 @@
+        border-radius: 5px;
+        }
+ .leaflet-control-layers-toggle {
+-       background-image: url(images/layers.png);
++       /*background-image: url(images/layers.png);*/
+        width: 36px;
+        height: 36px;
+        }
+ .leaflet-retina .leaflet-control-layers-toggle {
+-       background-image: url(images/layers-2x.png);
++       /*background-image: url(images/layers-2x.png);*/
+        background-size: 26px 26px;
+        }
+ .leaflet-touch .leaflet-control-layers-toggle {
 ```
 
 Now you can install the dependencies (in the `data-fixture` directory):
 ```
-npm install
+npm install .
 ```
-
-It is also useful in install `webpack` globally: `npm install webpack -g`
-
-Build the javascript files:
-```
-webpack -p
-```
-
-Copy the `assets/*.js` files to the `rails/app/assets/javascripts` directory and restart rails.
-
-You can run a development server
-```
-npm start
-```
-
-Hot reloading of the components isn't working now, but I am looking into it.
-
-When creating a new extension, you will add a file to `src/docJS/` and modify the `src/loader.js` file with the new file name.
-
-Currently the filenames map to the last component of the `docURI` in vivo.
-
-##Example Extension##
-There is an example extension called "hello" that demonstrates several points:
-
-* Vanilla javascript that just puts some html elements on the page.
-* Loads a css document
-* Loads an image onto the page.  The full size logo is loaded directly, the small logo is embedded in the webpacked javascript.
-* Structures the source into a subdirectory (`/helloworld`) with extra files.  The `index.js` file is loaded when the directory is `require`d.
-
