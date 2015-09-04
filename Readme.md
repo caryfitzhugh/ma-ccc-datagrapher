@@ -82,3 +82,6 @@ Now you can install the dependencies (in the `data-fixture` directory):
 ```
 npm install .
 ```
+
+Run the test server with `node devserver.js`.
+
