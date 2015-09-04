@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import d3 from 'd3';
 import {ScatterPlot, LinePlot} from 'react-d3-components';
 import {seasons,elems} from '../api';
 
@@ -44,14 +45,18 @@ export default class StnChart {
       }
     }
     if (data.length > 1){
-      let xAccessor = (row) => (row[0]),
+      const xAccessor = (row) => (row[0]),
           xAxis = {label:'Year',tickFormat: (t) => {return ''+t;}},
           yAccessor = (row) => (row[1]),
           gdata = [{label:'MinT',values: data}];
 
-      let toolTip = (x,y) => {
+      const toolTip = (x,y) => {
         return ''+x+': '+y+ttUnits;
       };
+      const innerHeight = 400-10-50; //FIXME -- hack -- svg height - margin.top - margin.bottom
+      const yExtent = d3.extent(data.map(yAccessor)),
+        yScale = d3.scale.linear().domain(yExtent).range([innerHeight,0]),
+        yIntercept = yScale(yScale.domain()[0]);
 
       chart = <ScatterPlot
         data={gdata}
@@ -61,6 +66,8 @@ export default class StnChart {
         x={xAccessor}
         xAxis={xAxis}
         y={yAccessor}
+        yScale={yScale}
+        yIntercept={yIntercept}
         // yAxis={{label:'Temperature'}}
         tooltipHtml={toolTip}
         />;
