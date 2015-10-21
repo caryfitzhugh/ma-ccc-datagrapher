@@ -176,7 +176,7 @@ export function buildQuery(params, meta) {
   if (params.geom == 'stn') {
     p.edate = 'por';
     p.sid = meta.ghcn;
-    p.sdate = s.smonth ? [1900,s.smonth] : [1900];
+    p.sdate = s.smonth ? ['por',s.smonth] : ['por'];
     elem = {...elem, ...e.acis};
   } else {
     switch (params.geom) {
