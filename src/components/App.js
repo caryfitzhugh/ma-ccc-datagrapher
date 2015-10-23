@@ -24,7 +24,7 @@ export default class App extends Component {
 
   locationChange(location) {
     let c = location.query.c;
-    if (!c) c = ['Temp/stn/maxt/ANN/USH00300042/'];
+    if (!c) return this.props.history.replaceState(null,BasePath+'?c=Temp/stn/maxt/ANN/USH00300042/');
     if (!Array.isArray(c)) c = [c];
     this.actions.changeQueryToParams(c);
   }
@@ -48,8 +48,8 @@ export default class App extends Component {
           q.push(chartDefs.get(panel.param.chart).toString(panel.param));
         }
       });
-      if (allReady && !nextProps.locationValid) {
-        this.props.history.pushState(null,BasePath+'?c='+q.join('&c='));
+      if (allReady) {
+        this.props.dispatch(panelActions.maybeUpdateURL(this.props.history, q));
       }
     }
   }

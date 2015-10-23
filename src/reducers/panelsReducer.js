@@ -5,16 +5,18 @@ import {
     SET_RESULT,
     INSERT_PANEL,
     DELETE_PANEL,
+    UPDATE_URL,
     QUERY_TO_PARAMS,
     SET_PARAMS,
   } from '../constants/actionTypes';
 import createReducer from './create-reducer';
-import { chartDefs, parseURL } from '../api';
+import { chartDefs, parseURL, correctParam } from '../api';
 
 /*
   State has:
     panels (see below)
     nextKey (integer)
+    query (array)
     locationValid: boolean
   Each panel state contains:
     param: {
@@ -38,6 +40,7 @@ const initialState = {
   panels: new Map(),
   nextKey: 1,
   locationValid: true,
+  query: [],
 };
 
 const actionHandlers = {
@@ -50,10 +53,10 @@ const actionHandlers = {
     let nPanel = {...cPanel}
     panels = new Map([...panels]);
 
-    if (!cPanel.ready) nPanel.param = param;
-    else nPanel = { ...cPanel, param, prevParam: cPanel.param, ready: false };
+    if (!cPanel.ready) nPanel.param = correctParam(param);
+    else nPanel = { ...cPanel, param: correctParam(param), prevParam: cPanel.param, ready: false };
     panels.set(key, nPanel);
-    return {...state, panels, locationValid: false };
+    return {...state, panels };
   },
 
   [UPDATE_PARAM]: (state, action) => {
@@ -64,7 +67,7 @@ const actionHandlers = {
 
     panels = new Map([...panels]);
     panels.set(key,{ ...cPanel, param });
-    return {...state, panels, locationValid: false};
+    return {...state, panels};
   },
 
   [REQUEST_DATA]: (state, action) => {
@@ -99,7 +102,7 @@ const actionHandlers = {
         nextKey++;
       }
     });
-    return {panels:newPanels, nextKey, locationValid: false};
+    return {panels:newPanels, nextKey};
   },
 
   [DELETE_PANEL]: (state, action) => {
@@ -108,34 +111,41 @@ const actionHandlers = {
     state.panels.forEach((val,key) => {
       if (key != delKey) panels.set(key,val);
     });
-    return {...state, panels, locationValid: false};
+    return {...state, panels};
+  },
+
+  [UPDATE_URL]: (state, action) => {
+    return {...state, ...action.payload }
   },
 
   [QUERY_TO_PARAMS]: (state, action) => {
     let {panels, nextKey} = state,
-      newPanels = new Map(), noChange=true;
+      newPanels = new Map(), noChange=true, valid=true;
     let query = action.payload.query;
 
     const panelIter = panels.entries();
-    query.forEach((q) => {
-      const p = panelIter.next();
+    query.forEach((qStr) => {
+      const p = panelIter.next(),
+          qParam = parseURL(qStr),
+          nParam = correctParam(qParam);
+          if (nParam !== qParam) valid = false;
       if (!p.done) {
-        const [key, panel] = p.value;
-        const pStr = chartDefs.get(panel.param.chart).toString(panel.param);
-        if (q == pStr) {
+        const [key, panel] = p.value,
+            pStr = chartDefs.get(panel.param.chart).toString(panel.param);
+        if (qStr == pStr) {
           newPanels.set(key,panel);
         } else {
           noChange = false;
-          newPanels.set(key,{param: parseURL(q), result: {}, ready: false});
+          newPanels.set(key,{param: nParam, result: {}, ready: false});
         }
       } else {
         noChange = false;
-        newPanels.set(nextKey++,{ param: parseURL(q), result: {}, ready: false });
+        newPanels.set(nextKey++,{ param: nParam, result: {}, ready: false });
       }
     })
 
-    if (noChange && panelIter.next().done) return { ...state, locationValid: true };
-    return { ...state, panels: newPanels, nextKey, locationValid: true};
+    if (noChange && panelIter.next().done) return state;
+    return { ...state, panels: newPanels, nextKey, query, locationValid: valid};
   }
 };
 

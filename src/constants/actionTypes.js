@@ -5,6 +5,7 @@ export const SET_RESULT = 'SET_RESULT';
 export const INSERT_PANEL = 'INSERT_PANEL';
 export const DELETE_PANEL = 'DELETE_PANEL';
 export const QUERY_TO_PARAMS = 'QUERY_TO_PARAMS';
+export const UPDATE_URL = 'UPDATE_URL';
 export const REQUEST_GEOMDATA = 'REQUEST_GEOMDATA';
 export const SET_GEOJSON = 'SET_GEOJSON';
 

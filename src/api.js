@@ -146,24 +146,6 @@ export let elems = new Map([
 
 // "elems":[{"name":"maxt","interval":[1,0,0],"duration":"std","season_start":"07-30","reduce":"run_gt_40"}]}
 
-export function parseURL(pStr) {
-  let pFields = pStr.split('/');
-  if (!chartDefs.has(pFields[0])) {
-    pFields = 'Temp/stn/maxt/ANN/HCN00304174/'.split('/');
-  }
-  const def = chartDefs.get(pFields[0]);
-  let params = {
-    chart: pFields[0],
-    geom: pFields[1],
-    element: pFields[2],
-    season: pFields[3],
-    sid: pFields[4],
-    bbox: pFields[5]
-  };
-  validateParams(def,params);
-  return params;
-}
-
 export function buildQuery(params, meta) {
   const s = seasons.get(params.season),
     e = elems.get(params.element);
@@ -201,9 +183,62 @@ export function buildQuery(params, meta) {
   return p;
 }
 
-function validateParams(def,params) {
-  if (def.elems.indexOf(params.element) == -1) { params.element = def.elems[0]}
-  if (def.seasons.indexOf(params.season) == -1) { params.season = def.seasons[0]}
+export function parseURL(pStr) {
+  let pFields = pStr.split('/');
+  return {
+    chart: pFields[0],
+    geom: pFields[1],
+    element: pFields[2],
+    season: pFields[3],
+    sid: pFields[4],
+    bbox: pFields[5]
+  };
+}
+
+export function correctParam(param) {
+  let { chart, geom, element, season, sid, bbox } = param;
+  let sane = true;
+  if (['stn','state','county','basin'].indexOf(geom) == -1) {
+    geom = 'stn';
+    sane = false;
+  }
+  if (!chartDefs.has(chart)) {
+    chart = 'Temp';
+    sane = false;
+  }
+  let def = chartDefs.get(chart);
+  if (geom == 'stn') {
+    if (def.elems.indexOf(element) == -1) {
+      element = def.elems[0];
+      sane = false;
+    }
+  } else {
+    if (def.gElems.length == 0) {
+      chart = 'Temp';
+      def = chartDefs.get(chart);
+      sane = false;
+    }
+    if (def.gElems.indexOf(element) == -1) {
+      element = def.gElems[0];
+      sane = false;
+    }
+  }
+  if (def.seasons.indexOf(season) == -1) {
+    season = def.seasons[0];
+    sane = false;
+  }
+  if (sane) return param;
+  return { chart, geom, element, season, sid, bbox };
+}
+
+export function updateSid(param, prevParam, geoms) {
+  let {sid, geom} = param;
+
+  if (!prevParam) sid = nearestGeom(param.sid, geoms[geom]);
+  else sid = nearestGeom(sid, geoms[geom], prevParam.sid, geoms[prevParam.geom]);
+
+  if (sid == param.sid) return param;
+  return {...param, sid}
 }
 
 function nearestGeom(nSid, nGeom, pSid, pGeom) {
@@ -218,34 +253,6 @@ function nearestGeom(nSid, nGeom, pSid, pGeom) {
     return nGeom.meta.has(nSid) ? nSid : [...nGeom.meta.keys()][0];
   }
   return '';
-}
-
-export function validateParam(param, prevParam, geoms) {
-  let { chart, geom, element, season, sid, bbox } = param;
-  if (['stn','state','county','basin'].indexOf(geom) == -1) geom = 'stn';
-  if (!chartDefs.has(chart)) chart = 'Temp';
-  let def = chartDefs.get(chart);
-  if (geom == 'stn') {
-    if (def.elems.indexOf(element) == -1) element = def.elems[0];
-  } else {
-    if (def.gElems.length == 0) {
-      chart = 'Temp';
-      def = chartDefs.get(chart);
-    }
-    if (def.gElems.indexOf(element) == -1) element = def.gElems[0];
-  }
-  if (def.seasons.indexOf(season) == -1) season = def.seasons[0];
-
-  if (!prevParam) sid = nearestGeom(sid, geoms[geom]);
-  else sid = nearestGeom(sid, geoms[geom], prevParam.sid, geoms[prevParam.geom]);
-
-  if (chart == param.chart &&
-      geom == param.geom &&
-      element == param.element &&
-      season == param.season &&
-      sid == param.sid &&
-      bbox == param.bbox) return param;
-  return { chart, geom, element, season, sid, bbox };
 }
 
 export function haveSameResults(p1,p2) {
@@ -298,9 +305,6 @@ export const chartDefs = new Map([
 
 chartDefs.forEach((def,chart) => {
   def.gElems = def.elems.filter((e) => (typeof elems.get(e).gYr != 'undefined'));
-  def.validateParams = (params) => {
-    validateParams(def,params);
-  };
   def.toString = (p) => {
     return [p.chart,p.geom,p.element,p.season,p.sid,p.bbox].join('/');
   };

@@ -2,9 +2,9 @@ import 'whatwg-fetch'
 
 
 import { fetchGeom } from './geomActions';
-import { buildQuery, validateParam, haveSameResults } from '../api';
+import { buildQuery, updateSid, haveSameResults } from '../api';
 
-import { StnData, GridData } from 'context';
+import { StnData, GridData, BasePath } from 'context';
 import {
     INVALIDATE_PARAM,
     UPDATE_PARAM,
@@ -13,6 +13,7 @@ import {
     QUERY_TO_PARAMS,
     REQUEST_DATA,
     SET_RESULT,
+    UPDATE_URL,
   } from '../constants/actionTypes';
 
 
@@ -65,6 +66,29 @@ export function setResult(key, param, result) {
   };
 }
 
+function updateURL(query) {
+  return {
+    type: UPDATE_URL,
+    payload: {query}
+  }
+}
+
+export function maybeUpdateURL(history,query) {
+  // check to see if current query is valid
+  //   if valid pushState else replaceState
+  return (dispatch, getState) => {
+    const cQuery = getState().panels.query, qValid = getState().panels.locationValid;
+    if ((query.length == cQuery.length) && cQuery.every((e,i)=> query[i] == e)) {
+      return;
+    }
+
+    dispatch(updateURL(query));
+    const loc = BasePath+'?c='+query.join('&c=');
+    if (qValid) history.pushState(null,loc)
+    else history.replaceState(null,loc)
+  }
+}
+
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -88,7 +112,7 @@ export function fetchResults(key) {
     }
     if (!geomInfo.ready) return;
 
-    const nParam = validateParam(param, panel.prevParam, getState().geoms);
+    const nParam = updateSid(param, panel.prevParam, getState().geoms);
     if (nParam !== param) dispatch(updateParam(key,nParam))
 
     // check for data in another panel
