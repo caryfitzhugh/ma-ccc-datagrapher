@@ -1,10 +1,88 @@
 <html>
   <head>
     <title>NYCCSC</title>
+    <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+    }
+    header {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+    header .left-side, header .right-side {
+      width: 50%;
+      float: left;
+    }
+    header:after {
+      content:'';
+      display:block;
+      clear: both;
+    }
+    .img-left {
+      float: left;
+      margin-right: 10px;
+    }
+    .clearfix {
+      clear: both;
+    }
+    form.search {
+      margin-top: 30px;
+      text-align:right;
+      height: 34px;
+      width: 100%;
+    }
+    form.search label.sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    form.search input {
+      width: 60%;
+      height: 34px;
+      font: inherit;
+      padding: 6px 12px;
+      background-color: white;
+      border: 1px solid #cccccc;
+      border-radius: 0px;
+    }
+    form.search button {
+      height: 34px;
+      font: inherit;
+      color: white;
+      background-color: #f6892e;
+      border-color: #f57b16;
+      border: 1px;
+      border-radius: 0px 4px 4px 0px;
+      padding: 6px 12px;
+      margin: 0px;
+    }
+    </style>
   </head>
   <body>
+    <header>
+      <div class="left-side">
+        <a href="/"><img src="data/images/logo-xs.png" class="img-left"></a>
+        <a href="/"><img src="data/images/nyccsc.png"></a>
+        <br class="clearfix">
+      </div>
+      <div class="right-side">
+        <!-- search -->
+        <form class="search" action="/catalog" method="get">
+          <label for="q" class="sr-only">Find maps, data products, reports, articles...</label>
+          <input type="text" name="q" placeholder="Find maps, data products, reports, articles..." ><button type="submit" id="search"><span>Search</span></button>
+        </form>
+      </div>
+    </header>
     <div id='root'></div>
   </body>
-  <script src="/dataproduct/common.bundle.js" charset="utf8"></script>
-  <script src="/dataproduct/loader.js" charset="utf8"></script>
+  <script src="/dataproduct/common.bundle.js" charset="utf-8"></script>
+  <script src="/dataproduct/loader.js" charset="utf-8"></script>
 </html>
