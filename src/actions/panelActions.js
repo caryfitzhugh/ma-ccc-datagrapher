@@ -143,7 +143,7 @@ export function fetchResults(key) {
         body: JSON.stringify(reqParams)
       });
     } else {
-      const url = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/'+
+      const url = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/prism/'+
         nParam.geom+'/'+nParam.element+'_'+nParam.season;
       req = fetch(url,{
         method:'get',
