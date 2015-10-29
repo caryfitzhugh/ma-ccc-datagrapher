@@ -64,7 +64,7 @@ export default class AreaChart {
     if (dPrism.length > 5){
       const x = d3.scale.linear()
         .range([0, width - margin.left - margin.right])
-        .domain(xRange);
+        .domain([xRange[0]-2,xRange[1]]);
       const y = d3.scale.linear()
         .range([height - margin.top - margin.bottom, 0])
         .domain(yRange)
@@ -73,10 +73,10 @@ export default class AreaChart {
       const smooth = (data) => {
         const r = [];
         data.forEach((d,i) => {
-          if (i>=5) r.push([d[0],
-            d3.mean(data.slice(i-5,i).map(v=>v[1])),
-            d3.mean(data.slice(i-5,i).map(v=>v[2])),
-            d3.mean(data.slice(i-5,i).map(v=>v[3])),
+          if (i>=4) r.push([d[0],
+            d3.mean(data.slice(i-4,i+1).map(v=>v[1])),
+            d3.mean(data.slice(i-4,i+1).map(v=>v[2])),
+            d3.mean(data.slice(i-4,i+1).map(v=>v[3])),
             ])
         })
         return r;
