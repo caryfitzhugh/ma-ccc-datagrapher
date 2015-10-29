@@ -199,7 +199,7 @@ export function correctParam(param) {
   let { chart, geom, element, season, sid, bbox } = param;
   let sane = true;
   if (['stn','state','county','basin'].indexOf(geom) == -1) {
-    geom = 'stn';
+    geom = 'state';
     sane = false;
   }
   if (!chartDefs.has(chart)) {
@@ -233,13 +233,28 @@ export function correctParam(param) {
 
 export function updateSid(param, prevParam, geoms) {
   let {sid, geom} = param;
+  const nGeom = geoms[geom];
 
-  if (!prevParam) sid = nearestGeom(param.sid, geoms[geom]);
-  else sid = nearestGeom(sid, geoms[geom], prevParam.sid, geoms[prevParam.geom]);
+  if (!prevParam) {
+    if (nGeom && nGeom.ready) sid = nGeom.meta.has(sid) ? sid : defaultSids[geom]
+    else sid = "";
+  } else {
+    const pGeom = geoms[prevParam.geom];
+    if (pGeom && pGeom.ready && nGeom && nGeom.ready) {
+      if (geom != prevParam.geom) sid = nGeom.meta.has(sid) ? sid : defaultSids[geom];
+    } else sid = "";
+  }
 
   if (sid == param.sid) return param;
   return {...param, sid}
 }
+
+const defaultSids = {
+  stn: "USH00300042",
+  state: "NY",
+  county: "36001",
+  basin: "02020006",
+};
 
 function nearestGeom(nSid, nGeom, pSid, pGeom) {
   if (!pGeom && !pSid) {
