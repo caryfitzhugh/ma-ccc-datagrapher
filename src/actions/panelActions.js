@@ -143,34 +143,40 @@ export function fetchResults(key) {
         body: JSON.stringify(reqParams)
       })
       .then(checkStatus)
-      .then(res => {console.log("fetch stn data"); return res.json();});
+      .then(res => res.json());
     } else {
       const url1 = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/prism/'+
         nParam.geom+'/'+nParam.element+'_'+nParam.season,
         url2 = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/narccap/'+
         nParam.geom+'/'+nParam.element+'_'+nParam.season;
+
       const req1 = fetch(url1,{
-        method:'get',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
+          method:'get',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(checkStatus)
+        .then(res => res.json())
+        .catch(error => {return {error};});
+
       const req2 = fetch(url2,{
-        method:'get',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
+          method:'get',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(checkStatus)
+        .then(res => res.json())
+        .catch(error => {return {error};});
+
       req = Promise.all([req1,req2])
         .then(res => {return {data:res[0].data,proj:res[1].data};});
     }
     req.then(res => {
       return dispatch(setResult(key,nParam,res));
-    })
-    .catch(function(error) {
-      console.log('request failed', error)
     });
   }
 }
