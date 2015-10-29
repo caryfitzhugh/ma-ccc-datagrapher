@@ -17,7 +17,6 @@ export default class StnChart {
   };
 
   render() {
-    console.log('StnChart render');
     const { meta, geomType, sid, element, season, result, ready } = this.props;
     const { label:titleElem, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,

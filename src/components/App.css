@@ -81,6 +81,10 @@
   stroke-width: 1px;
 }
 
+.axisLabel {
+	font-size: 90%;
+}
+
 .areaHi {
 	stroke: none;
 	fill: red;
@@ -91,8 +95,14 @@
 	fill: blue;
 	fill-opacity: 0.3;
 }
-.prism {
+.prismLine {
 	fill: none;
-	stroke: #000;
+	stroke: black;
+	stroke-opacity: 0.6;
 	stroke-width: 2px;
+}
+.prismDots {
+	fill: black;
+	fill-opacity: 0.3;
+	stroke: none;
 }

@@ -19,11 +19,10 @@ export default class AreaChart {
   };
 
   render() {
-    console.log('StnChart render');
     const { meta, geomType, sid, element, season, result, ready } = this.props;
     const width = 600, height = 400, margin = {top: 10, right: 15, bottom: 50, left: 50};
 
-    const { label:titleElem, ttUnits } = elems.get(element),
+    const { label:titleElem, yLabel, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,
           stationName = meta && meta.has(sid) ? meta.get(sid).name : 'loading';
     let chart = <svg width={width} height={height} >
@@ -62,7 +61,7 @@ export default class AreaChart {
       })
     }
 
-    if (dHist.length > 5){
+    if (dPrism.length > 5){
       const x = d3.scale.linear()
         .range([0, width - margin.left - margin.right])
         .domain(xRange);
@@ -115,9 +114,23 @@ export default class AreaChart {
         .attr('class', styles.axis)
         .attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')')
         .call(xAxis)
+        .append("text")
+          .attr("class", styles.axisLabel)
+          .attr("x", width - margin.left - margin.right)
+          .attr("y", -6)
+          .style("text-anchor", "end")
+          .text("Year");
+
       svg.append('g')
         .attr('class', styles.axis)
         .call(yAxis)
+        .append("text")
+          .attr("class", styles.axisLabel)
+          .attr("transform", "rotate(-90)")
+          .attr("y", 6)
+          .attr("dy", "0.7em")
+          .style("text-anchor", "end")
+          .text(yLabel);
 
       svg.append('path')
         .datum(sdHist)
@@ -139,8 +152,17 @@ export default class AreaChart {
 
       svg.append('path')
         .datum(sdPrism)
-        .attr('class', styles.prism)
+        .attr('class', styles.prismLine)
         .attr('d', line)
+
+      const dots = svg.append('g');
+      dPrism.forEach((d)=>{
+        dots.append('circle')
+          .attr('class',styles.prismDots)
+          .attr('r',2)
+          .attr('cx',x(d[0]))
+          .attr('cy',y(d[1]))
+      })
 
       chart = node.toReact()
     } else if (ready) {
