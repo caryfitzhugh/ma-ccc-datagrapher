@@ -50,6 +50,7 @@
     "leaflet": "file:vendor/Leaflet",
     "react": "0.13.3",
     "react-d3-components": "^0.4.8",
+    "react-faux-dom": "^2.0.1",
     "react-redux": "^0.8.2",
     "redux": "^1.0.1",
     "redux-thunk": "^0.1.0",

@@ -71,3 +71,28 @@
 	margin-bottom: 20px;
 }
 
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.axis path, .axis line {
+  stroke: #000;
+  fill: none;
+  stroke-width: 1px;
+}
+
+.areaHi {
+	stroke: none;
+	fill: red;
+	fill-opacity: 0.3;
+}
+.areaLo {
+	stroke: none;
+	fill: blue;
+	fill-opacity: 0.3;
+}
+.prism {
+	fill: none;
+	stroke: #000;
+	stroke-width: 2px;
+}

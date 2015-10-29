@@ -6,6 +6,7 @@ import SideBar from './SideBar';
 import Parameters from './Parameters';
 import MiniMap from './MiniMap';
 import Chart from './Chart';
+import AreaChart from './NChart';
 import styles from './App.css';
 
 import { chartDefs } from '../api';
@@ -35,6 +36,30 @@ class StnPanel extends Component {
           { geojson, meta } = this.props.geom, cDef = chartDefs.get(chart),
           seasons = cDef.seasons, 
           elements = geom == 'stn' ? cDef.elems : cDef.gElems;
+
+    let plot;
+    if (geom == 'stn')
+      plot = <Chart
+              className={styles.chartOutput}
+              geomType={geom}
+              result={this.props.result}
+              meta={meta}
+              element={element}
+              season={season}
+              sid={sid}
+              ready={this.props.ready}
+            />
+    else 
+      plot = <AreaChart
+              className={styles.chartOutput}
+              geomType={geom}
+              result={this.props.result}
+              meta={meta}
+              element={element}
+              season={season}
+              sid={sid}
+              ready={this.props.ready}
+            />
 
     return (
       <div className={styles.panel} >
@@ -66,16 +91,7 @@ class StnPanel extends Component {
               update={::this.updateMap}
             />
           </div>
-          <Chart
-            className={styles.chartOutput}
-            geomType={geom}
-            result={this.props.result}
-            meta={meta}
-            element={element}
-            season={season}
-            sid={sid}
-            ready={this.props.ready}
-          />
+          {plot}
         </div>
       </div>
     )
