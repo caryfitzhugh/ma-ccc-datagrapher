@@ -6,7 +6,7 @@ import {seasons,elems} from '../api';
 import styles from './App.css';
 
 
-export default class AreaChart {
+export default class AreaChart extends React.Component {
 
   static propTypes = {
     meta: PropTypes.object,
@@ -18,9 +18,15 @@ export default class AreaChart {
     ready: PropTypes.bool.isRequired
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {year: 0};
+    this.data = new Map();
+  }
+
   render() {
     const { meta, geomType, sid, element, season, result, ready } = this.props;
-    const width = 600, height = 400, margin = {top: 10, right: 15, bottom: 50, left: 50};
+    const width = 600, height = 400, margin = {top: 10, right: 15, bottom: 40, left: 50};
 
     const { label:titleElem, yLabel, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,
@@ -34,7 +40,9 @@ export default class AreaChart {
                   </text>
                 </svg>;
 
-    const data = new Map(), xRange=[9999,0], yRange=[10000,-10000];
+    const data = new Map();
+    this.data = data;
+    const xRange=[9999,0], yRange=[10000,-10000];
     const dPrism = [], sdPrism = [], dHist = [], dProj = [], medians = [0,0];
     if (ready && result.proj) {
       let cnt = 0, sum = [0.,0.,0.], tsum = 0., proj = false, oVal;
@@ -121,16 +129,16 @@ export default class AreaChart {
         .x(d => x(d[0]))
         .y(d => y(d[1]))
 
-      const node = ReactFauxDOM.createElement('svg'),
+      const node = ReactFauxDOM.createElement("svg"),
         svg = d3.select(node)
-          .attr('width', width)
-          .attr('height', height)
-          .append('g')
-          .attr('transform', 'translate(' + margin.left + ',' + margin.top +')')
+          .attr("width", width)
+          .attr("height", height)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top +")")
 
-      svg.append('g')
-        .attr('class', styles.axis)
-        .attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')')
+      svg.append("g")
+        .attr("class", styles.axis)
+        .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
         .call(xAxis)
         .append("text")
           .attr("class", styles.axisLabel)
@@ -139,8 +147,8 @@ export default class AreaChart {
           .style("text-anchor", "end")
           .text("Year");
 
-      svg.append('g')
-        .attr('class', styles.axis)
+      svg.append("g")
+        .attr("class", styles.axis)
         .call(yAxis)
         .append("text")
           .attr("class", styles.axisLabel)
@@ -150,29 +158,57 @@ export default class AreaChart {
           .style("text-anchor", "end")
           .text(yLabel);
 
-      svg.append('path')
+      svg.append("path")
         .datum(dHist)
-        .attr('class', styles.areaLo)
-        .attr('d', areaLo)
-      svg.append('path')
+        .attr("class", styles.areaLo)
+        .attr("d", areaLo)
+      svg.append("path")
         .datum(dHist)
-        .attr('class', styles.areaHi)
-        .attr('d', areaHi)
+        .attr("class", styles.areaHi)
+        .attr("d", areaHi)
 
-      svg.append('path')
+      svg.append("path")
         .datum(dProj)
-        .attr('class', styles.areaLo)
-        .attr('d', areaLo)
-      svg.append('path')
+        .attr("class", styles.areaLo)
+        .attr("d", areaLo)
+      svg.append("path")
         .datum(dProj)
-        .attr('class', styles.areaHi)
-        .attr('d', areaHi)
+        .attr("class", styles.areaHi)
+        .attr("d", areaHi)
 
-      svg.append('path')
+      svg.append("path")
         .datum(sdPrism)
-        .attr('class', styles.prismLine)
-        .attr('d', line)
+        .attr("class", styles.prismLine)
+        .attr("d", line)
 
+      svg.append("path")
+        .datum([
+          [2023,medians[0]],
+          [2027,medians[0]],
+          [2025,medians[0]],
+          [2025,medians[1]],
+          [2023,medians[1]],
+          [2027,medians[1]],
+        ])
+        .attr("class", styles.prismLine)
+        .attr("d", line)
+      svg.append("text")
+        .attr("x",x(2027))
+        .attr("y",y((medians[0]+medians[1])/2))
+        .attr("dy","0.3em")
+        .style("text-anchor","start")
+        .text((medians[1]-medians[0]).toFixed(1)+ttUnits)
+
+
+      d3.select(node)
+        .on("mouseleave",() => {
+          this.setState({year:0});
+        })
+        .on("mousemove", (d,i)=>{
+          const e = d3.event;
+          const year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          this.setState({year});
+        })
       const dots = svg.append('g');
       dPrism.forEach((d)=>{
         dots.append('circle')
@@ -182,7 +218,15 @@ export default class AreaChart {
           .attr('cy',y(d[1]))
       })
 
-      chart = node.toReact()
+      // node.props.onClick = (synEvent) => {
+      //   const e = synEvent.nativeEvent;
+      //   medians[0] = e.offsetX - margin.left;
+      //   medians[1] = e.offsetY - margin.top;
+      //   console.log(x.invert(medians[0]).toFixed(0)+' '+y.invert(medians[1]));
+      //   this.setState({m:[+x.invert(medians[0]).toFixed(0),y.invert(medians[1])]});
+      // };
+      chart = node.toReact();
+
     } else if (ready) {
       chart = <svg width={width} height={height} >
       <text x="50%" y="50%"
@@ -197,8 +241,23 @@ export default class AreaChart {
     return <div>
       <h3 style={{textAlign: 'center'}}>{titleSeason + ' ' + titleElem}</h3>
       <h4 style={{textAlign: 'center'}}>{stationName}</h4>
+      <Info year={this.state.year} data={data} />
       {chart}
       </div>
   }
 };
 
+class Info extends React.Component {
+
+  static propTypes = {
+    year: PropTypes.number.isRequired,
+    // data: PropTypes.object.isRequired,
+  };
+
+  render () {
+    const {year,data} = this.props;
+    return <div>
+      <span>{''+year}</span>
+      </div>
+  }
+}
