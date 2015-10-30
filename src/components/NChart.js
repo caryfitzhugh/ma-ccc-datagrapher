@@ -34,29 +34,60 @@ export default class AreaChart {
                   </text>
                 </svg>;
 
-    const dPrism = [], dHist = [], dProj = [], xRange=[9999,0], yRange=[10000,-10000];
+    const data = new Map(), xRange=[9999,0], yRange=[10000,-10000];
+    const dPrism = [], sdPrism = [], dHist = [], dProj = [], medians = [0,0];
     if (ready && result.proj) {
+      let cnt = 0, sum = [0.,0.,0.], tsum = 0., proj = false, oVal;
       result.proj.forEach((d) => {
-        const yr = +d[0].slice(0,4), vals = d[1][sid].map(v => +v.toFixed(2));
-        if (vals[0] < yRange[0]) yRange[0] = vals[0];
-        if (vals[2] > yRange[1]) yRange[1] = vals[2];
+        const yr = +d[0].slice(0,4), v = d[1][sid].map(x => +x.toFixed(2)), datum = {};
         if (yr < xRange[0]) xRange[0] = yr;
         if (yr > xRange[1]) xRange[1] = yr;
-        if (yr < 2010) dHist.push([yr,...vals])
-        else dProj.push([yr,...vals]);
+        if (v[0] < yRange[0]) yRange[0] = v[0];
+        if (v[2] > yRange[1]) yRange[1] = v[2];
+
+        if (yr > 2020 && !proj) { // reset the counters
+          medians[0] = tsum / cnt;
+          cnt = 0; sum = [0.,0.,0.]; tsum = 0.; proj = true;
+        }
+        tsum += v[1]; cnt++;
+        datum.proj = v;
+        oVal = cnt > 5 ? data.get(yr-5).proj : [0,0,0];
+        v.forEach((x,i) => {sum[i] += x - oVal[i];});
+        if (cnt >= 5) {
+          const s = v.map((x,i) => sum[i]/5.);
+          if (proj) dProj.push([yr, ...s])
+          else dHist.push([yr, ...s]);
+          datum.sproj = s;
+        }
+        data.set(yr,datum);
       })
+      medians[1] = tsum/cnt;
     }
+
     if (ready && result.data) {
+      let cnt = 0, sum = 0., oVal;
       result.data.forEach((d) => {
-        const yr = +d[0].slice(0,4);
+        const yr = +d[0].slice(0,4), datum = {};
         let v = d[1][sid];
         if (typeof v != 'undefined' && v == v) {
           v = +v.toFixed(2);
-          if (v < yRange[0]) yRange[0] = v;
-          if (v > yRange[1]) yRange[1] = v;
           if (yr < xRange[0]) xRange[0] = yr;
           if (yr > xRange[1]) xRange[1] = yr;
+          if (v < yRange[0]) yRange[0] = v;
+          if (v > yRange[1]) yRange[1] = v;
+
+          cnt++;
+          datum.data = v;
+          oVal = cnt > 5 ? data.get(yr-5).data : 0.;
+          sum += v - oVal;
           dPrism.push([yr,v]);
+          if (cnt >= 5) {
+            const s = sum/5;
+            sdPrism.push([yr,s]);
+            datum.sdata = s;
+          }
+          if (data.has(yr)) data.set(yr,{...data.get(yr), ...datum})
+          else data.set(yr,datum);
         }
       })
     }
@@ -69,19 +100,6 @@ export default class AreaChart {
         .range([height - margin.top - margin.bottom, 0])
         .domain(yRange)
         .nice(5);
-
-      const smooth = (data) => {
-        const r = [];
-        data.forEach((d,i) => {
-          if (i>=4) r.push([d[0],
-            d3.mean(data.slice(i-4,i+1).map(v=>v[1])),
-            d3.mean(data.slice(i-4,i+1).map(v=>v[2])),
-            d3.mean(data.slice(i-4,i+1).map(v=>v[3])),
-            ])
-        })
-        return r;
-      }
-      const sdPrism = smooth(dPrism), sdHist = smooth(dHist), sdProj = smooth(dProj);
 
       const xAxis = d3.svg.axis()
         .scale(x)
@@ -133,20 +151,20 @@ export default class AreaChart {
           .text(yLabel);
 
       svg.append('path')
-        .datum(sdHist)
+        .datum(dHist)
         .attr('class', styles.areaLo)
         .attr('d', areaLo)
       svg.append('path')
-        .datum(sdHist)
+        .datum(dHist)
         .attr('class', styles.areaHi)
         .attr('d', areaHi)
 
       svg.append('path')
-        .datum(sdProj)
+        .datum(dProj)
         .attr('class', styles.areaLo)
         .attr('d', areaLo)
       svg.append('path')
-        .datum(sdProj)
+        .datum(dProj)
         .attr('class', styles.areaHi)
         .attr('d', areaHi)
 
