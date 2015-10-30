@@ -62,7 +62,7 @@ export default class AreaChart extends React.Component {
         oVal = cnt > 5 ? data.get(yr-5).proj : [0,0,0];
         v.forEach((x,i) => {sum[i] += x - oVal[i];});
         if (cnt >= 5) {
-          const s = v.map((x,i) => sum[i]/5.);
+          const s = v.map((x,i) => +(sum[i]/5.).toFixed(2));
           if (proj) dProj.push([yr, ...s])
           else dHist.push([yr, ...s]);
           datum.sproj = s;
@@ -90,7 +90,7 @@ export default class AreaChart extends React.Component {
           sum += v - oVal;
           dPrism.push([yr,v]);
           if (cnt >= 5) {
-            const s = sum/5;
+            const s = +(sum/5).toFixed(2);
             sdPrism.push([yr,s]);
             datum.sdata = s;
           }
@@ -158,47 +158,57 @@ export default class AreaChart extends React.Component {
           .style("text-anchor", "end")
           .text(yLabel);
 
-      svg.append("path")
-        .datum(dHist)
-        .attr("class", styles.areaLo)
-        .attr("d", areaLo)
-      svg.append("path")
-        .datum(dHist)
-        .attr("class", styles.areaHi)
-        .attr("d", areaHi)
+      if (dHist.length > 5) {
+        svg.append("path")
+          .datum(dHist)
+          .attr("class", styles.areaLo)
+          .attr("d", areaLo)
+        svg.append("path")
+          .datum(dHist)
+          .attr("class", styles.areaHi)
+          .attr("d", areaHi)
 
-      svg.append("path")
-        .datum(dProj)
-        .attr("class", styles.areaLo)
-        .attr("d", areaLo)
-      svg.append("path")
-        .datum(dProj)
-        .attr("class", styles.areaHi)
-        .attr("d", areaHi)
+        svg.append("path")
+          .datum(dProj)
+          .attr("class", styles.areaLo)
+          .attr("d", areaLo)
+        svg.append("path")
+          .datum(dProj)
+          .attr("class", styles.areaHi)
+          .attr("d", areaHi)
+
+        svg.append("path")
+          .datum([
+            [2023,medians[0]],
+            [2027,medians[0]],
+            [2025,medians[0]],
+            [2025,medians[1]],
+            [2023,medians[1]],
+            [2027,medians[1]],
+          ])
+          .attr("class", styles.prismLine)
+          .attr("d", line)
+        svg.append("text")
+          .attr("x",x(2027))
+          .attr("y",y((medians[0]+medians[1])/2))
+          .attr("dy","0.3em")
+          .style("text-anchor","start")
+          .text((medians[1]-medians[0]).toFixed(1)+ttUnits)
+      }
 
       svg.append("path")
         .datum(sdPrism)
         .attr("class", styles.prismLine)
         .attr("d", line)
 
-      svg.append("path")
-        .datum([
-          [2023,medians[0]],
-          [2027,medians[0]],
-          [2025,medians[0]],
-          [2025,medians[1]],
-          [2023,medians[1]],
-          [2027,medians[1]],
-        ])
-        .attr("class", styles.prismLine)
-        .attr("d", line)
-      svg.append("text")
-        .attr("x",x(2027))
-        .attr("y",y((medians[0]+medians[1])/2))
-        .attr("dy","0.3em")
-        .style("text-anchor","start")
-        .text((medians[1]-medians[0]).toFixed(1)+ttUnits)
-
+      const dots = svg.append('g');
+      dPrism.forEach((d)=>{
+        dots.append('circle')
+          .attr('class',styles.prismDots)
+          .attr('r',2)
+          .attr('cx',x(d[0]))
+          .attr('cy',y(d[1]))
+      })
 
       d3.select(node)
         .on("mouseleave",() => {
@@ -209,22 +219,7 @@ export default class AreaChart extends React.Component {
           const year = +x.invert(e.offsetX - margin.left).toFixed(0);
           this.setState({year});
         })
-      const dots = svg.append('g');
-      dPrism.forEach((d)=>{
-        dots.append('circle')
-          .attr('class',styles.prismDots)
-          .attr('r',2)
-          .attr('cx',x(d[0]))
-          .attr('cy',y(d[1]))
-      })
 
-      // node.props.onClick = (synEvent) => {
-      //   const e = synEvent.nativeEvent;
-      //   medians[0] = e.offsetX - margin.left;
-      //   medians[1] = e.offsetY - margin.top;
-      //   console.log(x.invert(medians[0]).toFixed(0)+' '+y.invert(medians[1]));
-      //   this.setState({m:[+x.invert(medians[0]).toFixed(0),y.invert(medians[1])]});
-      // };
       chart = node.toReact();
 
     } else if (ready) {
@@ -256,8 +251,20 @@ class Info extends React.Component {
 
   render () {
     const {year,data} = this.props;
-    return <div>
-      <span>{''+year}</span>
+    if (!data.has(year)) return <div style={{minHeight: '20px'}}></div>
+    const d = data.get(year);
+    let proj, sproj, raw, sraw;
+    if (typeof d.proj != "undefined") {
+      proj = [<span>{''+year}: </span>,<span> {d.proj[0]} {d.proj[1]} {d.proj[2]}  </span>]
+    }
+    if (typeof d.sproj != "undefined") {
+      sproj = [<span>Mean {year-4}-{year}: </span>,<span> {d.sproj[0]} {d.sproj[1]} {d.sproj[2]}  </span>]
+    }
+    return <div style={{minHeight: '20px'}}>
+      {proj}
+      {sproj}
+      {raw}
+      {sraw}
       </div>
   }
 }
