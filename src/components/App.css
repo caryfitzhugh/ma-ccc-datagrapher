@@ -60,6 +60,22 @@
 	background-color: tan;
 }
 
+.chartHeader1 {
+	width: 100%;
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 50px;
+	margin-top: 10px;
+}
+.chartHeader2 {
+	width: 100%;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 50px;
+	margin-top: 5px;
+}
+
 .paramForm {
 	height: 200px;
 	background-color: green;

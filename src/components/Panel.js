@@ -5,7 +5,7 @@ import * as panelActions from '../actions/panelActions';
 import SideBar from './SideBar';
 import Parameters from './Parameters';
 import MiniMap from './MiniMap';
-import Chart from './Chart';
+import Chart from './SChart';
 import AreaChart from './NChart';
 import styles from './App.css';
 
@@ -16,7 +16,6 @@ class StnPanel extends Component {
   static propTypes = {
     param: PropTypes.object.isRequired,
     result: PropTypes.object,
-    loading: PropTypes.bool,
     geom: PropTypes.object,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,

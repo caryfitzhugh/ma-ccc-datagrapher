@@ -13,7 +13,7 @@ devtool: 'cheap-module-eval-source-map',
       'webpack/hot/only-dev-server',
       './src/index.js'
     ],
-    common: ['react', 'd3', 'leaflet', 'whatwg-fetch', 'react-d3-components', 'redux']
+    common: ['react', 'd3', 'leaflet', 'whatwg-fetch', 'redux']
   },
   debug: true,
   output: {
