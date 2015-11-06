@@ -55,10 +55,8 @@ function checkStatus(response) {
 }
 
 export function fetchGeom(geoType) {
-  console.log('fetchGeom '+geoType);
 
   return (dispatch, getState) => {
-    console.log('start fetchGeom',geoType);
     dispatch(requestGeoData(geoType));
 
     fetch('data/'+geoType+'.json',{
