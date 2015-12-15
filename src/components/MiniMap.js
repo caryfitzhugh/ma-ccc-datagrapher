@@ -32,11 +32,18 @@ export default class MiniMap extends Component {
 
   updateSid() {
     const sid = this.props.sid;
-    this.layer.setStyle((f) => ({
-        fillColor: f.id == sid ? 'blue' : 'darkgrey',
+    const isPoint = this.props.geomType == 'stn';
+    this.layer.setStyle((f) => (isPoint ? {
+        fillColor: f.id == sid ? 'blue' : 'black',
+        opacity: 0.0,
+        fillOpacity: 0.5,
+        color: 'black'
+      } : {
+        fillColor: f.id == sid ? 'blue' : 'lightgrey',
         weight: 1.5,
         opacity: 0.6,
-        color: 'black'
+        fillOpacity: 0.4,
+        color: 'black'        
     }));
     this.layer.eachLayer((l) => {
       if (l.feature.id == sid) {
@@ -51,6 +58,7 @@ export default class MiniMap extends Component {
       this.map.removeLayer(this.layer);
     }
     this.geomType = this.props.geomType;
+    const isPoint = this.geomType == 'stn';
     const fl = this.layer = L.geoJson(this.props.geoJSON,{
       pointToLayer: (geojson, latlng) => 
         new L.CircleMarker(latlng,
@@ -63,11 +71,17 @@ export default class MiniMap extends Component {
           }
         ),
       filter: (f) => (true),
-      style: (f) => ({
-        fillColor: f.id == sid ? 'blue' : 'darkgrey',
-        weight: 1.5,
-        opacity: 0.6,
-        color: 'black'
+      style: (f) => (isPoint ? {
+          fillColor: f.id == sid ? 'blue' : 'black',
+          opacity: 0.0,
+          fillOpacity: 0.5,
+          color: 'black'
+        } : {
+          fillColor: f.id == sid ? 'blue' : 'lightgrey',
+          weight: 1.5,
+          opacity: 0.6,
+          fillOpacity: 0.4,
+          color: 'black'        
       })
     });
 
@@ -88,8 +102,8 @@ export default class MiniMap extends Component {
     center: position,
     zoom: 5.6
     });
-    L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/terrain/{z}/{x}/{y}.png',
-      {subdomains: '0123', minZoom: 5.6, maxZoom: 10}).addTo(this.map);
+    L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+      {subdomains: 'abcd', minZoom: 5.6, maxZoom: 10, opacity: 0.3}).addTo(this.map);
     if (this.props.geoJSON) {
       this.updateLayer();
       this.updateSid();
