@@ -8,6 +8,7 @@ import { StnData, GridData, BasePath } from 'context';
 import {
     INVALIDATE_PARAM,
     UPDATE_PARAM,
+    SHOW_INFO,
     INSERT_PANEL,
     DELETE_PANEL,
     QUERY_TO_PARAMS,
@@ -28,6 +29,13 @@ export function updateParam(key, param) {
   return {
     type: UPDATE_PARAM,
     payload: { key, param }
+  };
+}
+
+export function showInfo() {
+  return {
+    type: SHOW_INFO,
+    payload: {show: true}
   };
 }
 

@@ -4,12 +4,18 @@ import { connect } from 'react-redux';
 
 import * as panelActions from '../actions/panelActions';
 import Panel from './Panel';
+let Modal = require('react-modal');
+import InfoModal from './InfoModal';
 import { chartDefs } from '../api';
 import { BasePath } from 'context';
 
 
 @connect(state => {
-  return { geoms: state.geoms, panels: state.panels.panels, locationValid: state.panels.locationValid }
+  return { geoms: state.geoms,
+    panels: state.panels.panels,
+    locationValid: state.panels.locationValid,
+    showInfo: state.panels.showInfo
+  }
 })
 export default class App extends Component {
   static propTypes = {
@@ -55,7 +61,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { geoms, panels, dispatch } = this.props;
+    const { geoms, panels, showInfo, dispatch } = this.props;
     const charts = [];
     panels.forEach((p,key) => {
       charts.push(
@@ -69,6 +75,12 @@ export default class App extends Component {
     return (
       <div>
         {charts}
+        <Modal
+          closeTimeoutMS={150}
+          isOpen={showInfo}>
+          <button onClick={this.actions.showInfo}>close</button>
+          <InfoModal />
+        </Modal>
       </div>
       );
   }
