@@ -17,6 +17,7 @@ class StnPanel extends Component {
     param: PropTypes.object.isRequired,
     result: PropTypes.object,
     geom: PropTypes.object,
+    showInfo: PropTypes.func.isRequired,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
     invalidateParam: PropTypes.func.isRequired,
@@ -33,7 +34,7 @@ class StnPanel extends Component {
   render () {
     const { chart, geom, element, season, sid, bbox } = this.props.param,
           { geojson, meta } = this.props.geom, cDef = chartDefs.get(chart),
-          seasons = cDef.seasons, 
+          seasons = element == 'grow_32' ? ['ANN'] : cDef.seasons, 
           elements = geom == 'stn' ? cDef.elems : cDef.gElems;
 
     let plot;
@@ -65,6 +66,7 @@ class StnPanel extends Component {
         <SideBar
           current={chart}
           updatePanel={::this.updateParams}
+          showInfo={this.props.showInfo}
           insertPanel={this.props.insertPanel}
           deletePanel={this.props.deletePanel}
         />
@@ -109,6 +111,7 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
   return {
     ...panel,
     geom,
+    showInfo: () => dispatchProps.showInfo(),
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),
     invalidateParam: (param) => dispatchProps.invalidateParam(idx,param),
