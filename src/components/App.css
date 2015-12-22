@@ -16,7 +16,7 @@
 	border: 1px solid grey;
 	justify-content: space-between;
 	font-family: sans-serif;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .sideitem {
@@ -42,6 +42,20 @@
 	height: 25px;
 }
 
+.infoModels {
+	width: 300px;
+	margin-left: 50px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.infoGraph {
+	height: 400px;
+	margin-left: 50px;
+}
+
 .chart {
 	display: flex;
 	flex: 1;
@@ -52,6 +66,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	padding: 0 10;
+	z-index: 0;
 }
 
 .chartOutput {
