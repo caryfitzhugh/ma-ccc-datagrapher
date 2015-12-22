@@ -212,6 +212,12 @@ export function correctParam(param) {
       element = def.elems[0];
       sane = false;
     }
+    if (element == 'grow_32') {
+      if (season != 'ANN') {
+        season = 'ANN';
+        sane = false;
+      }
+    }
   } else {
     if (def.gElems.length == 0) {
       chart = 'Temp';
@@ -286,35 +292,23 @@ const allSeasons = [ ...seasons.keys()];
 export const chartDefs = new Map([
   ['Temp', {
       title: 'Temp',
-      elems: ['maxt', 'mint', 'avgt', 'gdd50', 'hdd65', 'cdd65'],
+      elems: ['maxt', 'mint', 'avgt', 'gdd50', 'hdd65', 'cdd65',
+              'tx90','tx95','tx100',
+              'tn0','tn32',
+              'grow_32',
+              // 'tx90_3','tx95_3','tx100_3',
+              // 'tn0_3','tn32_3',
+              // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
+             ],
       seasons: allSeasons
   }],
   ['Prcp',{
     title: 'Prcp',
-    elems: ['pcpn','snow','snwd'],
-    seasons: allSeasons
-  }],
-  ['TDays',{
-    title: 'Temp-Days',
-    elems: ['tx90','tx95','tx100',
-            'tn0','tn32',
-            // 'tx90_3','tx95_3','tx100_3',
-            // 'tn0_3','tn32_3',
-            // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
-           ],
-    seasons: allSeasons
-  }],
-  ['PDays',{
-    title: 'Prcp-Days',
-    elems:['pcpn_1', 'pcpn_2', 'pcpn_4', 'snwd_1',
-           // 'pcpn_lt01_run','pcpn_lt1_run'
+    elems: ['pcpn','snow','snwd',
+            'pcpn_1', 'pcpn_2', 'pcpn_4', 'snwd_1',
+            // 'pcpn_lt01_run','pcpn_lt1_run'
           ],
     seasons: allSeasons
-  }],
-  ['Frost',{
-    title: 'Frost',
-    elems:['grow_32'],
-    seasons: ['ANN']
   }],
 ]);
 

@@ -33,7 +33,8 @@ devtool: 'cheap-module-eval-source-map',
     extensions: ['', '.js'],
     alias: {
       react: path.join(__dirname, 'node_modules', 'react'),
-      'redux-devtools': path.join(__dirname,'node_modules','redux-devtools','lib'),
+      // needed for react pre v0.14.x
+      'react-dom': path.join(__dirname,'node_modules','react'),
       context$: '../dev_context'
     }
   },

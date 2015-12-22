@@ -3,6 +3,7 @@ import {
     UPDATE_PARAM,
     REQUEST_DATA,
     SET_RESULT,
+    SHOW_INFO,
     INSERT_PANEL,
     DELETE_PANEL,
     UPDATE_URL,
@@ -18,6 +19,7 @@ import { chartDefs, parseURL, correctParam } from '../api';
     nextKey (integer)
     query (array)
     locationValid: boolean
+    showInfo: boolean
   Each panel state contains:
     param: {
       chart,
@@ -40,6 +42,7 @@ const initialState = {
   panels: new Map(),
   nextKey: 1,
   locationValid: true,
+  showInfo: false,
   query: [],
 };
 
@@ -90,6 +93,11 @@ const actionHandlers = {
     panels = new Map([...panels]);
     panels.set(key,{ param, result, ready: true });
     return {...state, panels};
+  },
+
+  [SHOW_INFO]: (state, action) => {
+    let { showInfo } = state;
+    return {...state, showInfo:!showInfo};
   },
 
   [INSERT_PANEL]: (state, action) => {
