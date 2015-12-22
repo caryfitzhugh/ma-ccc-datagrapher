@@ -28,6 +28,8 @@ module.exports = {
     extensions: ['', '.js'],
     alias: {
       react: path.join(__dirname, 'node_modules', 'react'),
+      // needed for react pre v0.14.x
+      'react-dom': path.join(__dirname,'node_modules','react'),
       context$: '../dev_context'
     }
   },
