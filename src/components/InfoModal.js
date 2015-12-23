@@ -35,8 +35,8 @@ export default class InfoModal {
         For instance, the value corresponding to the line in the year 2000 is the average of the five annual 
         values for 1996-2000. The 5-year running mean highlights multi-year variations including trends.
       </p>
-      <p>
-        <img alt="" src="data/images/info_fig_1.png" className={styles.infoGraph} title="" />
+      <p className={styles.infoGraph} >
+        <img alt="" src="data/images/info_fig_1.png" style={{height:"400px"}} title="" />
       </p>
       <h3>Projected Data</h3>
       <p>
@@ -82,8 +82,8 @@ export default class InfoModal {
         combinations. The mean of the seven combinations is reflected by the boundary between the blue and
         red areas. As with the observed data, a 5-year running mean is used.
       </p>
-      <p>
-        <img alt="" src="data/images/info_fig_2.png" className={styles.infoGraph} title="" />
+      <p className={styles.infoGraph} >
+        <img alt="" src="data/images/info_fig_2.png" style={{height:"400px"}} title="" />
       </p>
       <p>
         The remaining four NARCCAP grids (each RCM driven by NCEP/DOE AMIP-II Reanalysis) are used to bias
@@ -115,8 +115,8 @@ export default class InfoModal {
         In the example below, the mean of the seven RCM-AOGCM simulations increases by 3.9 °F between 
         1970-2000 and 2041-2070.
       </p>
-      <p>
-        <img alt="" src="data/images/info_fig_3.png" className={styles.infoGraph} title="" />
+      <p className={styles.infoGraph} >
+        <img alt="" src="data/images/info_fig_3.png" style={{height:"400px"}} title="" />
       </p>
       </div>
   }

@@ -20,6 +20,7 @@
 }
 
 .sideitem {
+	cursor: pointer;
 	display: flex;
 	text-align: center;
 	align-items: center;
@@ -52,8 +53,8 @@
 }
 
 .infoGraph {
-	height: 400px;
-	margin-left: 50px;
+	display: flex;
+	justify-content: center;
 }
 
 .chart {
