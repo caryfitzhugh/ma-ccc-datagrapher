@@ -77,6 +77,7 @@ export default class App extends Component {
         {charts}
         <Modal
           closeTimeoutMS={150}
+          onRequestClose={this.actions.showInfo}
           isOpen={showInfo}>
           <button onClick={this.actions.showInfo}>close</button>
           <InfoModal />
