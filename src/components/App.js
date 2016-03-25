@@ -14,7 +14,8 @@ import { BasePath } from 'context';
   return { geoms: state.geoms,
     panels: state.panels.panels,
     locationValid: state.panels.locationValid,
-    showInfo: state.panels.showInfo
+    hoverYear: state.panels.hoverYear,
+    showInfo: state.panels.showInfo,
   }
 })
 export default class App extends Component {
@@ -61,7 +62,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { geoms, panels, showInfo, dispatch } = this.props;
+    const { geoms, panels, hoverYear, showInfo, dispatch } = this.props;
     const charts = [];
     panels.forEach((p,key) => {
       charts.push(
@@ -69,6 +70,7 @@ export default class App extends Component {
           key={key}
           index={key}
           panel={p}
+          year={hoverYear}
         />
       );
     });

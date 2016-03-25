@@ -15,12 +15,13 @@ export default class AreaChart extends React.Component {
     element: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
     result: PropTypes.object.isRequired,
+    year: PropTypes.number.isRequired,
+    setYear: PropTypes.func.isRequired,
     ready: PropTypes.bool.isRequired
   };
 
   constructor(props) {
     super(props);
-    this.state = {year: 0};
     this.data = new Map();
     this.result = null;
   }
@@ -129,7 +130,7 @@ export default class AreaChart extends React.Component {
   }
 
   render() {
-    const { meta, geomType, sid, element, season, result, ready } = this.props;
+    const { meta, geomType, sid, element, season, result, year, ready } = this.props;
     const width = 500, height = 400, margin = {top: 10, right: 15, bottom: 30, left: 50};
 
     const { label:titleElem, yLabel, ttUnits } = elems.get(element),
@@ -146,7 +147,7 @@ export default class AreaChart extends React.Component {
 
     if (!ready || this.result != result) this.summarizeData(sid, result);
 
-    const data = this.data, year = this.state.year;
+    const data = this.data;
 
     if (data.has("xrange")) {
       const xRange = data.get("xrange"), yRange = data.get("yrange");
@@ -275,7 +276,7 @@ export default class AreaChart extends React.Component {
 
       d3.select(node)
         .on("mouseleave",() => {
-          this.setState({year:0});
+          this.props.setYear(0);
         })
         .on("mousemove", (d,i)=>{
           const e = d3.event;
@@ -284,7 +285,7 @@ export default class AreaChart extends React.Component {
             const d = this.data.get(year);
             if (typeof d.obs == "undefined" && typeof d.model_avg == "undefined") year = 0;
           } else year = 0;
-          this.setState({year});
+          this.props.setYear(year);
         })
 
       chart = node.toReact();

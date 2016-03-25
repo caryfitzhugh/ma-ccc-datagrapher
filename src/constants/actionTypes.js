@@ -2,6 +2,7 @@ export const INVALIDATE_PARAM = 'INVALIDATE_PARAM';
 export const UPDATE_PARAM = 'UPDATE_PARAM';
 export const REQUEST_DATA = 'REQUEST_DATA';
 export const SET_RESULT = 'SET_RESULT';
+export const SET_YEAR = 'SET_YEAR';
 export const SHOW_INFO = 'SHOW_INFO';
 export const INSERT_PANEL = 'INSERT_PANEL';
 export const DELETE_PANEL = 'DELETE_PANEL';

@@ -17,6 +17,7 @@ class StnPanel extends Component {
     param: PropTypes.object.isRequired,
     result: PropTypes.object,
     geom: PropTypes.object,
+    year: PropTypes.number.isRequired,
     showInfo: PropTypes.func.isRequired,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
@@ -48,6 +49,8 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              year={this.props.year}
+              setYear={this.props.setYear}
             />
     else 
       plot = <AreaChart
@@ -59,6 +62,8 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              year={this.props.year}
+              setYear={this.props.setYear}
             />
 
     return (
@@ -106,15 +111,18 @@ function mapStateToProps(state) {
 
 function mergeProps(stateProps, dispatchProps, parentProps) {
   const idx = parentProps.index, panel = parentProps.panel,
+    year = parentProps.year,
     geom = stateProps.geoms[panel.param.geom] ? stateProps.geoms[panel.param.geom] : {};
 
   return {
     ...panel,
     geom,
+    year,
     showInfo: () => dispatchProps.showInfo(),
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),
     invalidateParam: (param) => dispatchProps.invalidateParam(idx,param),
+    setYear: (year) => dispatchProps.setYear(year),
     };
 }
 
