@@ -136,15 +136,15 @@ export default class AreaChart extends React.Component {
       });
       
 
-      // d3.select(node)
-      //   .on("mouseleave",() => {
-      //     this.setState({year:0});
-      //   })
-      //   .on("mousemove", (d,i)=>{
-      //     const e = d3.event;
-      //     const year = +x.invert(e.offsetX - margin.left).toFixed(0);
-      //     this.setState({year});
-      //   })
+      d3.select(node)
+        .on("mouseleave",() => {
+          this.setState({year:0});
+        })
+        .on("mousemove", (d,i)=>{
+          const e = d3.event;
+          const year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          this.setState({year});
+        })
 
       chart = node.toReact();
 

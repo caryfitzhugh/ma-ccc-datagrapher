@@ -40,7 +40,7 @@ export default class AreaChart extends React.Component {
                   </text>
                 </svg>;
 
-    const data = new Map();
+    const data = new Map(), year = this.state.year;
     this.data = data;
     const xRange=[9999,0], yRange=[10000,-10000];
     const dPrism = [], sdPrism = [], dHist = [], dProj = [], medians = [0,0];
@@ -158,6 +158,16 @@ export default class AreaChart extends React.Component {
           .style("text-anchor", "end")
           .text(yLabel);
 
+      if (data.has(year)) {
+        svg.append("path")
+          .datum([
+            [year,yRange[0]],
+            [year,yRange[1]],
+          ])
+          .attr("class", styles.highlight)
+          .attr("d",line)
+      }
+
       if (dHist.length > 5) {
         svg.append("path")
           .datum(dHist)
@@ -205,22 +215,22 @@ export default class AreaChart extends React.Component {
         const dots = svg.append('g');
         dPrism.forEach((d)=>{
           dots.append('circle')
-            .attr('class',styles.prismDots)
+            .attr('class', d[0]!= year ? styles.prismDots : styles.prismDotsOver)
             .attr('r',2)
             .attr('cx',x(d[0]))
             .attr('cy',y(d[1]))
         })
       }
 
-      // d3.select(node)
-      //   .on("mouseleave",() => {
-      //     this.setState({year:0});
-      //   })
-      //   .on("mousemove", (d,i)=>{
-      //     const e = d3.event;
-      //     const year = +x.invert(e.offsetX - margin.left).toFixed(0);
-      //     this.setState({year});
-      //   })
+      d3.select(node)
+        .on("mouseleave",() => {
+          this.setState({year:0});
+        })
+        .on("mousemove", (d,i)=>{
+          const e = d3.event;
+          const year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          this.setState({year});
+        })
 
       chart = node.toReact();
 
@@ -235,11 +245,13 @@ export default class AreaChart extends React.Component {
       </svg>;
     }
 
-    return <div>
+    return <div className={styles.chartOutput}>
+      <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
       <div className={styles.chartHeader2}>{stationName}</div>
-      <Info year={this.state.year} data={data} />
       {chart}
+      </div>
+      <Info className={styles.chartTable} year={year} data={data} />
       </div>
   }
 };
@@ -253,20 +265,33 @@ class Info extends React.Component {
 
   render () {
     const {year,data} = this.props;
-    if (!data.has(year)) return <div style={{minHeight: '20px'}}></div>
-    const d = data.get(year);
+    // if (!data.has(year)) return <div className={styles.chartTable}></div>
+    const d = data.has(year) ? data.get(year) : {};
     let proj, sproj, raw, sraw;
     if (typeof d.proj != "undefined") {
-      proj = [<span>{''+year}: </span>,<span> {d.proj[0]} {d.proj[1]} {d.proj[2]}  </span>]
+      proj = <div><span>{''+year}: </span>,<span> {d.proj[0]} {d.proj[1]} {d.proj[2]}  </span></div>
+    } else {
+      proj = <div><span>a</span>,<span>b</span></div>
     }
     if (typeof d.sproj != "undefined") {
-      sproj = [<span>Mean {year-4}-{year}: </span>,<span> {d.sproj[0]} {d.sproj[1]} {d.sproj[2]}  </span>]
+      sproj = <div><span>Mean {year-4}-{year}: </span>,<span> {d.sproj[0]} {d.sproj[1]} {d.sproj[2]}  </span></div>
+    } else {
+      sproj = <div><span>a</span>,<span>b</span></div>
     }
-    return <div style={{minHeight: '20px'}}>
-      {proj}
-      {sproj}
-      {raw}
-      {sraw}
+    return <div className={styles.chartTable} >
+      <table>
+      <thead>
+        <tr><td></td><td>year</td><td>mean</td></tr>
+        <tr><td></td><td>1980</td><td>1976-1980</td></tr>
+      </thead>
+      <tbody>
+      <tr><td>observed</td><td>1.0</td><td>2.0</td></tr>
+      <tr><td>Modeled</td><td></td><td></td></tr>
+      <tr><td>Max</td><td>1.0</td><td>2.0</td></tr>
+      <tr><td>Median</td><td>1.0</td><td>2.0</td></tr>
+      <tr><td>Min</td><td>1.0</td><td>2.0</td></tr>
+      </tbody>
+      </table>
       </div>
   }
 }
