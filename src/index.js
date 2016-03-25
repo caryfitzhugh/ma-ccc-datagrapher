@@ -1,5 +1,6 @@
 import 'babel-core/polyfill';
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createHistory, useQueries } from 'history';
 
@@ -25,7 +26,7 @@ class Main extends Component {
   }
 }
 
-React.render(<Main />,
+ReactDOM.render(<Main />,
   document.getElementById('root')
 );
 
