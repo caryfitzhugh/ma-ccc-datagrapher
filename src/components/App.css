@@ -2,8 +2,7 @@
 	display: flex;
 	flex-flow: row wrap;
 	margin-bottom: 5px;
-	border-bottom: 2px solid black;
-	/*height: 500px;*/
+	border-bottom: 2px solid #5690ca;
 }
 
 .sidepanel {
