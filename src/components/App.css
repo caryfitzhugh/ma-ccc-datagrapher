@@ -72,24 +72,12 @@
 .chartOutput {
 	display: flex;
 	width: 100%;
-	background-color: tan;
 }
 
 .chartBody {
 	display: flex;
 	flex-direction: column;
 	flex: 0 1 auto;
-}
-
-.chartTable {
-	display: flex;
-	flex-direction: column;
-}
-
-.chartTableRow {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
 }
 
 .chartHeader1 {
@@ -106,6 +94,31 @@
 	text-align: center;
 	margin-left: 50px;
 	margin-top: 5px;
+}
+
+.chartTable {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.chartTable table {
+	border-radius: 4px;
+	border: 1px solid grey;
+}
+.chartTable th {
+	text-align: center;
+	line-height: 0.9em;
+}
+.chartTable td:first-child {
+	text-align: left;
+	line-height: 1.3em;
+	min-width: 5em;
+}
+
+.chartTable td:last-child {
+	text-align: right;
+	line-height: 1.3em;
+	min-width: 3em;
 }
 
 .paramForm {

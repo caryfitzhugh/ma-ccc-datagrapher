@@ -130,7 +130,7 @@ export default class AreaChart extends React.Component {
 
   render() {
     const { meta, geomType, sid, element, season, result, ready } = this.props;
-    const width = 500, height = 350, margin = {top: 10, right: 15, bottom: 30, left: 50};
+    const width = 500, height = 400, margin = {top: 10, right: 15, bottom: 30, left: 50};
 
     const { label:titleElem, yLabel, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,
@@ -306,7 +306,7 @@ export default class AreaChart extends React.Component {
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
       </div>
-      <Info className={styles.chartTable} year={year} data={data} />
+      <Info year={year} data={data.has(year) ? data.get(year) : {}} />
       </div>
   }
 };
@@ -320,32 +320,46 @@ class Info extends React.Component {
 
   render () {
     const {year,data} = this.props;
-    // if (!data.has(year)) return <div className={styles.chartTable}></div>
-    const d = data.has(year) ? data.get(year) : {};
-    let proj, sproj, raw, sraw;
-    if (typeof d.model != "undefined") {
-      proj = <div><span>{''+year}: </span>,<span> {d.model[0]} {d.model[1]} {d.model[2]}  </span></div>
-    } else {
-      proj = <div><span>a</span>,<span>b</span></div>
+    let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
+    let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
+
+    if (typeof data.obs != "undefined") {
+      obsYr = ""+year;
+      obs = ""+data.obs;
     }
-    if (typeof d.model_avg != "undefined") {
-      sproj = <div><span>Mean {year-4}-{year}: </span>,<span> {d.model_avg[0]} {d.model_avg[1]} {d.model_avg[2]}  </span></div>
-    } else {
-      sproj = <div><span>a</span>,<span>b</span></div>
+    if (typeof data.obs_avg != "undefined") {
+      obsYrRng = ""+(year-4)+"–"+year;
+      obs_avg = ""+data.obs_avg;
     }
+    if (typeof data.model_avg != "undefined") {
+      modelYrRng = ""+(year-4)+"–"+year;
+      model_min = ""+data.model_avg[0];
+      model_med = ""+data.model_avg[1];
+      model_max = ""+data.model_avg[2];
+    }
+
     return <div className={styles.chartTable} >
+      <div>
       <table>
+      <thead>
+      <tr><th colSpan="2">Observed</th></tr>
+      </thead>
       <tbody>
-      <tr><td>observed</td><td>1.0</td></tr>
-      <tr><td>1980</td><td>1.0</td></tr>
-      <tr><td>1976-1980</td><td>1.0</td></tr>
-      <tr><td>Modeled</td><td></td></tr>
-      <tr><td>1976-1980</td><td></td></tr>
-      <tr><td>Max</td><td>1.0</td></tr>
-      <tr><td>Median</td><td>1.0</td></tr>
-      <tr><td>Min</td><td>1.0</td></tr>
+      <tr><td>{obsYr}</td><td>{obs}</td></tr>
+      <tr><td>{obsYrRng}</td><td>{obs_avg}</td></tr>
+      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+      </tbody>
+      <thead>
+      <tr><th colSpan="2">Modeled</th></tr>
+      <tr><th colSpan="2">{modelYrRng}</th></tr>
+      </thead>
+      <tbody>
+      <tr><td>Max</td><td>{model_max}</td></tr>
+      <tr><td>Median</td><td>{model_med}</td></tr>
+      <tr><td>Min</td><td>{model_min}</td></tr>
       </tbody>
       </table>
+      </div>
       </div>
   }
 }
