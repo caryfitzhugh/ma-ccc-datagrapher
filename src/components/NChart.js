@@ -22,11 +22,115 @@ export default class AreaChart extends React.Component {
     super(props);
     this.state = {year: 0};
     this.data = new Map();
+    this.result = null;
+  }
+
+  summarizeData(sid,result) {
+    /*
+      data consists of map[yr] {
+      model:       [low, median, high]
+      model_avg:   [low, median, high]
+      obs:                 value
+      obs_avg:             value
+    }
+      plus entries for plotting (yr, v1, v2, v3...):
+        model_current_avg
+        model_future_avg
+        medians (for future-current delta)
+        obs
+        obs_avg
+        xrange
+        yrange
+    */
+    const data = new Map();
+    const xRange=[9999,0], yRange=[10000,-10000];
+    this.data = data;
+    this.result = result;
+
+    // calculate model data
+    if (result.proj) {
+      let cnt = 0, sum = [0.,0.,0.], median_sum = 0., future = false, oVal;
+      const model_current_avg = [], model_future_avg = [], medians = [0,0];
+
+      result.proj.forEach((d) => {
+        const yr = +d[0].slice(0,4),
+          v = d[1][sid].map(x => +x.toFixed(2)),
+          datum = {};
+
+        // get data range
+        if (yr < xRange[0]) xRange[0] = yr;
+        if (yr > xRange[1]) xRange[1] = yr;
+        if (v[0] < yRange[0]) yRange[0] = v[0];
+        if (v[2] > yRange[1]) yRange[1] = v[2];
+
+        if (yr > 2020 && !future) { // reset the counters for future
+          medians[0] = median_sum / cnt;
+          cnt = 0; sum = [0.,0.,0.]; median_sum = 0.; future = true;
+        }
+        median_sum += v[1]; cnt++;
+        datum.model = v;
+        oVal = cnt > 5 ? data.get(yr-5).model : [0,0,0];
+        v.forEach((x,i) => {sum[i] += x - oVal[i];});
+
+        if (cnt >= 5) {
+          const s = v.map((x,i) => +(sum[i]/5.).toFixed(2));
+          if (future) model_future_avg.push([yr, ...s])
+          else model_current_avg.push([yr, ...s]);
+          datum.model_avg = s;
+        }
+        data.set(yr,datum);
+      })
+      medians[1] = median_sum/cnt;
+      data.set("model_current_avg",model_current_avg);
+      data.set("model_future_avg",model_future_avg);
+      data.set("medians",medians);
+    }
+
+    // calculate prism obs data
+    if (result.data) {
+      let cnt = 0, sum = 0., oVal;
+      const obs = [], obs_avg = [];
+
+      result.data.forEach((d) => {
+        const yr = +d[0].slice(0,4),
+          datum = {};
+
+        let v = d[1][sid];
+        if (typeof v != 'undefined' && v == v) {
+          v = +v.toFixed(2);
+
+          // adjust data range
+          if (yr < xRange[0]) xRange[0] = yr;
+          if (yr > xRange[1]) xRange[1] = yr;
+          if (v < yRange[0]) yRange[0] = v;
+          if (v > yRange[1]) yRange[1] = v;
+
+          cnt++;
+          oVal = cnt > 5 ? data.get(yr-5).obs : 0.;
+          sum += v - oVal;
+          obs.push([yr,v]);
+          datum.obs = v;
+          if (cnt >= 5) {
+            const s = +(sum/5).toFixed(2);
+            obs_avg.push([yr,s]);
+            datum.obs_avg = s;
+          }
+          if (data.has(yr)) data.set(yr,{...data.get(yr), ...datum})
+          else data.set(yr,datum);
+        }
+      })
+      data.set("obs",obs);
+      data.set("obs_avg",obs_avg);
+    }
+    if (xRange[0]!=9999) {
+      data.set("xrange",xRange);
+      data.set("yrange",yRange);
+    }
   }
 
   render() {
     const { meta, geomType, sid, element, season, result, ready } = this.props;
-    const width = 600, height = 400, margin = {top: 10, right: 15, bottom: 30, left: 50};
+    const width = 500, height = 350, margin = {top: 10, right: 15, bottom: 30, left: 50};
 
     const { label:titleElem, yLabel, ttUnits } = elems.get(element),
           titleSeason = seasons.get(season).title,
@@ -40,67 +144,13 @@ export default class AreaChart extends React.Component {
                   </text>
                 </svg>;
 
-    const data = new Map(), year = this.state.year;
-    this.data = data;
-    const xRange=[9999,0], yRange=[10000,-10000];
-    const dPrism = [], sdPrism = [], dHist = [], dProj = [], medians = [0,0];
-    if (ready && result.proj) {
-      let cnt = 0, sum = [0.,0.,0.], tsum = 0., proj = false, oVal;
-      result.proj.forEach((d) => {
-        const yr = +d[0].slice(0,4), v = d[1][sid].map(x => +x.toFixed(2)), datum = {};
-        if (yr < xRange[0]) xRange[0] = yr;
-        if (yr > xRange[1]) xRange[1] = yr;
-        if (v[0] < yRange[0]) yRange[0] = v[0];
-        if (v[2] > yRange[1]) yRange[1] = v[2];
+    if (!ready || this.result != result) this.summarizeData(sid, result);
 
-        if (yr > 2020 && !proj) { // reset the counters
-          medians[0] = tsum / cnt;
-          cnt = 0; sum = [0.,0.,0.]; tsum = 0.; proj = true;
-        }
-        tsum += v[1]; cnt++;
-        datum.proj = v;
-        oVal = cnt > 5 ? data.get(yr-5).proj : [0,0,0];
-        v.forEach((x,i) => {sum[i] += x - oVal[i];});
-        if (cnt >= 5) {
-          const s = v.map((x,i) => +(sum[i]/5.).toFixed(2));
-          if (proj) dProj.push([yr, ...s])
-          else dHist.push([yr, ...s]);
-          datum.sproj = s;
-        }
-        data.set(yr,datum);
-      })
-      medians[1] = tsum/cnt;
-    }
+    const data = this.data, year = this.state.year;
 
-    if (ready && result.data) {
-      let cnt = 0, sum = 0., oVal;
-      result.data.forEach((d) => {
-        const yr = +d[0].slice(0,4), datum = {};
-        let v = d[1][sid];
-        if (typeof v != 'undefined' && v == v) {
-          v = +v.toFixed(2);
-          if (yr < xRange[0]) xRange[0] = yr;
-          if (yr > xRange[1]) xRange[1] = yr;
-          if (v < yRange[0]) yRange[0] = v;
-          if (v > yRange[1]) yRange[1] = v;
+    if (data.has("xrange")) {
+      const xRange = data.get("xrange"), yRange = data.get("yrange");
 
-          cnt++;
-          datum.data = v;
-          oVal = cnt > 5 ? data.get(yr-5).data : 0.;
-          sum += v - oVal;
-          dPrism.push([yr,v]);
-          if (cnt >= 5) {
-            const s = +(sum/5).toFixed(2);
-            sdPrism.push([yr,s]);
-            datum.sdata = s;
-          }
-          if (data.has(yr)) data.set(yr,{...data.get(yr), ...datum})
-          else data.set(yr,datum);
-        }
-      })
-    }
-
-    if (dPrism.length > 5 || dHist.length > 5){
       const x = d3.scale.linear()
         .range([0, width - margin.left - margin.right])
         .domain([xRange[0]-2,xRange[1]]);
@@ -168,25 +218,26 @@ export default class AreaChart extends React.Component {
           .attr("d",line)
       }
 
-      if (dHist.length > 5) {
+      if (data.has("model_current_avg")) {
         svg.append("path")
-          .datum(dHist)
+          .datum(data.get("model_current_avg"))
           .attr("class", styles.areaLo)
           .attr("d", areaLo)
         svg.append("path")
-          .datum(dHist)
+          .datum(data.get("model_current_avg"))
           .attr("class", styles.areaHi)
           .attr("d", areaHi)
 
         svg.append("path")
-          .datum(dProj)
+          .datum(data.get("model_future_avg"))
           .attr("class", styles.areaLo)
           .attr("d", areaLo)
         svg.append("path")
-          .datum(dProj)
+          .datum(data.get("model_future_avg"))
           .attr("class", styles.areaHi)
           .attr("d", areaHi)
 
+        const medians = data.get("medians");
         svg.append("path")
           .datum([
             [2023,medians[0]],
@@ -206,14 +257,14 @@ export default class AreaChart extends React.Component {
           .text((medians[1]-medians[0]).toFixed(1)+ttUnits)
       }
 
-      if (dPrism.length > 5) {
+      if (data.has("obs")) {
         svg.append("path")
-          .datum(sdPrism)
+          .datum(data.get("obs_avg"))
           .attr("class", styles.prismLine)
           .attr("d", line)
 
         const dots = svg.append('g');
-        dPrism.forEach((d)=>{
+        data.get("obs").forEach((d)=>{
           dots.append('circle')
             .attr('class', d[0]!= year ? styles.prismDots : styles.prismDotsOver)
             .attr('r',2)
@@ -228,7 +279,11 @@ export default class AreaChart extends React.Component {
         })
         .on("mousemove", (d,i)=>{
           const e = d3.event;
-          const year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          let year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          if (this.data.has(year)) {
+            const d = this.data.get(year);
+            if (typeof d.obs == "undefined" && typeof d.model_avg == "undefined") year = 0;
+          } else year = 0;
           this.setState({year});
         })
 
@@ -268,28 +323,27 @@ class Info extends React.Component {
     // if (!data.has(year)) return <div className={styles.chartTable}></div>
     const d = data.has(year) ? data.get(year) : {};
     let proj, sproj, raw, sraw;
-    if (typeof d.proj != "undefined") {
-      proj = <div><span>{''+year}: </span>,<span> {d.proj[0]} {d.proj[1]} {d.proj[2]}  </span></div>
+    if (typeof d.model != "undefined") {
+      proj = <div><span>{''+year}: </span>,<span> {d.model[0]} {d.model[1]} {d.model[2]}  </span></div>
     } else {
       proj = <div><span>a</span>,<span>b</span></div>
     }
-    if (typeof d.sproj != "undefined") {
-      sproj = <div><span>Mean {year-4}-{year}: </span>,<span> {d.sproj[0]} {d.sproj[1]} {d.sproj[2]}  </span></div>
+    if (typeof d.model_avg != "undefined") {
+      sproj = <div><span>Mean {year-4}-{year}: </span>,<span> {d.model_avg[0]} {d.model_avg[1]} {d.model_avg[2]}  </span></div>
     } else {
       sproj = <div><span>a</span>,<span>b</span></div>
     }
     return <div className={styles.chartTable} >
       <table>
-      <thead>
-        <tr><td></td><td>year</td><td>mean</td></tr>
-        <tr><td></td><td>1980</td><td>1976-1980</td></tr>
-      </thead>
       <tbody>
-      <tr><td>observed</td><td>1.0</td><td>2.0</td></tr>
-      <tr><td>Modeled</td><td></td><td></td></tr>
-      <tr><td>Max</td><td>1.0</td><td>2.0</td></tr>
-      <tr><td>Median</td><td>1.0</td><td>2.0</td></tr>
-      <tr><td>Min</td><td>1.0</td><td>2.0</td></tr>
+      <tr><td>observed</td><td>1.0</td></tr>
+      <tr><td>1980</td><td>1.0</td></tr>
+      <tr><td>1976-1980</td><td>1.0</td></tr>
+      <tr><td>Modeled</td><td></td></tr>
+      <tr><td>1976-1980</td><td></td></tr>
+      <tr><td>Max</td><td>1.0</td></tr>
+      <tr><td>Median</td><td>1.0</td></tr>
+      <tr><td>Min</td><td>1.0</td></tr>
       </tbody>
       </table>
       </div>
