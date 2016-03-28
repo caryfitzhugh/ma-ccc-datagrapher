@@ -5,7 +5,7 @@ import * as panelActions from '../actions/panelActions';
 import SideBar from './SideBar';
 import Parameters from './Parameters';
 import MiniMap from './MiniMap';
-import Chart from './SChart';
+import StationChart from './SChart';
 import AreaChart from './NChart';
 import styles from './App.css';
 
@@ -40,7 +40,7 @@ class StnPanel extends Component {
 
     let plot;
     if (geom == 'stn')
-      plot = <Chart
+      plot = <StationChart
               className={styles.chartOutput}
               geomType={geom}
               result={this.props.result}
