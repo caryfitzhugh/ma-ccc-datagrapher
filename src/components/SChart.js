@@ -243,16 +243,30 @@ class Info extends React.Component {
       obsYrRng = ""+(year-4)+"–"+year;
       obs_avg = ""+data.obs_avg;
     }
+    const col1=styles.col1, col2=styles.col2, col3=styles.col3,
+      l_avg = <svg width="20" height="20"><path className={styles.prismLine} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
+      l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>;
 
     return <div className={styles.chartTable} >
       <div>
       <table>
       <thead>
-      <tr><th colSpan="2">Observed</th></tr>
+      <tr><th colSpan="3">Observed</th></tr>
       </thead>
       <tbody>
-      <tr><td>{obsYr}</td><td>{obs}</td></tr>
-      <tr><td>{obsYrRng}</td><td>{obs_avg}</td></tr>
+      <tr>
+        <td className={col1}>{obsYr}</td>
+        <td className={col2}>{obs}</td>
+        <td className={col3}>{l_obs}</td>
+      </tr>
+      <tr>
+        <td className={col1}>5-yr Mean</td>
+        <td className={col2} rowSpan="2">{obs_avg}</td>
+        <td className={col3} rowSpan="2">{l_avg}</td>
+      </tr>
+      <tr>
+        <td className={col1}>{obsYrRng}</td>
+      </tr>
       </tbody>
       </table>
       </div>

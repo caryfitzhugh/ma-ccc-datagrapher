@@ -98,12 +98,12 @@
 }
 
 .chartTable {
-	max-width: 150px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
 .chartTable table {
+	min-width: 175px;
 	border-radius: 4px;
 	border: 1px solid grey;
 	/*font-size: 1.0em;*/
@@ -113,17 +113,22 @@
 	font-size: 1.0em;
 	line-height: 0.9em;
 }
-.chartTable td:first-child {
+.col1 {
 	font-size: 0.9em;
 	text-align: left;
 	line-height: 1.3em;
 	min-width: 5em;
 }
-
-.chartTable td:last-child {
-	text-align: right;
+.col2 {
+	font-size: 0.9em;
+	text-align: center;
 	line-height: 1.3em;
 	min-width: 3em;
+}
+.col3 {
+	text-align: right;
+	line-height: 1.3em;
+	min-width:20px;
 }
 
 .paramForm {

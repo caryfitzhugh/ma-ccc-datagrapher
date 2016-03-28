@@ -351,13 +351,14 @@ class Info extends React.Component {
       model_max = ""+data.model_avg[2];
     }
 
-    const
+    const col1=styles.col1, col2=styles.col2, col3=styles.col3,
       l_lo= <svg width="20" height="20"><path className={styles.lineLo} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_md = <svg width="20" height="20"><path className={styles.lineMd} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_hi = <svg width="20" height="20"><path className={styles.lineHi} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_avg = <svg width="20" height="20"><path className={styles.prismLine} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>,
       l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
+
     return <div className={styles.chartTable} >
       <div>
       <table>
@@ -365,20 +366,48 @@ class Info extends React.Component {
       <tr><th colSpan="3">Observed</th></tr>
       </thead>
       <tbody>
-      <tr><td>{obsYr}</td><td>{obs}</td><td>{l_obs}</td></tr>
-      <tr><td>5-yr Mean</td><td rowSpan="2">{obs_avg}</td><td rowSpan="2">{l_avg}</td></tr>
-      <tr><td>{obsYrRng}</td></tr>
-      <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+      <tr>
+        <td className={col1}>{obsYr}</td>
+        <td className={col2}>{obs}</td>
+        <td className={col3}>{l_obs}</td>
+      </tr>
+      <tr>
+        <td className={col1}>5-yr Mean</td>
+        <td className={col2} rowSpan="2">{obs_avg}</td>
+        <td className={col3} rowSpan="2">{l_avg}</td>
+      </tr>
+      <tr>
+        <td className={col1}>{obsYrRng}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td><td>&nbsp;</td>
+      </tr>
       </tbody>
       <thead>
       <tr><th colSpan="3">Modeled</th></tr>
       <tr><th colSpan="3">{modelYrRng}</th></tr>
       </thead>
       <tbody>
-      <tr><td>Max</td><td>{model_max}</td><td>{l_hi}</td></tr>
-      <tr><td>Median</td><td>{model_med}</td><td>{l_md}</td></tr>
-      <tr><td>Min</td><td>{model_min}</td><td>{l_lo}</td></tr>
-      <tr><td>Change 1968-2000 to 2039-2069</td><td>{delta}</td><td>{l_delta}</td></tr>
+      <tr>
+        <td className={col1}>Max</td>
+        <td className={col2}>{model_max}</td>
+        <td className={col3}>{l_hi}</td>
+      </tr>
+      <tr>
+        <td className={col1}>Median</td>
+        <td className={col2}>{model_med}</td>
+        <td className={col3}>{l_md}</td>
+      </tr>
+      <tr>
+        <td className={col1}>Min</td>
+        <td className={col2}>{model_min}</td>
+        <td className={col3}>{l_lo}</td>
+      </tr>
+      <tr>
+        <td className={col1}>Change 1968-2000 to 2039-2069</td>
+        <td className={col2}>{delta}</td>
+        <td className={col3}>{l_delta}</td>
+      </tr>
       </tbody>
       </table>
       </div>
