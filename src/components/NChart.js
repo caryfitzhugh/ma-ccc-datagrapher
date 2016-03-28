@@ -146,6 +146,7 @@ export default class AreaChart extends React.Component {
                 </svg>;
 
     if (!ready || this.result != result) this.summarizeData(sid, result);
+    let delta = "";
 
     const data = this.data;
 
@@ -176,6 +177,15 @@ export default class AreaChart extends React.Component {
         .x (d => x(d[0]))
         .y0(d => y(d[2]))
         .y1(d => y(d[3]))
+      const lineLo = d3.svg.line()
+        .x(d => x(d[0]))
+        .y(d => y(d[1]))
+      const lineMd = d3.svg.line()
+        .x(d => x(d[0]))
+        .y(d => y(d[2]))
+      const lineHi = d3.svg.line()
+        .x(d => x(d[0]))
+        .y(d => y(d[3]))
       const line = d3.svg.line()
         .x(d => x(d[0]))
         .y(d => y(d[1]))
@@ -220,25 +230,26 @@ export default class AreaChart extends React.Component {
       }
 
       if (data.has("model_current_avg")) {
-        svg.append("path")
-          .datum(data.get("model_current_avg"))
-          .attr("class", styles.areaLo)
-          .attr("d", areaLo)
-        svg.append("path")
-          .datum(data.get("model_current_avg"))
-          .attr("class", styles.areaHi)
-          .attr("d", areaHi)
 
-        svg.append("path")
-          .datum(data.get("model_future_avg"))
-          .attr("class", styles.areaLo)
-          .attr("d", areaLo)
-        svg.append("path")
-          .datum(data.get("model_future_avg"))
-          .attr("class", styles.areaHi)
-          .attr("d", areaHi)
+        const dc = data.get("model_current_avg");
+        svg.append("path").datum(dc).attr("class", styles.areaLo).attr("d", areaLo)
+        svg.append("path").datum(dc).attr("class", styles.areaHi).attr("d", areaHi)
+
+        svg.append("path").datum(dc).attr("class", styles.lineLo).attr("d",lineLo)
+        svg.append("path").datum(dc).attr("class", styles.lineMd).attr("d",lineMd)
+        svg.append("path").datum(dc).attr("class", styles.lineHi).attr("d",lineHi)
+
+        const df = data.get("model_future_avg");
+        svg.append("path").datum(df).attr("class", styles.areaLo).attr("d", areaLo)
+        svg.append("path").datum(df).attr("class", styles.areaHi).attr("d", areaHi)
+        
+        svg.append("path").datum(df).attr("class", styles.lineLo).attr("d",lineLo)
+        svg.append("path").datum(df).attr("class", styles.lineMd).attr("d",lineMd)
+        svg.append("path").datum(df).attr("class", styles.lineHi).attr("d",lineHi)
 
         const medians = data.get("medians");
+        // for infotable
+        delta = ""+(medians[1]-medians[0]).toFixed(1)
         svg.append("path")
           .datum([
             [2023,medians[0]],
@@ -255,7 +266,7 @@ export default class AreaChart extends React.Component {
           .attr("y",y((medians[0]+medians[1])/2))
           .attr("dy","0.3em")
           .style("text-anchor","start")
-          .text((medians[1]-medians[0]).toFixed(1)+ttUnits)
+          .text(delta+ttUnits)
       }
 
       if (data.has("obs")) {
@@ -307,7 +318,7 @@ export default class AreaChart extends React.Component {
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
       </div>
-      <Info year={year} data={data.has(year) ? data.get(year) : {}} />
+      <Info year={year} data={data.has(year) ? data.get(year) : {}} delta={delta} />
       </div>
   }
 };
@@ -316,11 +327,12 @@ class Info extends React.Component {
 
   static propTypes = {
     year: PropTypes.number.isRequired,
+    delta: PropTypes.string.isRequired,
     // data: PropTypes.object.isRequired,
   };
 
   render () {
-    const {year,data} = this.props;
+    const {year,delta,data} = this.props;
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
     let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
 
@@ -339,25 +351,34 @@ class Info extends React.Component {
       model_max = ""+data.model_avg[2];
     }
 
+    const
+      l_lo= <svg width="20" height="20"><path className={styles.lineLo} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
+      l_md = <svg width="20" height="20"><path className={styles.lineMd} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
+      l_hi = <svg width="20" height="20"><path className={styles.lineHi} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
+      l_avg = <svg width="20" height="20"><path className={styles.prismLine} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
+      l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>,
+      l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
     return <div className={styles.chartTable} >
       <div>
       <table>
       <thead>
-      <tr><th colSpan="2">Observed</th></tr>
+      <tr><th colSpan="3">Observed</th></tr>
       </thead>
       <tbody>
-      <tr><td>{obsYr}</td><td>{obs}</td></tr>
-      <tr><td>{obsYrRng}</td><td>{obs_avg}</td></tr>
+      <tr><td>{obsYr}</td><td>{obs}</td><td>{l_obs}</td></tr>
+      <tr><td>5-yr Mean</td><td rowSpan="2">{obs_avg}</td><td rowSpan="2">{l_avg}</td></tr>
+      <tr><td>{obsYrRng}</td></tr>
       <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
       </tbody>
       <thead>
-      <tr><th colSpan="2">Modeled</th></tr>
-      <tr><th colSpan="2">{modelYrRng}</th></tr>
+      <tr><th colSpan="3">Modeled</th></tr>
+      <tr><th colSpan="3">{modelYrRng}</th></tr>
       </thead>
       <tbody>
-      <tr><td>Max</td><td>{model_max}</td></tr>
-      <tr><td>Median</td><td>{model_med}</td></tr>
-      <tr><td>Min</td><td>{model_min}</td></tr>
+      <tr><td>Max</td><td>{model_max}</td><td>{l_hi}</td></tr>
+      <tr><td>Median</td><td>{model_med}</td><td>{l_md}</td></tr>
+      <tr><td>Min</td><td>{model_min}</td><td>{l_lo}</td></tr>
+      <tr><td>Change 1968-2000 to 2039-2069</td><td>{delta}</td><td>{l_delta}</td></tr>
       </tbody>
       </table>
       </div>

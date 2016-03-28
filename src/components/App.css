@@ -59,6 +59,7 @@
 .chart {
 	display: flex;
 	flex: 1;
+	flex-wrap: nowrap;
 }
 
 .chartInput {
@@ -97,6 +98,7 @@
 }
 
 .chartTable {
+	max-width: 150px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -104,12 +106,15 @@
 .chartTable table {
 	border-radius: 4px;
 	border: 1px solid grey;
+	/*font-size: 1.0em;*/
 }
 .chartTable th {
 	text-align: center;
+	font-size: 1.0em;
 	line-height: 0.9em;
 }
 .chartTable td:first-child {
+	font-size: 0.9em;
 	text-align: left;
 	line-height: 1.3em;
 	min-width: 5em;
@@ -162,6 +167,24 @@
 	stroke: none;
 	fill: blue;
 	fill-opacity: 0.3;
+}
+.lineHi{
+	fill: none;
+	stroke: red;
+	stroke-opacity: 0.8;
+	stroke-width: 2px;
+}
+.lineMd{
+	fill: none;
+	stroke: grey;
+	stroke-opacity: 1.0;
+	stroke-width: 2px;
+}
+.lineLo{
+	fill: none;
+	stroke: blue;
+	stroke-opacity: 0.8;
+	stroke-width: 2px;
 }
 .prismLine {
 	fill: none;
