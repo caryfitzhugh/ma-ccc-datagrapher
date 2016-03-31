@@ -3,6 +3,7 @@ import d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 
 import {seasons,elems} from '../api';
+import DownloadForm from './DownloadForm'
 import styles from './App.css';
 
 
@@ -15,6 +16,7 @@ export default class StationChart extends React.Component {
     element: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
     result: PropTypes.object.isRequired,
+    showInfo: PropTypes.func.isRequired,
     year: PropTypes.number.isRequired,
     setYear: PropTypes.func.isRequired,
     ready: PropTypes.bool.isRequired
@@ -76,9 +78,19 @@ export default class StationChart extends React.Component {
       data.set("obs",obs);
     }
 
-    if (xRange[0]!=9999) {
+    if (yRange[0]!=10000) {
       data.set("xrange",xRange);
       data.set("yrange",yRange);
+      const rows = [];
+      for (let yr=xRange[0]; yr<=xRange[1]; yr++) {
+        if (data.has(yr)) {
+          const datum = data.get(yr);
+          if (typeof datum.obs != "undefined") {
+            rows.push(""+yr+","+datum.obs);
+          }
+        }
+      }
+      if (rows.length > 0) data.set("rows",rows);
     }
   }
 
@@ -98,7 +110,7 @@ export default class StationChart extends React.Component {
                   </text>
                 </svg>;
 
-    if (!ready || this.result != result) this.summarizeData(result);
+    if ( ready && this.result != result) this.summarizeData(result);
 
     const data = this.data;
 
@@ -213,14 +225,28 @@ export default class StationChart extends React.Component {
       </svg>;
     }
 
+    let dload = ""
+    if (data.has("rows")) {
+      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs"]} rows={data.get("rows")} />
+    }
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
+      {dload}
       </div>
-      <Info year={year} data={data.has(year) ? data.get(year) : {}} />
+      <Info year={year} data={data.has(year) ? data.get(year) : {}}
+        download={::this.doDownload}
+        showInfo={this.props.showInfo}/>
       </div>
+  }
+
+  doDownload(e) {
+    const f = this.download;
+    if (typeof f != "undefined") {
+      f._form.submit();
+    }
   }
 };
 
@@ -232,7 +258,7 @@ class Info extends React.Component {
   };
 
   render () {
-    const {year,data} = this.props;
+    const {year,data,download} = this.props;
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
 
     if (typeof data.obs != "undefined") {
@@ -248,7 +274,7 @@ class Info extends React.Component {
       l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>;
 
     return <div className={styles.chartTable} >
-      <div>
+      <button onClick={download}>Download</button>
       <table>
       <thead>
       <tr><th colSpan="3">Observed</th></tr>
@@ -269,7 +295,8 @@ class Info extends React.Component {
       </tr>
       </tbody>
       </table>
-      </div>
-      </div>
+      <button onClick={this.props.showInfo}>Explain Data Source</button>
+      <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
+    </div>
   }
 }

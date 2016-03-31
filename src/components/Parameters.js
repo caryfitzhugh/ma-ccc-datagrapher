@@ -71,7 +71,7 @@ export default class StnParameters extends React.Component {
         </fieldset>
 
         <fieldset style={{border:"none"}} >
-          <label style={{display:"block", margin:"5px 0px"}} >Element: </label>
+          <label style={{display:"block", margin:"5px 0px"}} >Calculated Variable: </label>
           <select
             value={this.props.element}
             onChange={this.handleElement}

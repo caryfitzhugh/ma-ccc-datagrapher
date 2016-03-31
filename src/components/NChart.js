@@ -3,6 +3,7 @@ import d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 
 import {seasons,elems} from '../api';
+import DownloadForm from './DownloadForm'
 import styles from './App.css';
 
 
@@ -15,6 +16,7 @@ export default class AreaChart extends React.Component {
     element: PropTypes.string.isRequired,
     season: PropTypes.string.isRequired,
     result: PropTypes.object.isRequired,
+    showInfo: PropTypes.func.isRequired,
     year: PropTypes.number.isRequired,
     setYear: PropTypes.func.isRequired,
     ready: PropTypes.bool.isRequired
@@ -54,10 +56,11 @@ export default class AreaChart extends React.Component {
       const model_current_avg = [], model_future_avg = [], medians = [0,0];
 
       result.proj.forEach((d) => {
-        const yr = +d[0].slice(0,4),
-          v = d[1][sid].map(x => +x.toFixed(2)),
-          datum = {};
+        const yr = +d[0].slice(0,4), datum = {};
+        let v = d[1][sid];
 
+        if (typeof v == 'undefined') return;
+        v = v.map(x => +x.toFixed(2))
         // get data range
         if (yr < xRange[0]) xRange[0] = yr;
         if (yr > xRange[1]) xRange[1] = yr;
@@ -123,9 +126,24 @@ export default class AreaChart extends React.Component {
       data.set("obs",obs);
       data.set("obs_avg",obs_avg);
     }
-    if (xRange[0]!=9999) {
+    if (yRange[0]!=10000) {
       data.set("xrange",xRange);
       data.set("yrange",yRange);
+      const rows = [];
+      for (let yr=xRange[0]; yr<=xRange[1]; yr++) {
+        if (data.has(yr)) {
+          const datum = data.get(yr);
+          let s = ""+yr+","
+          if (typeof datum.obs != "undefined") s = s+datum.obs;
+          if (typeof datum.model != "undefined") {
+            s = s+","+datum.model[0]+","+datum.model[1]+","+datum.model[2];
+          } else {
+            s = s+",,,"
+          }
+          if (s.length > 8) rows.push(s)
+        }
+      }
+      if (rows.length > 0) data.set("rows",rows);
     }
   }
 
@@ -312,14 +330,31 @@ export default class AreaChart extends React.Component {
       </svg>;
     }
 
+    let dload = ""
+    if (data.has("rows")) {
+      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows")} />
+    }
+
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
+      {dload}
       </div>
-      <Info year={year} data={data.has(year) ? data.get(year) : {}} delta={delta} />
+      <Info year={year} data={data.has(year) ? data.get(year) : {}}
+        delta={delta}
+        download={::this.doDownload}
+        showInfo={this.props.showInfo}/>
+      <DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows")} />
       </div>
+  }
+
+  doDownload(e) {
+    const f = this.download;
+    if (typeof f != "undefined") {
+      f._form.submit();
+    }
   }
 };
 
@@ -332,7 +367,7 @@ class Info extends React.Component {
   };
 
   render () {
-    const {year,delta,data} = this.props;
+    const {year,delta,data,download} = this.props;
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
     let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
 
@@ -360,7 +395,7 @@ class Info extends React.Component {
       l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
 
     return <div className={styles.chartTable} >
-      <div>
+      <button onClick={download}>Download Data</button>
       <table>
       <thead>
       <tr><th colSpan="3">Observed</th></tr>
@@ -410,7 +445,8 @@ class Info extends React.Component {
       </tr>
       </tbody>
       </table>
-      </div>
+      <button onClick={this.props.showInfo}>Explain Data Source</button>
+      <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
       </div>
   }
 }

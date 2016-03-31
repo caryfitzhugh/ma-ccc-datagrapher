@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 
 import * as panelActions from '../actions/panelActions';
-import SideBar from './SideBar';
 import Parameters from './Parameters';
 import MiniMap from './MiniMap';
 import StationChart from './SChart';
@@ -49,6 +48,7 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              showInfo={this.props.showInfo}
               year={this.props.year}
               setYear={this.props.setYear}
             />
@@ -62,19 +62,13 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              showInfo={this.props.showInfo}
               year={this.props.year}
               setYear={this.props.setYear}
             />
 
     return (
       <div className={styles.panel} >
-        <SideBar
-          current={chart}
-          updatePanel={::this.updateParams}
-          showInfo={this.props.showInfo}
-          insertPanel={this.props.insertPanel}
-          deletePanel={this.props.deletePanel}
-        />
         <div className={styles.chart}>
           <div className={styles.chartInput}>
             <Parameters
@@ -96,6 +90,10 @@ class StnPanel extends Component {
               sid={sid}
               update={::this.updateMap}
             />
+            <div className={styles.addDelPanels}>
+              <button onClick={this.props.insertPanel} >Add Chart</button>
+              {this.props.canDelete ? <button onClick={this.props.deletePanel} >Remove this Chart</button> : null}
+            </div>
           </div>
           {plot}
         </div>
@@ -110,7 +108,9 @@ function mapStateToProps(state) {
 }
 
 function mergeProps(stateProps, dispatchProps, parentProps) {
-  const idx = parentProps.index, panel = parentProps.panel,
+  const idx = parentProps.index, 
+    panel = parentProps.panel,
+    canDelete = parentProps.canDelete,
     year = parentProps.year,
     geom = stateProps.geoms[panel.param.geom] ? stateProps.geoms[panel.param.geom] : {};
 
@@ -118,6 +118,7 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
     ...panel,
     geom,
     year,
+    canDelete,
     showInfo: () => dispatchProps.showInfo(),
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),

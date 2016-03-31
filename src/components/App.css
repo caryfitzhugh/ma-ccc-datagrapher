@@ -1,6 +1,7 @@
 .panel {
 	display: flex;
 	flex-flow: row wrap;
+	margin-left: 10px;
 	margin-bottom: 5px;
 	border-bottom: 2px solid #5690ca;
 }
@@ -70,6 +71,37 @@
 	z-index: 0;
 }
 
+.paramForm {
+	height: 200px;
+	background-color: green;
+}
+
+.miniMapTitle {
+	min-height: 20px;
+	margin-left: 10px;
+}
+.miniMap {
+	height: 250px;
+	width: 300px;
+	margin-bottom: 20px;
+}
+.addDelPanels {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.addDelPanels button {
+	margin-bottom: 10px;
+	font: inherit;
+	color: white;
+	background-color: #f6892e;
+	border-color: #f57b16;
+	border: 1px;
+	border-radius: 4px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
 .chartOutput {
 	display: flex;
 	width: 100%;
@@ -86,24 +118,37 @@
 	font-size: 1.2em;
 	font-weight: bold;
 	text-align: center;
-	margin-left: 50px;
+	margin-left: 20px;
 	margin-top: 10px;
 }
 .chartHeader2 {
 	width: 100%;
 	font-weight: bold;
 	text-align: center;
-	margin-left: 50px;
+	margin-left: 20px;
 	margin-top: 5px;
 }
 
 .chartTable {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: space-between;
+	align-items: center;
+}
+.chartTable button {
+	margin: 15px 0px;
+	width: 150px;
+	font: inherit;
+	color: white;
+	background-color: #f6892e;
+	border-color: #f57b16;
+	border: 1px;
+	border-radius: 4px;
+	padding: 6px 12px;
+	cursor: pointer;
 }
 .chartTable table {
-	min-width: 175px;
+	width: 175px;
 	border-radius: 4px;
 	border: 1px solid grey;
 	/*font-size: 1.0em;*/
@@ -129,17 +174,6 @@
 	text-align: right;
 	line-height: 1.3em;
 	min-width:20px;
-}
-
-.paramForm {
-	height: 200px;
-	background-color: green;
-}
-
-.miniMap {
-	height: 250px;
-	width: 300px;
-	margin-bottom: 20px;
 }
 
 .axis {
