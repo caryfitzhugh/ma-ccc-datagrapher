@@ -215,6 +215,14 @@ export default class AreaChart extends React.Component {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top +")")
 
+      svg.append("rect")
+        // .style("visibility","hidden")
+        .style("opacity","0")
+        .attr("x",0)
+        .attr("y",0)
+        .attr("width", width-margin.left-margin.right)
+        .attr("height", height-margin.top-margin.bottom);
+
       svg.append("g")
         .attr("class", styles.axis)
         .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
