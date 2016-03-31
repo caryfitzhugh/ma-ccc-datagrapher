@@ -215,8 +215,8 @@ export default class AreaChart extends React.Component {
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top +")")
 
+      // add rect for mouse capture on webkit
       svg.append("rect")
-        // .style("visibility","hidden")
         .style("opacity","0")
         .attr("x",0)
         .attr("y",0)
