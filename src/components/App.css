@@ -65,6 +65,7 @@
 
 .chartInput {
 	display: flex;
+	flex:1 0 auto;
 	flex-direction: column;
 	justify-content: space-between;
 	padding: 0 10;
