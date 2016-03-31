@@ -14,7 +14,8 @@ import { BasePath } from 'context';
   return { geoms: state.geoms,
     panels: state.panels.panels,
     locationValid: state.panels.locationValid,
-    showInfo: state.panels.showInfo
+    hoverYear: state.panels.hoverYear,
+    showInfo: state.panels.showInfo,
   }
 })
 export default class App extends Component {
@@ -61,14 +62,17 @@ export default class App extends Component {
   }
 
   render() {
-    const { geoms, panels, showInfo, dispatch } = this.props;
+    const { geoms, panels, hoverYear, showInfo, dispatch } = this.props;
     const charts = [];
+    const canDelete = panels.size > 1;
     panels.forEach((p,key) => {
       charts.push(
         <Panel
           key={key}
           index={key}
           panel={p}
+          canDelete={canDelete}
+          year={hoverYear}
         />
       );
     });
@@ -81,6 +85,7 @@ export default class App extends Component {
           isOpen={showInfo}>
           <button onClick={this.actions.showInfo}>close</button>
           <InfoModal />
+          <button onClick={this.actions.showInfo}>close</button>
         </Modal>
       </div>
       );

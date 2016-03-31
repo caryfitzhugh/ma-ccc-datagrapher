@@ -9,6 +9,7 @@ import {
     INVALIDATE_PARAM,
     UPDATE_PARAM,
     SHOW_INFO,
+    SET_YEAR,
     INSERT_PANEL,
     DELETE_PANEL,
     QUERY_TO_PARAMS,
@@ -36,6 +37,13 @@ export function showInfo() {
   return {
     type: SHOW_INFO,
     payload: {show: true}
+  };
+}
+
+export function setYear(year) {
+  return {
+    type: SET_YEAR,
+    payload: {year}
   };
 }
 

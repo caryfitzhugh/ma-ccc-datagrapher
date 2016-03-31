@@ -3,12 +3,12 @@ import {
     UPDATE_PARAM,
     REQUEST_DATA,
     SET_RESULT,
+    SET_YEAR,
     SHOW_INFO,
     INSERT_PANEL,
     DELETE_PANEL,
     UPDATE_URL,
     QUERY_TO_PARAMS,
-    SET_PARAMS,
   } from '../constants/actionTypes';
 import createReducer from './create-reducer';
 import { chartDefs, parseURL, correctParam } from '../api';
@@ -20,6 +20,7 @@ import { chartDefs, parseURL, correctParam } from '../api';
     query (array)
     locationValid: boolean
     showInfo: boolean
+    hoverYear: integer
   Each panel state contains:
     param: {
       chart,
@@ -42,6 +43,7 @@ const initialState = {
   panels: new Map(),
   nextKey: 1,
   locationValid: true,
+  hoverYear: 0,
   showInfo: false,
   query: [],
 };
@@ -93,6 +95,13 @@ const actionHandlers = {
     panels = new Map([...panels]);
     panels.set(key,{ param, result, ready: true });
     return {...state, panels};
+  },
+
+  [SET_YEAR]: (state, action) => {
+    const { hoverYear } = state;
+    const year = action.payload.year;
+    if (year == hoverYear) return state;
+    return {...state, hoverYear:year};
   },
 
   [SHOW_INFO]: (state, action) => {

@@ -1,6 +1,7 @@
 .panel {
 	display: flex;
 	flex-flow: row wrap;
+	margin-left: 10px;
 	margin-bottom: 5px;
 	border-bottom: 2px solid #5690ca;
 }
@@ -59,6 +60,7 @@
 .chart {
 	display: flex;
 	flex: 1;
+	flex-wrap: nowrap;
 }
 
 .chartInput {
@@ -69,10 +71,46 @@
 	z-index: 0;
 }
 
+.paramForm {
+	height: 200px;
+	background-color: green;
+}
+
+.miniMapTitle {
+	min-height: 20px;
+	margin-left: 10px;
+}
+.miniMap {
+	height: 250px;
+	width: 300px;
+	margin-bottom: 20px;
+}
+.addDelPanels {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+.addDelPanels button {
+	margin-bottom: 10px;
+	font: inherit;
+	color: white;
+	background-color: #f6892e;
+	border-color: #f57b16;
+	border: 1px;
+	border-radius: 4px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+
 .chartOutput {
+	display: flex;
 	width: 100%;
-	height: 600px;
-	background-color: tan;
+}
+
+.chartBody {
+	display: flex;
+	flex-direction: column;
+	flex: 0 1 auto;
 }
 
 .chartHeader1 {
@@ -80,26 +118,62 @@
 	font-size: 1.2em;
 	font-weight: bold;
 	text-align: center;
-	margin-left: 50px;
+	margin-left: 20px;
 	margin-top: 10px;
 }
 .chartHeader2 {
 	width: 100%;
 	font-weight: bold;
 	text-align: center;
-	margin-left: 50px;
+	margin-left: 20px;
 	margin-top: 5px;
 }
 
-.paramForm {
-	height: 200px;
-	background-color: green;
+.chartTable {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
 }
-
-.miniMap {
-	height: 250px;
-	width: 300px;
-	margin-bottom: 20px;
+.chartTable button {
+	margin: 15px 0px;
+	width: 150px;
+	font: inherit;
+	color: white;
+	background-color: #f6892e;
+	border-color: #f57b16;
+	border: 1px;
+	border-radius: 4px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+.chartTable table {
+	width: 175px;
+	border-radius: 4px;
+	border: 1px solid grey;
+	/*font-size: 1.0em;*/
+}
+.chartTable th {
+	text-align: center;
+	font-size: 1.0em;
+	line-height: 0.9em;
+}
+.col1 {
+	font-size: 0.9em;
+	text-align: left;
+	line-height: 1.3em;
+	min-width: 5em;
+}
+.col2 {
+	font-size: 0.9em;
+	text-align: center;
+	line-height: 1.3em;
+	min-width: 3em;
+}
+.col3 {
+	text-align: right;
+	line-height: 1.3em;
+	min-width:20px;
 }
 
 .axis {
@@ -110,6 +184,13 @@
   stroke: #000;
   fill: none;
   stroke-width: 1px;
+}
+
+.highlight {
+	fill: none;
+	stroke: red;
+	stroke-opacity: 0.4;
+	stroke-width: 2px;
 }
 
 .axisLabel {
@@ -126,6 +207,24 @@
 	fill: blue;
 	fill-opacity: 0.3;
 }
+.lineHi{
+	fill: none;
+	stroke: red;
+	stroke-opacity: 0.8;
+	stroke-width: 2px;
+}
+.lineMd{
+	fill: none;
+	stroke: grey;
+	stroke-opacity: 1.0;
+	stroke-width: 2px;
+}
+.lineLo{
+	fill: none;
+	stroke: blue;
+	stroke-opacity: 0.8;
+	stroke-width: 2px;
+}
 .prismLine {
 	fill: none;
 	stroke: black;
@@ -135,5 +234,10 @@
 .prismDots {
 	fill: black;
 	fill-opacity: 0.3;
+	stroke: none;
+}
+.prismDotsOver {
+	fill: red;
+	fill-opacity: 1.0;
 	stroke: none;
 }

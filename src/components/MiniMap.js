@@ -6,6 +6,7 @@
 // });
 
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import 'leaflet';
 require('style-loader!css-loader!../../node_modules/leaflet/dist/leaflet.css');
 import styles from "./App.css";
@@ -98,7 +99,7 @@ export default class MiniMap extends Component {
   }
 
   componentDidMount() {
-    this.map = L.map(React.findDOMNode(this.refs.map), {
+    this.map = L.map(ReactDOM.findDOMNode(this.refs.map), {
     center: position,
     zoom: 5.6
     });
@@ -128,7 +129,7 @@ export default class MiniMap extends Component {
     const title = this.state.title;
     return (
       <div>
-        <div>{title}</div>
+        <div className={styles.miniMapTitle} >{title}</div>
         <div ref='map' className={styles.miniMap} ></div>
       </div>
     );

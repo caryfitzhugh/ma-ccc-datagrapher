@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux';
 
 import * as panelActions from '../actions/panelActions';
-import SideBar from './SideBar';
 import Parameters from './Parameters';
 import MiniMap from './MiniMap';
-import Chart from './SChart';
+import StationChart from './SChart';
 import AreaChart from './NChart';
 import styles from './App.css';
 
@@ -17,6 +16,7 @@ class StnPanel extends Component {
     param: PropTypes.object.isRequired,
     result: PropTypes.object,
     geom: PropTypes.object,
+    year: PropTypes.number.isRequired,
     showInfo: PropTypes.func.isRequired,
     insertPanel: PropTypes.func.isRequired,
     deletePanel: PropTypes.func.isRequired,
@@ -39,7 +39,7 @@ class StnPanel extends Component {
 
     let plot;
     if (geom == 'stn')
-      plot = <Chart
+      plot = <StationChart
               className={styles.chartOutput}
               geomType={geom}
               result={this.props.result}
@@ -48,6 +48,9 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              showInfo={this.props.showInfo}
+              year={this.props.year}
+              setYear={this.props.setYear}
             />
     else 
       plot = <AreaChart
@@ -59,17 +62,13 @@ class StnPanel extends Component {
               season={season}
               sid={sid}
               ready={this.props.ready}
+              showInfo={this.props.showInfo}
+              year={this.props.year}
+              setYear={this.props.setYear}
             />
 
     return (
       <div className={styles.panel} >
-        <SideBar
-          current={chart}
-          updatePanel={::this.updateParams}
-          showInfo={this.props.showInfo}
-          insertPanel={this.props.insertPanel}
-          deletePanel={this.props.deletePanel}
-        />
         <div className={styles.chart}>
           <div className={styles.chartInput}>
             <Parameters
@@ -91,6 +90,10 @@ class StnPanel extends Component {
               sid={sid}
               update={::this.updateMap}
             />
+            <div className={styles.addDelPanels}>
+              <button onClick={this.props.insertPanel} >Add Chart</button>
+              {this.props.canDelete ? <button onClick={this.props.deletePanel} >Remove this Chart</button> : null}
+            </div>
           </div>
           {plot}
         </div>
@@ -105,16 +108,22 @@ function mapStateToProps(state) {
 }
 
 function mergeProps(stateProps, dispatchProps, parentProps) {
-  const idx = parentProps.index, panel = parentProps.panel,
+  const idx = parentProps.index, 
+    panel = parentProps.panel,
+    canDelete = parentProps.canDelete,
+    year = parentProps.year,
     geom = stateProps.geoms[panel.param.geom] ? stateProps.geoms[panel.param.geom] : {};
 
   return {
     ...panel,
     geom,
+    year,
+    canDelete,
     showInfo: () => dispatchProps.showInfo(),
     insertPanel: () => dispatchProps.insertPanel(idx),
     deletePanel: () => dispatchProps.deletePanel(idx),
     invalidateParam: (param) => dispatchProps.invalidateParam(idx,param),
+    setYear: (year) => dispatchProps.setYear(year),
     };
 }
 
