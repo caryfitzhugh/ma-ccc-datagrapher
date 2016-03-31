@@ -1,7 +1,7 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import styles from "./App.css";
 
-export default class InfoModal {
+export default class MiniMap extends Component {
 
   render() {
     return <div>
@@ -52,19 +52,19 @@ export default class InfoModal {
         All future projections cover the period 2041-2070 and are based on the relatively high SRES A2 
         emissions scenario. Simulations are also generated for the 1971-2000 historical period. 
         Future (and historical) simulations are based four RCMs:
+      </p>
         <ul>
         <li>Canadian Regional Climate Model (CRCM)</li>
         <li>MM5 - Penn State NCAR Mesoscale Model (MM5I)</li>
         <li>Regional Climate Model Ver. 3 (RCM3)</li>
         <li>Weather Research and Forecasting Model (WRF)</li>
         </ul>
-        nested within at least one of three AOGCMS:
+      <p>nested within at least one of three AOGCMS:</p>
         <ul>
         <li>Community Climate System Model (CCSM)</li>
         <li>Third Generation Coupled Global Climate Model (CGCM3)</li>
         <li>Geophysical Fluid Dynamics Laboratory GCM (GFDL)</li>
         </ul>
-      </p>
       <p>This yields a set of seven RCM-AOGCM combinations:</p>
       <div className={styles.infoModels}>
         <div>CRCM-CCSM</div>
