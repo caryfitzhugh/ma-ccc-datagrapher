@@ -33,7 +33,7 @@ export let elems = new Map([
     acis: {vX:4, vN:0, reduce:'sum'},
     grid: {vX:94,maxmissing:0},
     gridY: {vX:98,maxmissing:0},
-    gYr: [1895,2015]}],
+    gYr: [1895,2016]}],
   ['snow', {
     label:'Total Snowfall',
     yLabel: 'Inches', ttUnits: '"',
@@ -49,89 +49,89 @@ export let elems = new Map([
     acis: {vX:1, vN:0, reduce:'mean'},
     grid: {vX:91,maxmissing:0},
     gridY: {vX:95,maxmissing:0},
-    gYr: [1895,2015]}],
+    gYr: [1895,2016]}],
   ['mint', {
     label:'Minimum Temperature',
     yLabel: 'Temperature', ttUnits: '°',
     acis: {vX:2, vN:0, reduce:'mean'},
     grid: {vX:92,maxmissing:0},
     gridY: {vX:96,maxmissing:0},
-    gYr: [1895,2015]}],
+    gYr: [1895,2016]}],
   ['avgt', {
     label:'Average Temperature',
     yLabel: 'Temperature', ttUnits: '°',
     acis: {vX:43, vN:0, reduce:'mean'},
     grid: {vX:99,maxmissing:0},
     gridY: {vX:100,maxmissing:0},
-    gYr: [1895,2015]}],
+    gYr: [1895,2016]}],
   ['gdd50', {
     label:'Growing Degree-Day Accumulation',
     yLabel: 'Degree-Day', ttUnits: '',
     acis: {vX:44, vN:0, base:50, reduce:'sum'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['hdd65', {
     label:'Heating Degree-Day Accumulation',
     yLabel: 'Degree-Day', ttUnits: '',
     acis: {vX:45, vN:0, base:65, reduce:'sum'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['cdd65', {
     label:'Cooling Degree-Day Accumulation',
     yLabel: 'Degree-Day', ttUnits: '',
     acis: {vX:44, vN:0, base:65, reduce:'sum'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
 // StnTDays
   ['tx90', {
     label:'Days with Maximum Temperature Above 90°',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_90'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['tx95', {
     label:'Days with Maximum Temperature Above 95°',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_95'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['tx100', {
     label:'Days with Maximum Temperature Above 100°',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_100'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['tn0', {
     label:'Days with Minimum Temperature Below 0°',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:2, vN:0, reduce:'cnt_lt_0'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['tn32', {
     label:'Days with Minimum Temperature Below 32°',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:2, vN:0, reduce:'cnt_lt_32'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
 // StnPDays
   ['pcpn_1', {
     label:'Days with Precipitation > 1"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_1'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['pcpn_2', {
     label:'Days with Precipitation > 2"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_2'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['pcpn_4', {
     label:'Days with Precipitation > 4"',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:4, vN:0, reduce:'cnt_gt_4'},
     grid: {},
-    gYr: [1981,2015]}],
+    gYr: [1981,2016]}],
   ['snwd_1', {
     label:'Days with Snow Depth > 1"',
     yLabel: 'Days', ttUnits: '',
@@ -299,15 +299,25 @@ export const chartDefs = new Map([
               // 'tx90_3','tx95_3','tx100_3',
               // 'tn0_3','tn32_3',
               // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
+              'pcpn','snow','snwd',
+              'pcpn_1', 'pcpn_2', 'pcpn_4', 'snwd_1',
+              // 'pcpn_lt01_run','pcpn_lt1_run'
              ],
       seasons: allSeasons
   }],
   ['Prcp',{
     title: 'Prcp',
-    elems: ['pcpn','snow','snwd',
+    elems: ['maxt', 'mint', 'avgt', 'gdd50', 'hdd65', 'cdd65',
+            'tx90','tx95','tx100',
+            'tn0','tn32',
+            'grow_32',
+            // 'tx90_3','tx95_3','tx100_3',
+            // 'tn0_3','tn32_3',
+            // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
+            'pcpn','snow','snwd',
             'pcpn_1', 'pcpn_2', 'pcpn_4', 'snwd_1',
             // 'pcpn_lt01_run','pcpn_lt1_run'
-          ],
+           ],
     seasons: allSeasons
   }],
 ]);
