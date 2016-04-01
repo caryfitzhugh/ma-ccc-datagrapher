@@ -30,4 +30,19 @@ ReactDOM.render(<Main />,
   document.getElementById('root')
 );
 
+let navToggle = document.querySelector("button.navbar"),
+    navMenu = document.querySelector("ul.nav-dropdown"),
+    navOpen = false;
+
+navToggle.onclick = function(e) {
+  navOpen = !navOpen;
+  if (navOpen) {
+    console.log("opening");
+    navMenu.style.top = ""+(this.offsetHeight+this.offsetTop-10)+"px";
+  } else {
+    navMenu.style.top = "100%";
+  }
+}
+
+
 
