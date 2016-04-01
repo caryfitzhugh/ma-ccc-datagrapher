@@ -37,10 +37,10 @@ let navToggle = document.querySelector("button.navbar"),
 navToggle.onclick = function(e) {
   navOpen = !navOpen;
   if (navOpen) {
-    console.log("opening");
     navMenu.style.top = ""+(this.offsetHeight+this.offsetTop-10)+"px";
+    navMenu.style.display = "block";
   } else {
-    navMenu.style.top = "100%";
+    navMenu.style.display = "none";
   }
 }
 
