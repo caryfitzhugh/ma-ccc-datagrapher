@@ -103,7 +103,7 @@ export default class MiniMap extends Component {
     center: position,
     zoom: 5.6
     });
-    L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+    L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
       {subdomains: 'abcd', minZoom: 5.6, maxZoom: 10, opacity: 0.3}).addTo(this.map);
     if (this.props.geoJSON) {
       this.updateLayer();
