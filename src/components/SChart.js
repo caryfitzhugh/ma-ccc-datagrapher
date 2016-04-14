@@ -244,7 +244,7 @@ export default class StationChart extends React.Component {
       {chart}
       {dload}
       </div>
-      <Info year={year} data={data.has(year) ? data.get(year) : {}}
+      <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
         download={::this.doDownload}
         showInfo={this.props.showInfo}/>
       </div>
@@ -262,11 +262,13 @@ class Info extends React.Component {
 
   static propTypes = {
     year: PropTypes.number.isRequired,
+    element: PropTypes.string.isRequired,
     // data: PropTypes.object.isRequired,
   };
 
   render () {
-    const {year,data,download} = this.props;
+    const {year,element,data,download} = this.props,
+      { ttUnits } = elems.get(element);
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
 
     if (typeof data.obs != "undefined") {
@@ -285,7 +287,7 @@ class Info extends React.Component {
       <button onClick={download}>Download</button>
       <table>
       <thead>
-      <tr><th colSpan="3">Observed</th></tr>
+      <tr><th colSpan="3">Observed {ttUnits}</th></tr>
       </thead>
       <tbody>
       <tr>
@@ -303,7 +305,7 @@ class Info extends React.Component {
       </tr>
       </tbody>
       </table>
-      <button onClick={this.props.showInfo}>Explain Data Source</button>
+      <button onClick={this.props.showInfo}>About the Source Data</button>
       <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
     </div>
   }

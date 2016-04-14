@@ -61,11 +61,6 @@ export default class AreaChart extends React.Component {
 
         if (typeof v == 'undefined') return;
         v = v.map(x => +x.toFixed(2))
-        // get data range
-        if (yr < xRange[0]) xRange[0] = yr;
-        if (yr > xRange[1]) xRange[1] = yr;
-        if (v[0] < yRange[0]) yRange[0] = v[0];
-        if (v[2] > yRange[1]) yRange[1] = v[2];
 
         if (yr > 2020 && !future) { // reset the counters for future
           medians[0] = median_sum / cnt;
@@ -78,6 +73,11 @@ export default class AreaChart extends React.Component {
 
         if (cnt >= 5) {
           const s = v.map((x,i) => +(sum[i]/5.).toFixed(2));
+          // get data range
+          if (yr < xRange[0]) xRange[0] = yr;
+          if (yr > xRange[1]) xRange[1] = yr;
+          if (s[0] < yRange[0]) yRange[0] = s[0];
+          if (s[2] > yRange[1]) yRange[1] = s[2];
           if (future) model_future_avg.push([yr, ...s])
           else model_current_avg.push([yr, ...s]);
           datum.model_avg = s;
@@ -317,6 +317,10 @@ export default class AreaChart extends React.Component {
         })
         .on("mousemove", (d,i)=>{
           const e = d3.event;
+          if (e.srcElement.nodeName == "text") { // range label
+            this.props.setYear(0);
+            return;
+          }
           let year = +x.invert(e.offsetX - margin.left).toFixed(0);
           if (this.data.has(year)) {
             const d = this.data.get(year);
@@ -350,7 +354,7 @@ export default class AreaChart extends React.Component {
       {chart}
       {dload}
       </div>
-      <Info year={year} data={data.has(year) ? data.get(year) : {}}
+      <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
         delta={delta}
         download={::this.doDownload}
         showInfo={this.props.showInfo}/>
@@ -370,12 +374,14 @@ class Info extends React.Component {
 
   static propTypes = {
     year: PropTypes.number.isRequired,
+    element: PropTypes.string.isRequired,
     delta: PropTypes.string.isRequired,
     // data: PropTypes.object.isRequired,
   };
 
   render () {
-    const {year,delta,data,download} = this.props;
+    const {year,element,delta,data,download} = this.props,
+      { ttUnits } = elems.get(element);
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
     let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
 
@@ -406,7 +412,7 @@ class Info extends React.Component {
       <button onClick={download}>Download Data</button>
       <table>
       <thead>
-      <tr><th colSpan="3">Observed</th></tr>
+      <tr><th colSpan="3">Observed {ttUnits}</th></tr>
       </thead>
       <tbody>
       <tr>
@@ -427,7 +433,7 @@ class Info extends React.Component {
       </tr>
       </tbody>
       <thead>
-      <tr><th colSpan="3">Modeled</th></tr>
+      <tr><th colSpan="3">Modeled {ttUnits}</th></tr>
       <tr><th colSpan="3">{modelYrRng}</th></tr>
       </thead>
       <tbody>
@@ -453,7 +459,7 @@ class Info extends React.Component {
       </tr>
       </tbody>
       </table>
-      <button onClick={this.props.showInfo}>Explain Data Source</button>
+      <button onClick={this.props.showInfo}>About the Source Data</button>
       <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
       </div>
   }

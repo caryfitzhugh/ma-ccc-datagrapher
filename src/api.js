@@ -1,8 +1,8 @@
 export const geoms = new Map([
-  ['stn', 'Station'],
   ['state','State'],
   ['county','County'],
   ['basin','Basin'],
+  ['stn', 'Station'],
 ]);
 
 export let seasons = new Map([
@@ -29,86 +29,86 @@ export let elems = new Map([
 // StnPrcp
   ['pcpn', {
     label:'Total Precipitation',
-    yLabel: 'Inches', ttUnits: '"',
+    yLabel: 'Precipitation (Inch)', ttUnits: '"',
     acis: {vX:4, vN:0, reduce:'sum'},
     grid: {vX:94,maxmissing:0},
     gridY: {vX:98,maxmissing:0},
     gYr: [1895,2016]}],
   ['snow', {
     label:'Total Snowfall',
-    yLabel: 'Inches', ttUnits: '"',
+    yLabel: 'Snowfall (Inch)', ttUnits: '"',
     acis: {vX:10, vN:0, reduce:'sum'}}],
   ['snwd', {
     label:'Maximum Daily Snowdepth',
-    yLabel: 'Inches', ttUnits: '"',
+    yLabel: 'Snowdepth (Inch)', ttUnits: '"',
     acis: {vX:11, vN:0, reduce:'max'}}],
 // StnTemp
   ['maxt', {
     label:'Maximum Temperature',
-    yLabel: 'Temperature', ttUnits: '°',
+    yLabel: 'Temperature °F', ttUnits: '°F',
     acis: {vX:1, vN:0, reduce:'mean'},
     grid: {vX:91,maxmissing:0},
     gridY: {vX:95,maxmissing:0},
     gYr: [1895,2016]}],
   ['mint', {
     label:'Minimum Temperature',
-    yLabel: 'Temperature', ttUnits: '°',
+    yLabel: 'Temperature °F', ttUnits: '°F',
     acis: {vX:2, vN:0, reduce:'mean'},
     grid: {vX:92,maxmissing:0},
     gridY: {vX:96,maxmissing:0},
     gYr: [1895,2016]}],
   ['avgt', {
     label:'Average Temperature',
-    yLabel: 'Temperature', ttUnits: '°',
+    yLabel: 'Temperature °F', ttUnits: '°F',
     acis: {vX:43, vN:0, reduce:'mean'},
     grid: {vX:99,maxmissing:0},
     gridY: {vX:100,maxmissing:0},
     gYr: [1895,2016]}],
   ['gdd50', {
     label:'Growing Degree-Day Accumulation',
-    yLabel: 'Degree-Day', ttUnits: '',
+    yLabel: 'Degree-Day °F', ttUnits: '°F',
     acis: {vX:44, vN:0, base:50, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['hdd65', {
     label:'Heating Degree-Day Accumulation',
-    yLabel: 'Degree-Day', ttUnits: '',
+    yLabel: 'Degree-Day °F', ttUnits: '°F',
     acis: {vX:45, vN:0, base:65, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['cdd65', {
     label:'Cooling Degree-Day Accumulation',
-    yLabel: 'Degree-Day', ttUnits: '',
+    yLabel: 'Degree-Day °F', ttUnits: '°F',
     acis: {vX:44, vN:0, base:65, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
 // StnTDays
   ['tx90', {
-    label:'Days with Maximum Temperature Above 90°',
+    label:'Days with Maximum Temperature Above 90°F',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_90'},
     grid: {},
     gYr: [1981,2016]}],
   ['tx95', {
-    label:'Days with Maximum Temperature Above 95°',
+    label:'Days with Maximum Temperature Above 95°F',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_95'},
     grid: {},
     gYr: [1981,2016]}],
   ['tx100', {
-    label:'Days with Maximum Temperature Above 100°',
+    label:'Days with Maximum Temperature Above 100°F',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:1, vN:0, reduce:'cnt_gt_100'},
     grid: {},
     gYr: [1981,2016]}],
   ['tn0', {
-    label:'Days with Minimum Temperature Below 0°',
+    label:'Days with Minimum Temperature Below 0°F',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:2, vN:0, reduce:'cnt_lt_0'},
     grid: {},
     gYr: [1981,2016]}],
   ['tn32', {
-    label:'Days with Minimum Temperature Below 32°',
+    label:'Days with Minimum Temperature Below 32°F',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:2, vN:0, reduce:'cnt_lt_32'},
     grid: {},
@@ -138,7 +138,7 @@ export let elems = new Map([
     acis: {vX:11, vN:0, reduce:'cnt_gt_1'}}],
 // StnFrost
   ['grow_32', {
-    label:'Growing Season Length (above 32°)',
+    label:'Growing Season Length (above 32°F)',
     yLabel: 'Days', ttUnits: '',
     acis: {vX:2, vN:0, reduce:{reduce:'run_gt_32', n:1}}}],
 ]);
