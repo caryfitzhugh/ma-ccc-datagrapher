@@ -5,7 +5,7 @@ var cssimport = require('postcss-import');
 var autoprefixer = require('autoprefixer-core');
 
 module.exports = {
-  devtool: 'source-map',
+  // devtool: 'source-map',
   entry: {
     main: [
       './src/index.js'
@@ -16,11 +16,15 @@ module.exports = {
     path: path.join(__dirname, 'dataproduct'),
     filename: 'loader.js',
     chunkFilename: '[name].js',
-    publicPath: '/dataproduct/',
+    // publicPath: '/dataproduct/',
+    publicPath: '/data-fixture/',
     pathinfo: true
   },
   plugins: [
-    new webpack.DefinePlugin({ __DEV__: 'false' }),
+    new webpack.DefinePlugin({
+      __DEV__: 'false',
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
     // new ExtractTextPlugin('style.css', { allChunks: true }),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.bundle.js')
   ],
@@ -28,7 +32,7 @@ module.exports = {
     extensions: ['', '.js'],
     alias: {
       react: path.join(__dirname, 'node_modules', 'react'),
-      context$: '../dev_context'
+      context$: '../gh_context'
     }
   },
   postcss: [

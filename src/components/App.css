@@ -106,12 +106,13 @@
 .chartOutput {
 	display: flex;
 	width: 100%;
+	flex: 0 0 auto;
 }
 
 .chartBody {
 	display: flex;
 	flex-direction: column;
-	flex: 0 1 auto;
+	flex: 0 0 auto;
 }
 
 .chartHeader1 {
