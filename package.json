@@ -4,12 +4,8 @@
   "description": "Fixture for developing NYCCSC data products",
   "author": "bnoon",
   "scripts": {
-    "build": "babel src --out-dir lib",
-    "clean": "rimraf ./lib",
-    "lint": "eslint src test",
-    "start": "node server.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --recursive",
-    "test:watch": "npm run test -- --watch"
+    "build-min": "NODE_ENV=production webpack -p",
+    "start": "node devserver.js"
   },
   "repository": {
     "type": "git",
