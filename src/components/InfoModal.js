@@ -10,14 +10,17 @@ export default class MiniMap extends Component {
       <p>
         State, county and river basin graphs use the gridded
         <a href="http://www.prism.oregonstate.edu"> Parameter-elevation Relationships on Independent Slopes Model (PRISM) </a>
-        dataset. A 4 km x 4 km grid is used. Monthly, seasonal and annual maximum, minimum and average temperature 
-        as well as total precipitation cover the period from 1895-present. For elements such as heating degree-days, 
-        temperature and precipitation threshold counts, and growing season length that require daily data to compute, 
-        PRISM data are available from 1981-present. A single value is obtained for each spatial feature 
-        (i.e. state, county or basin) by averaging the values of all grid encompassed by the feature.
-        Grids that are only partially within the feature are included in the average, but with proportionally less weight.
-        For example, if only half of a grid is within a county, its value is given half of the weight of a grid that is 
-        totally within the county.
+        dataset. A 4 km x 4 km grid is used. PRISM data are updated each month, typically on the 15th (e.g. March 2016 
+        data are available in mid-April 2016). Monthly, seasonal and annual maximum, minimum and average temperature 
+        as well as total precipitation cover the period from 1895-the most recent full month. For elements such as heating 
+        degree-days, temperature and precipitation threshold counts, and growing season length that require daily data to 
+        compute, PRISM data are available from 1981-most recent full month. Snowfall and snow depth data are not included in
+        the PRISM dataset, but are available as a part of station-specific data graphs.</p>
+        <p>
+        A single value is obtained for each spatial feature (i.e. state, county or basin) by averaging the values of all grids
+        encompassed by the feature. Grids that are only partially within the feature are included in the average, but with 
+        proportionally less weight. For example, if only half of a grid is within a county, its value is given half of the 
+        weight of a grid that is totally within the county.
       </p>
       <p>
         For station data graphs, observations from stations within the 
@@ -27,7 +30,8 @@ export default class MiniMap extends Component {
         precipitation. Over 1000 high-quality stations comprise the USHCN with 57 located in New York.
         Adjustments to the monthly data exist that account for non-climatic discontinuities (e.g. instrument 
         changes, station relocations and urbanization). Since similar adjustments are not available 
-        for the daily data, all graphs are based on unadjusted observations for consistency.
+        for the daily data, all graphs are based on unadjusted observations for consistency.  Station data records have
+        varying starting dates.  Data from currently active stations are updated daily.
       </p>
       <p>
         On the county, state, basin and station graphs, observed data values for each year are shown by gray dots.
