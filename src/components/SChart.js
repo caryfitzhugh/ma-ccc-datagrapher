@@ -212,7 +212,16 @@ export default class StationChart extends React.Component {
         })
         .on("mousemove", (d,i)=>{
           const e = d3.event;
-          let year = +x.invert(e.offsetX - margin.left).toFixed(0);
+          let year = 0;
+          if (e.srcElement) { // non-firefox
+            if (e.srcElement.nodeName != "text") { // range label
+              year = +x.invert(e.offsetX - margin.left).toFixed(0);
+            }
+          } else {
+            if (e.explicitOriginalTarget && e.target.nodeName != "text") {
+              year = +x.invert(d3.mouse(e.explicitOriginalTarget)[0]).toFixed(0);
+            }
+          }
           if (this.data.has(year)) {
             const d = this.data.get(year);
             if (typeof d.obs == "undefined" && typeof d.model_avg == "undefined") year = 0;
