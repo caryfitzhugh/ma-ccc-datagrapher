@@ -43,6 +43,3 @@ navToggle.onclick = function(e) {
     navMenu.style.display = "none";
   }
 }
-
-
-

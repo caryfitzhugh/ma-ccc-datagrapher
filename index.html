@@ -1,8 +1,12 @@
 <html>
   <head>
-    <title>NYCCSC</title>
+    <title>MA CCC Datagrapher</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900');
+    </style>
     <style>
     body {
+      font-family: 'Raleway', sans-serif;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: 14px;
       margin: 0px;
@@ -121,37 +125,57 @@
       color: #5690ca;
       background-color: white;
     }
+    .header .logo .logo-text {
+        font-family: Raleway,sans-serif;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+    .header .logo .logo-text h1 {
+      font-weight: 300;
+      margin-bottom: 0;
+      font-size: 5em;
+      margin-top: 0;
+    }
 
+    .slate-text {
+        color: #113f83;
+    }
+    .header .logo .logo-text small {
+      font-weight: 400;
+      font-size: 1em;
+    }
+    .header .logo .logo-text small strong {
+      margin-right: 0.4em;
+    }
+    .header .logo .logo-text h1 em {
+      font-style: normal;
+      margin-right: -.1em;
+      font-weight: 700;
+    }
+    .header .logo img {
+      margin-right: 1em;
+      width: auto;
+      height: 7rem;
+    }
+    .orange-text {
+        color: #f27421;
+    }
+    .header {
+      border-bottom: 10px solid #5e5e5e;
+      margin-bottom: 1em;
+    }
     </style>
   </head>
   <body>
-    <header>
+    <header class='header'>
       <div class="left-side">
-        <a href="/"><img src="data/images/logo-xs.png" class="img-left"></a>
-        <a href="/"><img src="data/images/nyccsc.png"></a>
+        <div class='logo'>
+          <a href="/"><img src="data/images/logo-xs.png" class="img-left"></a>
+          <div class="logo-text slate-text"><h1><em class="slate-text"> MA </em><span class="gray-text">CCC</span></h1><small class="orange-text"><strong>Massachusetts</strong><!-- react-text: 13 -->Climate Change Clearinghouse<!-- /react-text --></small></div>
+        </div>
         <br class="clearfix">
-      </div>
-      <div class="right-side">
-        <button 
-              class="navbar">
-              <span class="navbar-icon"></span>
-              <span class="navbar-icon"></span>
-              <span class="navbar-icon"></span>
-          </button>
-          <ul class="nav-dropdown">
-            <li><a href="/highlights/maps">Maps</a></li>
-            <li><a href="/highlights/data_products">Data Products</a></li>
-            <li><a href="/highlights/documents">Documents</a></li>
-            <li><hr></li>
-            <li><a href="/highlights/problems">Identify Problems</a></li>
-            <li><a href="/highlights/solutions">Investigate Solutions</a></li>
-            <li><a href="/highlights/actions">Take Action</a></li>
-          </ul>
-        <!-- search -->
-        <form class="search" action="/catalog" method="get">
-          <label for="q" class="sr-only">Find maps, data products, reports, articles...</label>
-          <input type="text" name="q" placeholder="Find maps, data products, reports, articles..." ><button type="submit" id="search"><span>Search</span></button>
-        </form>
       </div>
     </header>
     <div id='root'></div>
