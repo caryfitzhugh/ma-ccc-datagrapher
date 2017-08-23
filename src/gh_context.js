@@ -1,5 +1,5 @@
 let acisws = {
-  BasePath: '/data-fixture/',
+  BasePath: '/datagrapher/',
   StnData: 'https://grid.rcc-acis.org/StnData',
   GridData: 'https://grid.rcc-acis.org/GridData',
 }
