@@ -30,11 +30,11 @@ class StnPanel extends Component {
   updateMap(sid, bbox) {
     this.props.invalidateParam({ ...this.props.param, sid });
   }
-  
+
   render () {
     const { chart, geom, element, season, sid, bbox } = this.props.param,
           { geojson, meta } = this.props.geom, cDef = chartDefs.get(chart),
-          seasons = element == 'grow_32' ? ['ANN'] : cDef.seasons, 
+          seasons = element == 'grow_32' ? ['ANN'] : cDef.seasons,
           elements = geom == 'stn' ? cDef.elems : cDef.gElems;
 
     let plot;
@@ -52,7 +52,7 @@ class StnPanel extends Component {
               year={this.props.year}
               setYear={this.props.setYear}
             />
-    else 
+    else
       plot = <AreaChart
               className={styles.chartOutput}
               geomType={geom}
@@ -108,7 +108,7 @@ function mapStateToProps(state) {
 }
 
 function mergeProps(stateProps, dispatchProps, parentProps) {
-  const idx = parentProps.index, 
+  const idx = parentProps.index,
     panel = parentProps.panel,
     canDelete = parentProps.canDelete,
     year = parentProps.year,
@@ -128,4 +128,3 @@ function mergeProps(stateProps, dispatchProps, parentProps) {
 }
 
 export default connect(mapStateToProps, panelActions, mergeProps)(StnPanel);
-

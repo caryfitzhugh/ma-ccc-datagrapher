@@ -11,7 +11,7 @@ import 'leaflet';
 require('style-loader!css-loader!../../node_modules/leaflet/dist/leaflet.css');
 import styles from "./App.css";
 
-const position = [43,-76];
+const position = [42.2373,-71.5314];
 
 export default class MiniMap extends Component {
 
@@ -44,7 +44,7 @@ export default class MiniMap extends Component {
         weight: 1.5,
         opacity: 0.6,
         fillOpacity: 0.4,
-        color: 'black'        
+        color: 'black'
     }));
     this.layer.eachLayer((l) => {
       if (l.feature.id == sid) {
@@ -61,7 +61,7 @@ export default class MiniMap extends Component {
     this.geomType = this.props.geomType;
     const isPoint = this.geomType == 'stn';
     const fl = this.layer = L.geoJson(this.props.geoJSON,{
-      pointToLayer: (geojson, latlng) => 
+      pointToLayer: (geojson, latlng) =>
         new L.CircleMarker(latlng,
           {
             radius:5,
@@ -82,7 +82,7 @@ export default class MiniMap extends Component {
           weight: 1.5,
           opacity: 0.6,
           fillOpacity: 0.4,
-          color: 'black'        
+          color: 'black'
       })
     });
 
@@ -101,8 +101,9 @@ export default class MiniMap extends Component {
   componentDidMount() {
     this.map = L.map(ReactDOM.findDOMNode(this.refs.map), {
     center: position,
-    zoom: 5.6
+    zoom: 6.5
     });
+
     L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
       {subdomains: 'abcd', minZoom: 5.6, maxZoom: 10, opacity: 0.3}).addTo(this.map);
     if (this.props.geoJSON) {
@@ -119,7 +120,7 @@ export default class MiniMap extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.props.geoJSON && this.geomType != this.props.geomType) {
       this.updateLayer();
-      this.updateSid();      
+      this.updateSid();
     } else {
       if (prevProps.sid != this.props.sid) this.updateSid();
     }

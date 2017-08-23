@@ -147,6 +147,7 @@ export function fetchResults(key) {
     if (done || panel.request) return;
 
     dispatch(requestData(key));
+
     let req;
     if (nParam.geom == 'stn') {
       const reqParams = buildQuery(nParam, geomInfo.meta.get(nParam.sid));
@@ -196,4 +197,3 @@ export function fetchResults(key) {
     });
   }
 }
-

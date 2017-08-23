@@ -57,7 +57,7 @@ export default class StationChart extends React.Component {
           const idx = obs.length,
             v = 0.0 ? d[1] == 'T' : +(+d[1]).toFixed(2);
 
-          // get data range          
+          // get data range
           if (yr < xRange[0]) xRange[0] = yr;
           if (yr > xRange[1]) xRange[1] = yr;
           if (v < yRange[0]) yRange[0] = v;
@@ -204,7 +204,7 @@ export default class StationChart extends React.Component {
           .attr('cx',x(d[0]))
           .attr('cy',y(d[1]))
       });
-      
+
 
       d3.select(node)
         .on("mouseleave",() => {
@@ -315,7 +315,7 @@ class Info extends React.Component {
       </tbody>
       </table>
       <button onClick={this.props.showInfo}>About the Source Data</button>
-      <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
+      <a href="http://necsc.umass.edu"><img className='necsc-logo' src="data/images/NECSC-logo.png"/></a>
     </div>
   }
 }

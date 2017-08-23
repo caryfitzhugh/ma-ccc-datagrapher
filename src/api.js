@@ -1,8 +1,8 @@
 export const geoms = new Map([
   ['state','State'],
   ['county','County'],
-  ['basin','Basin'],
-  ['stn', 'Station'],
+//  ['basin','Basin'],
+//  ['stn', 'Station'],
 ]);
 
 export let seasons = new Map([
@@ -11,18 +11,6 @@ export let seasons = new Map([
   ['JJA',{title:'Summer',interval:[1,0],duration:3,maxmissing:10,smonth:8}],
   ['SON',{title:'Fall',interval:[1,0],duration:3,maxmissing:10,smonth:11}],
   ['DJF',{title:'Winter',interval:[1,0],duration:3,maxmissing:10,smonth:2}],
-  ['Jan',{title:'January',interval:[1,0],duration:1,maxmissing:3,smonth:1}],
-  ['Feb',{title:'February',interval:[1,0],duration:1,maxmissing:3,smonth:2}],
-  ['Mar',{title:'March',interval:[1,0],duration:1,maxmissing:3,smonth:3}],
-  ['Apr',{title:'April',interval:[1,0],duration:1,maxmissing:3,smonth:4}],
-  ['May',{title:'May',interval:[1,0],duration:1,maxmissing:3,smonth:5}],
-  ['Jun',{title:'June',interval:[1,0],duration:1,maxmissing:3,smonth:6}],
-  ['Jul',{title:'July',interval:[1,0],duration:1,maxmissing:3,smonth:7}],
-  ['Aug',{title:'August',interval:[1,0],duration:1,maxmissing:3,smonth:8}],
-  ['Sep',{title:'September',interval:[1,0],duration:1,maxmissing:3,smonth:9}],
-  ['Oct',{title:'October',interval:[1,0],duration:1,maxmissing:3,smonth:10}],
-  ['Nov',{title:'November',interval:[1,0],duration:1,maxmissing:3,smonth:11}],
-  ['Dec',{title:'December',interval:[1,0],duration:1,maxmissing:3,smonth:12}],
 ]);
 
 export let elems = new Map([
@@ -328,5 +316,3 @@ chartDefs.forEach((def,chart) => {
     return [p.chart,p.geom,p.element,p.season,p.sid,p.bbox].join('/');
   };
 });
-
-

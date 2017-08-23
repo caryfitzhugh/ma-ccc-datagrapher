@@ -1,9 +1,10 @@
 .panel {
 	display: flex;
 	flex-flow: row wrap;
-	margin-left: 10px;
+	margin-left: 0px;
+  padding: 0.5em 1em;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #5690ca;
+	border-bottom: 2px solid #5e5e5e;
 }
 
 .sidepanel {
@@ -95,8 +96,8 @@
 	margin-bottom: 10px;
 	font: inherit;
 	color: white;
-	background-color: #f6892e;
-	border-color: #f57b16;
+	background-color: #f27421;
+	border-color: #f27421;
 	border: 1px;
 	border-radius: 4px;
 	padding: 6px 12px;
@@ -105,7 +106,6 @@
 
 .chartOutput {
 	display: flex;
-	width: 100%;
 	flex: 0 0 auto;
 }
 
@@ -142,8 +142,8 @@
 	width: 150px;
 	font: inherit;
 	color: white;
-	background-color: #f6892e;
-	border-color: #f57b16;
+	background-color: #f27421;
+	border-color: #f27421;
 	border: 1px;
 	border-radius: 4px;
 	padding: 6px 12px;

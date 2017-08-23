@@ -268,7 +268,7 @@ export default class AreaChart extends React.Component {
         const df = data.get("model_future_avg");
         svg.append("path").datum(df).attr("class", styles.areaLo).attr("d", areaLo)
         svg.append("path").datum(df).attr("class", styles.areaHi).attr("d", areaHi)
-        
+
         svg.append("path").datum(df).attr("class", styles.lineLo).attr("d",lineLo)
         svg.append("path").datum(df).attr("class", styles.lineMd).attr("d",lineMd)
         svg.append("path").datum(df).attr("class", styles.lineHi).attr("d",lineHi)
@@ -465,7 +465,7 @@ class Info extends React.Component {
       </tbody>
       </table>
       <button onClick={this.props.showInfo}>About the Source Data</button>
-      <a href="http://www.nrcc.cornell.edu"><img src="data/images/acis_logo.png"/></a>
-      </div>
+      <a href="http://necsc.umass.edu"><img className='necsc-logo' src="data/images/NECSC-logo.png"/></a>
+    </div>
   }
 }
