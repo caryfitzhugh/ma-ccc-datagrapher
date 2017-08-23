@@ -1,5 +1,4 @@
 let acisws = {
-  BasePath: '/dataproduct/',
   StnData: '/data_product_proxy/acis_station_data',
   GridData: '/data_product_proxy/acis_grid_data',
 }

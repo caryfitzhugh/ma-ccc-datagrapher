@@ -7,7 +7,6 @@ import Panel from './Panel';
 let Modal = require('react-modal');
 import InfoModal from './InfoModal';
 import { chartDefs } from '../api';
-import { BasePath } from 'context';
 
 
 @connect(state => {
@@ -31,7 +30,7 @@ export default class App extends Component {
 
   locationChange(location) {
     let c = location.query.c;
-    if (!c) return this.props.history.replaceState(null,BasePath+'?c=Temp/state/maxt/ANN/NY/');
+    if (!c) return this.props.history.replaceState(null,window.location.pathname+'?c=Temp/state/maxt/ANN/NY/');
     if (!Array.isArray(c)) c = [c];
     this.actions.changeQueryToParams(c);
   }
@@ -91,4 +90,3 @@ export default class App extends Component {
       );
   }
 }
-

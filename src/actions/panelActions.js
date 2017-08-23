@@ -4,7 +4,7 @@ import 'whatwg-fetch'
 import { fetchGeom } from './geomActions';
 import { buildQuery, updateSid, haveSameResults } from '../api';
 
-import { StnData, GridData, BasePath } from 'context';
+import { StnData, GridData} from 'context';
 import {
     INVALIDATE_PARAM,
     UPDATE_PARAM,
@@ -99,7 +99,7 @@ export function maybeUpdateURL(history,query) {
     }
 
     dispatch(updateURL(query));
-    const loc = BasePath+'?c='+query.join('&c=');
+    const loc = window.location.pathname+'?c='+query.join('&c=');
     if (qValid) history.pushState(null,loc)
     else history.replaceState(null,loc)
   }
