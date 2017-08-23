@@ -17,7 +17,7 @@ module.exports = {
     filename: 'loader.js',
     chunkFilename: '[name].js',
     // publicPath: '/dataproduct/',
-    publicPath: '/data-fixture/',
+    //publicPath: '/data-fixture/',
     pathinfo: true
   },
   plugins: [
@@ -42,10 +42,10 @@ module.exports = {
     loaders: [
       { test: /\.js$/, loaders: ['babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /App.css$/, exclude: /node_modules/, 
+      { test: /App.css$/, exclude: /node_modules/,
         loaders: ['style-loader',
           'css-loader?modules&importLoaders=1!postcss-loader']
-      // { test: /\.css$/, exclude: /node_modules/, 
+      // { test: /\.css$/, exclude: /node_modules/,
       //   loader: ExtractTextPlugin.extract('style-loader',
       //     'css-loader?modules&importLoaders=1!postcss-loader')
       },
