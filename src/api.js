@@ -245,8 +245,8 @@ export function updateSid(param, prevParam, geoms) {
 
 const defaultSids = {
   stn: "USH00300042",
-  state: "NY",
-  county: "36001",
+  state: "MA",
+  county: "25001",
   basin: "02020006",
 };
 

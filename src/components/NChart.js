@@ -49,7 +49,6 @@ export default class AreaChart extends React.Component {
     const xRange=[9999,0], yRange=[10000,-10000];
     this.data = data;
     this.result = result;
-
     // calculate model data
     if (result.proj) {
       let cnt = 0, sum = [0.,0.,0.], median_sum = 0., future = false, oVal;
@@ -99,7 +98,9 @@ export default class AreaChart extends React.Component {
         const yr = +d[0].slice(0,4),
           datum = {};
 
-        let v = d[1][sid];
+        // It receives an array
+        let v = d[1][sid][0];
+
         if (typeof v != 'undefined' && v == v) {
           v = +v.toFixed(2);
 
