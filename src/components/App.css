@@ -1,3 +1,4 @@
+
 .panel {
 	display: flex;
 	flex-flow: row wrap;
@@ -62,6 +63,9 @@
 	display: flex;
 	flex: 1;
 	flex-wrap: nowrap;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .chartInput {
