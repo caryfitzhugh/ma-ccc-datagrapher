@@ -58,6 +58,7 @@ export function fetchGeom(geoType) {
     dispatch(requestGeoData(geoType));
 
     fetch('./data/'+geoType+'.json',{
+      credentials: 'include',
       method: 'get',
       headers: {
         'Accept': 'application/json',

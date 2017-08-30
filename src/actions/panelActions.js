@@ -152,6 +152,7 @@ export function fetchResults(key) {
     if (nParam.geom == 'stn') {
       const reqParams = buildQuery(nParam, geomInfo.meta.get(nParam.sid));
       req = fetch(StnData,{
+        credentials: 'include',
         method: 'post',
         headers: {
           'Accept': 'application/json',
