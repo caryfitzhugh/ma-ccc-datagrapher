@@ -26,6 +26,7 @@ export function requestGeoData(geoType) {
 
 function transformToGeoJSON(res) {
   const out = {type:'FeatureCollection'};
+
   out.features = res.meta.map((f) => {
     return {
         type: 'Feature',
@@ -35,10 +36,7 @@ function transformToGeoJSON(res) {
           id: f.id,
           bbox: f.bbox
         },
-        geometry:{
-          type: f.geojson.type,
-          coordinates: f.geojson.coordinates
-        }
+        geometry: f.geojson.geometry
       }
   });
   return out;

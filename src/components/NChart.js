@@ -350,7 +350,7 @@ export default class AreaChart extends React.Component {
 
     let dload = ""
     if (data.has("rows")) {
-      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows")} />
+      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows") || []} />
     }
 
     return <div className={styles.chartOutput}>
@@ -364,7 +364,7 @@ export default class AreaChart extends React.Component {
         delta={delta}
         download={::this.doDownload}
         showInfo={this.props.showInfo}/>
-      <DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows")} />
+      <DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows") || []} />
       </div>
   }
 

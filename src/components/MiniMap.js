@@ -60,6 +60,7 @@ export default class MiniMap extends Component {
     }
     this.geomType = this.props.geomType;
     const isPoint = this.geomType == 'stn';
+
     const fl = this.layer = L.geoJson(this.props.geoJSON,{
       pointToLayer: (geojson, latlng) =>
         new L.CircleMarker(latlng,

@@ -29,17 +29,3 @@ class Main extends Component {
 ReactDOM.render(<Main />,
   document.getElementById('root')
 );
-
-let navToggle = document.querySelector("button.navbar"),
-    navMenu = document.querySelector("ul.nav-dropdown"),
-    navOpen = false;
-
-navToggle.onclick = function(e) {
-  navOpen = !navOpen;
-  if (navOpen) {
-    navMenu.style.top = ""+(this.offsetHeight+this.offsetTop-10)+"px";
-    navMenu.style.display = "block";
-  } else {
-    navMenu.style.display = "none";
-  }
-}

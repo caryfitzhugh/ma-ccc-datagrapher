@@ -162,12 +162,12 @@ export function fetchResults(key) {
       .then(checkStatus)
       .then(res => res.json());
     } else {
-//      const url1 = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/prism/'+
-//      nParam.geom+'/'+nParam.element+'_'+nParam.season,
-//      url2 = 'https://s3.amazonaws.com/nyccsc-cache.nrcc.cornell.edu/narccap/'+
-//      nParam.geom+'/'+nParam.element+'_'+nParam.season;
-      const url1 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/observed_${nParam.geom}_${nParam.element}_${nParam.season}`,
-            url2 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/projected_${nParam.geom}_${nParam.element}_${nParam.season}`
+      const url1 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/datagrapher/observed_${nParam.element}_${nParam.season}`,
+            url2 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/datagrapher/projected_${nParam.element}_${nParam.season}`
+
+      /*const url1 = `http://localhost:4000/data/ma/datagrapher/observed_${nParam.element}_${nParam.season}`,
+            url2 = `http://localhost:4000/data/ma/datagrapher/projected_${nParam.element}_${nParam.season}`
+      */
 
       const req1 = fetch(url1,{
           method:'get',
