@@ -172,6 +172,7 @@ export function fetchResults(key) {
 
       const req1 = fetch(url1,{
           method:'get',
+          credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -183,6 +184,7 @@ export function fetchResults(key) {
 
       const req2 = fetch(url2,{
           method:'get',
+          credentials: 'include',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
