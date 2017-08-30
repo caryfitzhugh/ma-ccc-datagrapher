@@ -162,6 +162,7 @@ export function fetchResults(key) {
       .then(checkStatus)
       .then(res => res.json());
     } else {
+
       const url1 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/datagrapher/observed_${nParam.element}_${nParam.season}`,
             url2 = `https://repository.staging.nescaum-ccsc-dataservices.com/data/ma/datagrapher/projected_${nParam.element}_${nParam.season}`
 
