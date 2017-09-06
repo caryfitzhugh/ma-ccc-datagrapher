@@ -285,7 +285,7 @@ class Info extends React.Component {
       obs = ""+data.obs;
     }
     if (typeof data.obs_avg != "undefined") {
-      obsYrRng = ""+(year-4)+"–"+year;
+      obsYrRng = ""+(year-2)+"–"+(year+2);
       obs_avg = ""+data.obs_avg;
     }
     const col1=styles.col1, col2=styles.col2, col3=styles.col3,

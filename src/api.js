@@ -37,7 +37,7 @@ export let elems = new Map([
     acis: {vX:1, vN:0, reduce:'mean'},
     grid: {vX:91,maxmissing:0},
     gridY: {vX:95,maxmissing:0},
-    gYr: [1895,2016]}],
+    gYr: [1895,3096]}],
   ['mint', {
     label:'Minimum Temperature',
     yLabel: 'Temperature °F', ttUnits: '°F',

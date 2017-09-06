@@ -28,6 +28,28 @@ export default class AreaChart extends React.Component {
     this.result = null;
   }
 
+  getMedian(args) {
+    if (!args.length) {return 0};
+    var numbers = args.slice(0).sort((a,b) => a - b);
+    var middle = Math.floor(numbers.length / 2);
+    var isEven = numbers.length % 2 === 0;
+    return isEven ? (numbers[middle] + numbers[middle - 1]) / 2 : numbers[middle];
+  }
+  calculate_median(data, start, end) {
+    let slice = [];
+
+    for (let i = start; i <=end; i++) {
+      let v = data.get(i);
+      slice.push(v.model[1]); // Get the MEDIAN, middle value
+    }
+
+    return {
+      median: this.getMedian(slice),
+      start: start,
+      end: end
+    }
+  }
+
   summarizeData(sid,result) {
     /*
       data consists of map[yr] {
@@ -49,10 +71,11 @@ export default class AreaChart extends React.Component {
     const xRange=[9999,0], yRange=[10000,-10000];
     this.data = data;
     this.result = result;
+
     // calculate model data
     if (result.proj) {
-      let cnt = 0, sum = [0.,0.,0.], median_sum = 0., future = false, oVal;
-      const model_current_avg = [], model_future_avg = [], medians = [0,0];
+      let cnt = 0, sum = [0.,0.,0.], oVal;
+      const model_values = [];
 
       result.proj.forEach((d) => {
         const yr = +d[0].slice(0,4), datum = {};
@@ -61,32 +84,29 @@ export default class AreaChart extends React.Component {
         if (typeof v == 'undefined') return;
         v = v.map(x => +x.toFixed(2))
 
-        if (yr > 2020 && !future) { // reset the counters for future
-          medians[0] = median_sum / cnt;
-          cnt = 0; sum = [0.,0.,0.]; median_sum = 0.; future = true;
-        }
-        median_sum += v[1]; cnt++;
         datum.model = v;
-        oVal = cnt > 5 ? data.get(yr-5).model : [0,0,0];
-        v.forEach((x,i) => {sum[i] += x - oVal[i];});
+        // we are already averaged!
+        datum.model_avg = v;
+        // get data range
+        if (yr < xRange[0]) xRange[0] = yr;
+        if (yr > xRange[1]) xRange[1] = yr;
+        if (v[0] < yRange[0]) yRange[0] = v[0];
+        if (v[2] > yRange[1]) yRange[1] = v[2];
 
-        if (cnt >= 5) {
-          const s = v.map((x,i) => +(sum[i]/5.).toFixed(2));
-          // get data range
-          if (yr < xRange[0]) xRange[0] = yr;
-          if (yr > xRange[1]) xRange[1] = yr;
-          if (s[0] < yRange[0]) yRange[0] = s[0];
-          if (s[2] > yRange[1]) yRange[1] = s[2];
-          if (future) model_future_avg.push([yr, ...s])
-          else model_current_avg.push([yr, ...s]);
-          datum.model_avg = s;
-        }
+        model_values.push([yr, ...v])
         data.set(yr,datum);
       })
-      medians[1] = median_sum/cnt;
-      data.set("model_current_avg",model_current_avg);
-      data.set("model_future_avg",model_future_avg);
-      data.set("medians",medians);
+
+      let medians = [
+        this.calculate_median(data, 2020,2049),
+        this.calculate_median(data, 2040,2069),
+        this.calculate_median(data, 2060,2089),
+        this.calculate_median(data, 2080,2097),
+      ];
+
+      data.set("medians.projected", medians);
+
+      data.set("model_values",model_values);
     }
 
     // calculate prism obs data
@@ -111,8 +131,11 @@ export default class AreaChart extends React.Component {
           if (v > yRange[1]) yRange[1] = v;
 
           cnt++;
+          // For the firsrt 5 years, use an initial value of 0.0
           oVal = cnt > 5 ? data.get(yr-5).obs : 0.;
+          // This is the value of this year, - the starting value
           sum += v - oVal;
+          // Push into 'observed' the year and value
           obs.push([yr,v]);
           datum.obs = v;
           if (cnt >= 5) {
@@ -126,7 +149,16 @@ export default class AreaChart extends React.Component {
       })
       data.set("obs",obs);
       data.set("obs_avg",obs_avg);
+
+      let slice = [];
+      for (let i = 1971; i <=2000; i++) {
+        let v = data.get(i);
+        slice.push(v.obs);
+      }
+
+      data.set("medians.observed", this.getMedian(slice));
     }
+
     if (yRange[0]!=10000) {
       data.set("xrange",xRange);
       data.set("yrange",yRange);
@@ -168,6 +200,12 @@ export default class AreaChart extends React.Component {
     let delta = "";
 
     const data = this.data;
+    const node = ReactFauxDOM.createElement("svg"),
+      svg = d3.select(node)
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top +")")
 
     if (data.has("xrange")) {
       const xRange = data.get("xrange"), yRange = data.get("yrange");
@@ -175,6 +213,7 @@ export default class AreaChart extends React.Component {
       const x = d3.scale.linear()
         .range([0, width - margin.left - margin.right])
         .domain([xRange[0]-2,xRange[1]]);
+
       const y = d3.scale.linear()
         .range([height - margin.top - margin.bottom, 0])
         .domain(yRange)
@@ -209,13 +248,6 @@ export default class AreaChart extends React.Component {
         .x(d => x(d[0]))
         .y(d => y(d[1]))
 
-      const node = ReactFauxDOM.createElement("svg"),
-        svg = d3.select(node)
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top +")")
-
       // add rect for mouse capture on webkit
       svg.append("rect")
         .style("opacity","0")
@@ -224,6 +256,7 @@ export default class AreaChart extends React.Component {
         .attr("width", width-margin.left-margin.right)
         .attr("height", height-margin.top-margin.bottom);
 
+      // Year Label
       svg.append("g")
         .attr("class", styles.axis)
         .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
@@ -235,6 +268,7 @@ export default class AreaChart extends React.Component {
           .style("text-anchor", "end")
           .text("Year");
 
+      // Y Axis Label
       svg.append("g")
         .attr("class", styles.axis)
         .call(yAxis)
@@ -247,6 +281,7 @@ export default class AreaChart extends React.Component {
           .text(yLabel);
 
       if (data.has(year)) {
+        // This is the vertical line on hover (showing year highlighted)
         svg.append("path")
           .datum([
             [year,yRange[0]],
@@ -256,46 +291,54 @@ export default class AreaChart extends React.Component {
           .attr("d",line)
       }
 
-      if (data.has("model_current_avg")) {
+      /// THIS IS ADDING THE AREA GRAPHS
 
-        const dc = data.get("model_current_avg");
+      if (data.has("model_values")) {
+        const dc = data.get("model_values");
         svg.append("path").datum(dc).attr("class", styles.areaLo).attr("d", areaLo)
         svg.append("path").datum(dc).attr("class", styles.areaHi).attr("d", areaHi)
 
         svg.append("path").datum(dc).attr("class", styles.lineLo).attr("d",lineLo)
         svg.append("path").datum(dc).attr("class", styles.lineMd).attr("d",lineMd)
         svg.append("path").datum(dc).attr("class", styles.lineHi).attr("d",lineHi)
-
-        const df = data.get("model_future_avg");
-        svg.append("path").datum(df).attr("class", styles.areaLo).attr("d", areaLo)
-        svg.append("path").datum(df).attr("class", styles.areaHi).attr("d", areaHi)
-
-        svg.append("path").datum(df).attr("class", styles.lineLo).attr("d",lineLo)
-        svg.append("path").datum(df).attr("class", styles.lineMd).attr("d",lineMd)
-        svg.append("path").datum(df).attr("class", styles.lineHi).attr("d",lineHi)
-
-        const medians = data.get("medians");
-        // for infotable
-        delta = ""+(medians[1]-medians[0]).toFixed(1)
-        svg.append("path")
-          .datum([
-            [2023,medians[0]],
-            [2027,medians[0]],
-            [2025,medians[0]],
-            [2025,medians[1]],
-            [2023,medians[1]],
-            [2027,medians[1]],
-          ])
-          .attr("class", styles.prismLine)
-          .attr("d", line)
-        svg.append("text")
-          .attr("x",x(2027))
-          .attr("y",y((medians[0]+medians[1])/2))
-          .attr("dy","0.3em")
-          .style("text-anchor","start")
-          .text(delta+ttUnits)
       }
 
+      if (data.get("medians.observed") && data.get('medians.projected')) {
+        let obs_median = data.get("medians.observed");
+        data.get("medians.projected").forEach((median) => {
+          let at = median.start +  Math.floor((median.end - median.start) / 2)
+          let e = median.end;
+          let s = median.start;
+          let m = median.median;
+          delta = ""+(m-obs_median).toFixed(1)
+          svg.append("path")
+            .datum([
+              [at-2,obs_median],
+              [at+2,obs_median],
+              [at,obs_median],
+              [at,m],
+              [at-2,m],
+              [at+2,m],
+            ])
+            .attr("class", styles.prismLine)
+            .attr("d", line)
+
+          svg.append("text")
+            .attr("x",x(at))
+            .attr("y",y((m + obs_median)/2))
+            .attr("dy","0.3em")
+            .style("text-anchor","start")
+            .style("stroke", "white")
+            .style("stroke-width", "1px")
+            .style("font-size", "16px")
+            .style("fill", "black")
+            .style("font-weight", "800")
+            .text(delta+ttUnits)
+          });
+      }
+
+
+      // THIS IS ADDING THE OBSERVED / HISTORICAL
       if (data.has("obs")) {
         svg.append("path")
           .datum(data.get("obs_avg"))
@@ -303,6 +346,7 @@ export default class AreaChart extends React.Component {
           .attr("d", line)
 
         const dots = svg.append('g');
+
         data.get("obs").forEach((d)=>{
           dots.append('circle')
             .attr('class', d[0]!= year ? styles.prismDots : styles.prismDotsOver)
@@ -353,6 +397,18 @@ export default class AreaChart extends React.Component {
       dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows") || []} />
     }
 
+    let obs_median = data.get("medians.observed");
+    let medians = (data.get("medians.projected") || []).map((median, indx) => {
+      let e = median.end;
+      let s = median.start;
+      let m = median.median;
+      return (<tr key={indx}>
+      <td className={styles.col1}> {s} - {e}</td>
+      <td className={styles.col3}> {(m - obs_median).toFixed(2)}F&deg;</td>
+      </tr>)
+    });
+
+
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
@@ -362,6 +418,7 @@ export default class AreaChart extends React.Component {
       </div>
       <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
         delta={delta}
+        medians={medians}
         download={::this.doDownload}
         showInfo={this.props.showInfo}/>
       <DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows") || []} />
@@ -386,7 +443,7 @@ class Info extends React.Component {
   };
 
   render () {
-    const {year,element,delta,data,download} = this.props,
+    const {medians, year,element,delta,data,download} = this.props,
       { ttUnits } = elems.get(element);
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
     let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
@@ -396,11 +453,11 @@ class Info extends React.Component {
       obs = ""+data.obs;
     }
     if (typeof data.obs_avg != "undefined") {
-      obsYrRng = ""+(year-4)+"–"+year;
+      obsYrRng = ""+(year-4)+"–"+(year);
       obs_avg = ""+data.obs_avg;
     }
     if (typeof data.model_avg != "undefined") {
-      modelYrRng = ""+(year-4)+"–"+year;
+      modelYrRng = ""+(year-2)+"–"+(year+2);
       model_min = ""+data.model_avg[0];
       model_med = ""+data.model_avg[1];
       model_max = ""+data.model_avg[2];
@@ -459,10 +516,11 @@ class Info extends React.Component {
         <td className={col3}>{l_lo}</td>
       </tr>
       <tr>
-        <td className={col1}>Change 1968-2000 to 2039-2069</td>
-        <td className={col2}>{delta}</td>
+        <td className={col1}>Changes from 1971-2000 for: </td>
+        <td className={col2}>{}</td>
         <td className={col3}>{l_delta}</td>
       </tr>
+      {medians}
       </tbody>
       </table>
       <button onClick={this.props.showInfo}>About the Source Data</button>
