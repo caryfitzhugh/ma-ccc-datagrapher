@@ -51,7 +51,7 @@ devtool: 'cheap-module-eval-source-map',
       { test: /\.js$/, loaders: ['react-hot', 'babel'], exclude: /node_modules/ },
       { test: /\.json$/, loader: 'json-loader', exclude: /node_modules/  },
       { test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
-      { test: /App.css$/, exclude: /node_modules/, 
+      { test: /App.css$/, exclude: /node_modules/,
         loaders: ['style-loader',
           'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]','postcss-loader']
         // loader: ExtractTextPlugin.extract('style-loader',

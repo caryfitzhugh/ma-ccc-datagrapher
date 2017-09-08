@@ -5,124 +5,107 @@ export default class MiniMap extends Component {
 
   render() {
     return <div>
-      <h2>The NYCCSC Data Grapher combines a number of different data sources</h2>
-      <h3>Observed Data</h3>
+
+      <h2>Massachusetts Climate Change Projections</h2>
       <p>
-        State, county and river basin graphs use the gridded
-        <a href="http://www.prism.oregonstate.edu"> Parameter-elevation Relationships on Independent Slopes Model (PRISM) </a>
-        dataset. A 4 km x 4 km grid is used. PRISM data are updated each month, typically on the 15th (e.g. March 2016 
-        data are available in mid-April 2016). Monthly, seasonal and annual maximum, minimum and average temperature 
-        as well as total precipitation cover the period from 1895-the most recent full month. For elements such as heating 
-        degree-days, temperature and precipitation threshold counts, and growing season length that require daily data to 
-        compute, PRISM data are available from 1981-most recent full month. Snowfall and snow depth data are not included in
-        the PRISM dataset, but are available as a part of station-specific data graphs.</p>
-        <p>
-        A single value is obtained for each spatial feature (i.e. state, county or basin) by averaging the values of all grids
-        encompassed by the feature. Grids that are only partially within the feature are included in the average, but with 
-        proportionally less weight. For example, if only half of a grid is within a county, its value is given half of the 
-        weight of a grid that is totally within the county.
+        Climate change projections for the commonwealth of Massachusetts are based on simulations
+        from the latest generation of climate models included in the Coupled Model Intercomparison
+        Project Phase 5 (CMIP5). These same CMIP5 models formed the basis of projections
+        summarized in the IPCC Fifth Assessment Report (2013). The statewide projections comprising
+        county- and watershed-level information are derived by statistically downscaling CMIP5 model
+        results using the Local Constructed Analogs (LOCA) method (Pierce et al., 2014). The LOCA
+        dataset provides values for daily precipitation, and maximum and minimum temperature on a ~6
+        km grid (available here: <a href='http://loca.ucsd.edu'>http://loca.ucsd.edu/</a>). The LOCA method corrects for systematic biases
+        present in climate models simulations, and has been shown to produce better depiction of climate
+        extremes compared to previous statistical downscaling methods.
       </p>
       <p>
-        For station data graphs, observations from stations within the 
-        <a href="http://cdiac.ornl.gov/epubs/ndp/ushcn/ushcn.html"> U.S. Historical Climatology Network (HCN) </a>
-        are used. USHCN data include daily observations of maximum and minimum temperature, precipitation amount, 
-        snowfall amount, and snow depth, monthly-averaged maximum, minimum, and mean temperature and total monthly 
-        precipitation. Over 1000 high-quality stations comprise the USHCN with 57 located in New York.
-        Adjustments to the monthly data exist that account for non-climatic discontinuities (e.g. instrument 
-        changes, station relocations and urbanization). Since similar adjustments are not available 
-        for the daily data, all graphs are based on unadjusted observations for consistency.  Station data records have
-        varying starting dates.  Data from currently active stations are updated daily.
+        The climate change projections are based on fourteen CMIP5 models and two pathways of future
+        greenhouse gas emissions: RCP4.5 and RCP8.5, the medium and high emissions scenarios
+        respectively. The fourteen models were carefully selected from a large ensemble of CMIP5
+        models based on their ability to provide reliable climate information for the Northeast US, while
+        maintaining diversity in future projections consistent with known uncertainties.
       </p>
       <p>
-        On the county, state, basin and station graphs, observed data values for each year are shown by gray dots.
-        The solid black line shows the 5-year running mean of the annual values.
-        For instance, the value corresponding to the line in the year 2000 is the average of the five annual 
-        values for 1996-2000. The 5-year running mean highlights multi-year variations including trends.
+        Two scenarios for fourteen models each lead to 28 projections. The values cited below are based
+        on the 10-90 th percentiles across 28 projections, so they bracket the most likely scenarios. For
+        simplicity, we use the terms “…expected to…”, “…will be…”, but recognize that these are
+        estimates based on model scenarios and are <em>not forecasts</em>. They represent the best estimates that
+        we can provide for a range of anticipated changes in greenhouse gases. Note also that
+        precipitation projections are generally more uncertain than temperature.
       </p>
-      <p className={styles.infoGraph} >
-        <img alt="" src="data/images/info_fig_1.png" style={{height:"400px"}} title="" />
-      </p>
-      <h3>Projected Data</h3>
-      <p>
-        Global climate model projections from the North American Regional Climate Change Assessment Program
-        (NARCCAP) are shown on graphs for state, county and basin areas. The NARCCAP dataset provides
-        daily values of maximum and minimum temperature and precipitation on a 50 km grid. Eleven NARCCAP
-        grids are used each is created using a regional climate model (RCM) driven by one of three
-        atmosphere-ocean general circulation models (AOGCM) or a historical Reanalysis dataset. 
-        The spatial resolution of the NARCCAP simulations preclude the inclusion of projections on
-        station-specific graphs.
-      </p>
-      <p>
-        All future projections cover the period 2041-2070 and are based on the relatively high SRES A2 
-        emissions scenario. Simulations are also generated for the 1971-2000 historical period. 
-        Future (and historical) simulations are based four RCMs:
-      </p>
-        <ul>
-        <li>Canadian Regional Climate Model (CRCM)</li>
-        <li>MM5 - Penn State NCAR Mesoscale Model (MM5I)</li>
-        <li>Regional Climate Model Ver. 3 (RCM3)</li>
-        <li>Weather Research and Forecasting Model (WRF)</li>
-        </ul>
-      <p>nested within at least one of three AOGCMS:</p>
-        <ul>
-        <li>Community Climate System Model (CCSM)</li>
-        <li>Third Generation Coupled Global Climate Model (CGCM3)</li>
-        <li>Geophysical Fluid Dynamics Laboratory GCM (GFDL)</li>
-        </ul>
-      <p>This yields a set of seven RCM-AOGCM combinations:</p>
-      <div className={styles.infoModels}>
-        <div>CRCM-CCSM</div>
-        <div>CRCM-CGCM3</div>
-        <div>MM5I-CCSM</div>
-        <div>RCM3-GFDL</div>
-        <div>RCM3-CGCM3</div>
-        <div>WRF-CCSM</div>
-        <div>WRF-CGM3</div>
-      </div>
-      <p>
-        Simulations from these model combinations form the red-blue shaded areas on each graph for the
-        historical and future period. The top of the red area corresponds to the highest of the
-        seven combinations. The bottom of the blue area corresponds to the lowest of the seven
-        combinations. The mean of the seven combinations is reflected by the boundary between the blue and
-        red areas. As with the observed data, a 5-year running mean is used.
-      </p>
-      <p className={styles.infoGraph} >
-        <img alt="" src="data/images/info_fig_2.png" style={{height:"400px"}} title="" />
-      </p>
-      <p>
-        The remaining four NARCCAP grids (each RCM driven by NCEP/DOE AMIP-II Reanalysis) are used to bias
-        adjust the historical and future AOGCM simulations. The Reanalysis is not a climate model, but
-        a representation of historical atmospheric conditions based on observed data. Differences 
-        between RCM simulations and the &ldquo;true&rdquo; climate occur for a variety of reasons, 
-        particularly boundary conditions that result from the limited spatial domain of the RCMs and 
-        between-model differences in the physical handling of complex atmospheric processes. To account 
-        for this, a bias grid was computed for each RCM by subtracting the average monthly RCM-NCEP 
-        simulations from the corresponding historical RCM-AOGCM combination. This bias grid was 
-        then used to adjust both the historical and future RCM-AOGCM simulations. For instance, suppose 
-        the historical June average temperature at a grid point is 54 °F in the WRF-NCEP simulation 
-        and the corresponding temperature in the historical WRF-CGCM3 simulation is 54.6 °F. This 0.6 °F 
-        bias would be subtracted from both the historical WRF-CGCM3 and future WRF-CGCM3 simulations 
-        prior to plotting on the graphs.
-      </p>
-      <p>
-        You may notice that in many cases, the shaded region corresponding to the bias corrected 
-        historical RCM-AOGCM simulations does not encompass the observed data values. This is to be 
-        expected, as the Reanalysis data used to drive the historical RCM simulations is different from 
-        the PRISM data that represent the observations. The RCM-simulations represent conditions 
-        over a much larger spatial area (50km) than the PRISM values (4 km). Also the coarser resolution 
-        of the RCM affects the influence of variables such as topography and proximity to water bodies. 
-        The nuances of these features in regions like the Finger Lakes and Catskills can not be 
-        represented at the RCM resolution, but influence the higher resolution PRISM data.
-      </p>
-      <p>
-        A final element of each graph depicts the change between the historical and future RCM-AOGM mean. 
-        In the example below, the mean of the seven RCM-AOGCM simulations increases by 3.9 °F between 
-        1970-2000 and 2041-2070.
-      </p>
-      <p className={styles.infoGraph} >
-        <img alt="" src="data/images/info_fig_3.png" style={{height:"400px"}} title="" />
-      </p>
-      </div>
+
+      <h4>The following projections are for the mid-21 st century (2050s) relative to the 1971-2000
+average</h4>
+      <ul>
+        <li>Mean annual temperatures in MA are expected to be 2.8-6.2°F warmer than over recent decades.</li>
+        <li>There will be 7-26 more days per year when daily maximum temperatures exceed 90°F.</li>
+        <li>There will be 19-40 fewer days when minimum temperatures fall below 32°F (a decline of 13-27%).</li>
+        <li>Total heating degree days will be 11-24% lower, but cooling degree days will be 57-150% higher.</li>
+        <li>Growing degree days will be 23-52% higher, and the growing season will be longer.</li>
+        <li>Total annual precipitation will increase by 2-13%, and winter precipitation will increase by up to 21%.</li>
+        <li>While winters are projected to get wetter, more precipitation will fall as rain or freezing rain, rather than snow because of the increase in temperatures.</li>
+      </ul>
+      <table className='table'>
+        <thead>
+          <tr>
+            <th>Variable</th>
+            <th>Observed value <br/> 1971 - 2000 average</th>
+            <th>Change by 2050s</th>
+            <th>Change by 2090s</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td> Annual average temperature </td>
+            <td> 47.5 °F </td>
+            <td> Increase by 2.8-6.2 °F </td>
+            <td> Increase by 3.8-10.8 °F</td>
+          </tr>
+          <tr>
+            <td>Number of days per year with daily Tmax &gt; 90°F</td>
+            <td> 5 days</td>
+            <td>Increase by 7-26 days</td>
+            <td>Increase by 10-63 days</td>
+          </tr>
+          <tr>
+            <td> Number of days per year with daily Tmin &lt; 32°F</td>
+            <td> 146 days </td>
+            <td> Decrease by 19-40 days</td>
+            <td> Decrease by 24-64 days</td>
+          </tr>
+          <tr>
+            <td> Heating degree- days per year </td>
+            <td> 6839 Degree-Day °F</td>
+            <td> Decrease by 773-1627 </td>
+            <td> Decrease by 1033-2533</td>
+          </tr>
+          <tr>
+            <td> Cooling degree- days per year </td>
+            <td> 457 Degree-Day °F </td>
+            <td> Increase by 261-689 </td>
+            <td> Increase by 356-1417 </td>
+          </tr>
+          <tr>
+            <td> Growing degree- days per year </td>
+            <td> 2344 Degree-Day °F </td>
+            <td> Increase by 531-1210 </td>
+            <td> Increase by 702-2347 </td>
+          </tr>
+          <tr>
+            <td> Total Precipitation per year </td>
+            <td> 47 inches </td>
+            <td> Increase by 0.9-6 inches </td>
+            <td> Increase by 1.2-7.3 inches</td>
+          </tr>
+          <tr>
+            <td> Number of days with precip &gt; 1 in </td>
+            <td> 7 days </td>
+            <td> Increase by 0-3 days </td>
+            <td> Increase by 1-4 days </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   }
 };
-
