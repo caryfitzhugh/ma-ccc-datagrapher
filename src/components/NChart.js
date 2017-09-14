@@ -313,12 +313,14 @@ export default class AreaChart extends React.Component {
           delta = ""+(m-obs_median).toFixed(1)
           svg.append("path")
             .datum([
-              [at-2,obs_median],
-              [at+2,obs_median],
+              [at-1,obs_median+0.5],
+              [at,obs_median],
+              [at+1,obs_median+0.5],
               [at,obs_median],
               [at,m],
-              [at-2,m],
-              [at+2,m],
+              [at-1,m-0.5],
+              [at,m],
+              [at+1,m-0.5],
             ])
             .attr("class", styles.prismLine)
             .attr("d", line)
@@ -398,13 +400,14 @@ export default class AreaChart extends React.Component {
     }
 
     let obs_median = data.get("medians.observed");
+
     let medians = (data.get("medians.projected") || []).map((median, indx) => {
       let e = median.end;
       let s = median.start;
       let m = median.median;
       return (<tr key={indx}>
       <td className={styles.col1}> {s} - {e}</td>
-      <td className={styles.col3}> {(m - obs_median).toFixed(2)}F&deg;</td>
+      <td className={styles.col3}> {(m - obs_median).toFixed(2)}{ttUnits}</td>
       </tr>)
     });
 
@@ -445,6 +448,7 @@ class Info extends React.Component {
   render () {
     const {medians, year,element,delta,data,download} = this.props,
       { ttUnits } = elems.get(element);
+
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
     let modelYrRng=" ", model_min=" ", model_med=" ", model_max=" ";
 
@@ -468,7 +472,7 @@ class Info extends React.Component {
       l_md = <svg width="20" height="20"><path className={styles.lineMd} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_hi = <svg width="20" height="20"><path className={styles.lineHi} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
       l_avg = <svg width="20" height="20"><path className={styles.prismLine} d="M0,15L5,12L10,7,L15,10L20,5"></path></svg>,
-      l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>,
+      //l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>,
       l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
 
     return <div className={styles.chartTable} >
@@ -481,7 +485,7 @@ class Info extends React.Component {
       <tr>
         <td className={col1}>{obsYr}</td>
         <td className={col2}>{obs}</td>
-        <td className={col3}>{l_obs}</td>
+        <td className={col3}>{ttUnits}</td>
       </tr>
       <tr>
         <td className={col1}>5-yr Mean</td>

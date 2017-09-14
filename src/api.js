@@ -54,75 +54,75 @@ export let elems = new Map([
     gYr: [1895,2016]}],
   ['gdd50', {
     label:'Growing Degree-Day Accumulation',
-    yLabel: 'Degree-Day °F', ttUnits: '°F',
+    yLabel: 'Degree-Day °F', ttUnits: 'GDD',
     acis: {vX:44, vN:0, base:50, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['hdd65', {
     label:'Heating Degree-Day Accumulation',
-    yLabel: 'Degree-Day °F', ttUnits: '°F',
+    yLabel: 'Degree-Day °F', ttUnits: 'HDD',
     acis: {vX:45, vN:0, base:65, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['cdd65', {
     label:'Cooling Degree-Day Accumulation',
-    yLabel: 'Degree-Day °F', ttUnits: '°F',
+    yLabel: 'Degree-Day °F', ttUnits: 'CDD',
     acis: {vX:44, vN:0, base:65, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
 // StnTDays
   ['tx90', {
     label:'Days with Maximum Temperature Above 90°F',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: ' days',
     acis: {vX:1, vN:0, reduce:'cnt_gt_90'},
     grid: {},
     gYr: [1981,2016]}],
   ['tx95', {
     label:'Days with Maximum Temperature Above 95°F',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: ' days',
     acis: {vX:1, vN:0, reduce:'cnt_gt_95'},
     grid: {},
     gYr: [1981,2016]}],
   ['tx100', {
     label:'Days with Maximum Temperature Above 100°F',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:1, vN:0, reduce:'cnt_gt_100'},
     grid: {},
     gYr: [1981,2016]}],
   ['tn0', {
     label:'Days with Minimum Temperature Below 0°F',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:2, vN:0, reduce:'cnt_lt_0'},
     grid: {},
     gYr: [1981,2016]}],
   ['tn32', {
     label:'Days with Minimum Temperature Below 32°F',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:2, vN:0, reduce:'cnt_lt_32'},
     grid: {},
     gYr: [1981,2016]}],
 // StnPDays
   ['pcpn_1', {
     label:'Days with Precipitation > 1"',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:4, vN:0, reduce:'cnt_gt_1'},
     grid: {},
     gYr: [1981,2016]}],
   ['pcpn_2', {
     label:'Days with Precipitation > 2"',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:4, vN:0, reduce:'cnt_gt_2'},
     grid: {},
     gYr: [1981,2016]}],
   ['pcpn_4', {
     label:'Days with Precipitation > 4"',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:4, vN:0, reduce:'cnt_gt_4'},
     grid: {},
     gYr: [1981,2016]}],
   ['snwd_1', {
     label:'Days with Snow Depth > 1"',
-    yLabel: 'Days', ttUnits: '',
+    yLabel: 'Days', ttUnits: 'days',
     acis: {vX:11, vN:0, reduce:'cnt_gt_1'}}],
 // StnFrost
   ['grow_32', {
