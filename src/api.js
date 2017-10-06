@@ -1,7 +1,7 @@
 export const geoms = new Map([
   ['state','State'],
   ['county','County'],
-//  ['basin','Basin'],
+  ['basin','Basin'],
 //  ['stn', 'Station'],
 ]);
 
@@ -247,7 +247,7 @@ const defaultSids = {
   stn: "USH00300042",
   state: "MA",
   county: "25001",
-  basin: "02020006",
+  basin: "Blackstone",
 };
 
 function nearestGeom(nSid, nGeom, pSid, pGeom) {
