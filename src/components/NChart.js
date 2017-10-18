@@ -479,7 +479,7 @@ class Info extends React.Component {
       <button onClick={download}>Download Data</button>
       <table>
       <thead>
-      <tr><th colSpan="3">Observed {ttUnits}</th></tr>
+      <tr><th colSpan="3">Observed</th></tr>
       </thead>
       <tbody>
       <tr>
