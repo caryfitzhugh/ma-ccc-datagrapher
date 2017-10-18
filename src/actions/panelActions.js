@@ -90,18 +90,11 @@ function updateURL(query) {
 }
 
 export function maybeUpdateURL(history,query) {
-  // check to see if current query is valid
-  //   if valid pushState else replaceState
   return (dispatch, getState) => {
-    const cQuery = getState().panels.query, qValid = getState().panels.locationValid;
-    if ((query.length == cQuery.length) && cQuery.every((e,i)=> query[i] == e)) {
-      return;
-    }
-
     dispatch(updateURL(query));
     const loc = window.location.pathname+'?c='+query.join('&c=');
-    if (qValid) history.pushState(null,loc)
-    else history.replaceState(null,loc)
+    // ALWAYS replaceState
+    history.replaceState(null,loc);
   }
 }
 
