@@ -3,7 +3,6 @@ import d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 
 import {seasons,elems} from '../api';
-import DownloadForm from './DownloadForm'
 import styles from './App.css';
 
 
@@ -242,19 +241,19 @@ export default class StationChart extends React.Component {
       </svg>;
     }
 
-    let dload = ""
-    if (data.has("rows")) {
-      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs"]} rows={data.get("rows")} />
-    }
+    //let dload = ""
+    //if (data.has("rows")) {
+      //dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs"]} rows={data.get("rows")} />
+    //}
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
-      {dload}
+     // {dload}
       </div>
       <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
-        download={::this.doDownload}
+      //  download={::this.doDownload}
         showInfo={this.props.showInfo}/>
       </div>
   }

@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
+import FileSaver from 'file-saver';
 import d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 
 import {seasons,elems} from '../api';
-import DownloadForm from './DownloadForm'
 import styles from './App.css';
 
 
@@ -396,10 +396,6 @@ export default class AreaChart extends React.Component {
       </svg>;
     }
 
-    let dload = ""
-    if (data.has("rows")) {
-      dload = <DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows") || []} />
-    }
 
     let obs_median = data.get("medians.observed");
 
@@ -413,28 +409,22 @@ export default class AreaChart extends React.Component {
       </tr>)
     });
 
+    //<DownloadForm ref={(c) => this.download = c} title={["year","obs","model_min","model_median","model_max"]} rows={data.get("rows") || []} />
+    //<DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows") || []} />
 
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
       <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
       <div className={styles.chartHeader2}>{stationName}</div>
       {chart}
-      {dload}
       </div>
       <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
         delta={delta}
         medians={medians}
-        download={::this.doDownload}
+        download_data={["year","obs","model_min","model_median","model_max"].join(',') + "\n" +
+              (data.get('rows') || []).join("\n")}
         showInfo={this.props.showInfo}/>
-      <DownloadForm ref="download" title={["year","obs","model"]} rows={data.get("rows") || []} />
       </div>
-  }
-
-  doDownload(e) {
-    const f = this.download;
-    if (typeof f != "undefined") {
-      f._form.submit();
-    }
   }
 };
 
@@ -447,8 +437,13 @@ class Info extends React.Component {
     // data: PropTypes.object.isRequired,
   };
 
+  on_download_data(dl_data) {
+    var blob = new Blob([dl_data], {type: "text/csv;charset=utf-8"});
+    FileSaver.saveAs(blob, "maccc_dg_download.csv");
+  }
+
   render () {
-    const {medians, year,element,delta,data,download} = this.props,
+    const {download_data, medians, year,element,delta,data} = this.props,
       { ttUnits } = elems.get(element);
 
     let obsYr=" ", obsYrRng=" ", obs=" ", obs_avg=" ";
@@ -478,7 +473,7 @@ class Info extends React.Component {
       l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
 
     return <div className={styles.chartTable} >
-      <button onClick={download}>Download Data</button>
+      <button onClick={() => this.on_download_data(download_data)}>Download Data</button>
       <table>
       <thead>
       <tr><th colSpan="3">Observed</th></tr>
