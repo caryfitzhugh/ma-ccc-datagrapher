@@ -9,12 +9,12 @@ export default class DownloadForm extends React.Component {
 
   render() {
     const {title,rows} = this.props;
-    const filename="nyccsc_download.csv";
+    const filename="maccc_dg_download.csv";
 
     return <form
           ref={(c) => this._form = c}
           method="post"
-          action="https://adhoc.rcc-acis.org/nyccsc_download"
+          action="https://adhoc.rcc-acis.org/maccc_dg_download"
           style={{display:"none"}} >
         <input type="hidden" name="filename" value={filename} />
         <input type="hidden" name="headers" value={JSON.stringify(title)} />
