@@ -324,7 +324,9 @@ export default class AreaChart extends React.Component {
             ])
             .attr("class", styles.prismLine)
             .attr("d", line)
+        });
 
+          /*
           svg.append("text")
             .attr("x",x(at))
             .attr("y",y((m + obs_median)/2))
@@ -336,7 +338,7 @@ export default class AreaChart extends React.Component {
             .style("fill", "black")
             .style("font-weight", "800")
             .text(delta+ttUnits)
-          });
+          */
       }
 
 

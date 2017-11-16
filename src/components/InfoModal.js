@@ -75,19 +75,19 @@ average</h4>
             <td> Decrease by 24-64 days</td>
           </tr>
           <tr>
-            <td> Heating degree- days per year </td>
+            <td> Heating degree-days per year (HDD)</td>
             <td> 6839 Degree-Day °F</td>
             <td> Decrease by 773-1627 </td>
             <td> Decrease by 1033-2533</td>
           </tr>
           <tr>
-            <td> Cooling degree- days per year </td>
+            <td> Cooling degree-days per year (CDD)</td>
             <td> 457 Degree-Day °F </td>
             <td> Increase by 261-689 </td>
             <td> Increase by 356-1417 </td>
           </tr>
           <tr>
-            <td> Growing degree- days per year </td>
+            <td> Growing degree-days per year (GDD)</td>
             <td> 2344 Degree-Day °F </td>
             <td> Increase by 531-1210 </td>
             <td> Increase by 702-2347 </td>

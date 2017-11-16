@@ -53,19 +53,19 @@ export let elems = new Map([
     gridY: {vX:100,maxmissing:0},
     gYr: [1895,2016]}],
   ['gdd50', {
-    label:'Growing Degree-Day Accumulation',
+    label:'Growing Degree-Day Accumulation (GDD)',
     yLabel: 'Degree-Day °F', ttUnits: 'GDD',
     acis: {vX:44, vN:0, base:50, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['hdd65', {
-    label:'Heating Degree-Day Accumulation',
+    label:'Heating Degree-Day Accumulation (HDD)',
     yLabel: 'Degree-Day °F', ttUnits: 'HDD',
     acis: {vX:45, vN:0, base:65, reduce:'sum'},
     grid: {},
     gYr: [1981,2016]}],
   ['cdd65', {
-    label:'Cooling Degree-Day Accumulation',
+    label:'Cooling Degree-Day Accumulation (CDD)',
     yLabel: 'Degree-Day °F', ttUnits: 'CDD',
     acis: {vX:44, vN:0, base:65, reduce:'sum'},
     grid: {},
