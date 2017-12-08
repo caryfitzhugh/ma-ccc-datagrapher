@@ -313,14 +313,14 @@ export default class AreaChart extends React.Component {
           delta = ""+(m-obs_median).toFixed(1)
           svg.append("path")
             .datum([
-              [at-1,obs_median+0.5],
+              [at-1.5,obs_median],
               [at,obs_median],
-              [at+1,obs_median+0.5],
+              [at+1.5,obs_median],
               [at,obs_median],
               [at,m],
-              [at-1,m-0.5],
+              [at-1.5,m],
               [at,m],
-              [at+1,m-0.5],
+              [at+1.5,m],
             ])
             .attr("class", styles.prismLine)
             .attr("d", line)
