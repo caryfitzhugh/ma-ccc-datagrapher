@@ -304,6 +304,8 @@ export default class AreaChart extends React.Component {
       }
 
       if (data.get("medians.observed") && data.get('medians.projected')) {
+        /*
+        // These are the lines
         let obs_median = data.get("medians.observed");
         data.get("medians.projected").forEach((median) => {
           let at = median.start +  Math.floor((median.end - median.start) / 2)
@@ -325,6 +327,7 @@ export default class AreaChart extends React.Component {
             .attr("class", styles.prismLine)
             .attr("d", line)
         });
+          */
 
           /*
           svg.append("text")
