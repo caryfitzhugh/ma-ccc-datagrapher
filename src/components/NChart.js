@@ -408,6 +408,7 @@ export default class AreaChart extends React.Component {
       let m = median.median;
       return (<tr key={indx}>
       <td className={styles.col1}> {s} - {e}</td>
+      <td className={styles.col2}> </td>
       <td className={styles.col3}> {(m - obs_median).toFixed(2)}{ttUnits}</td>
       </tr>)
     });
@@ -520,9 +521,7 @@ class Info extends React.Component {
         <td className={col3}>{l_lo}</td>
       </tr>
       <tr>
-        <td className={col1}>Changes from 1971-2000 for: </td>
-        <td className={col2}>{}</td>
-        <td className={col3}>{l_delta}</td>
+        <td colSpan='3' style={{padding: "6px 0 3px 0", borderBottom:"1px solid black", textAlign: "center"}}>Changes from 1971-2000 for: </td>
       </tr>
       {medians}
       </tbody>
