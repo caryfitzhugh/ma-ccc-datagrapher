@@ -443,7 +443,7 @@ class Info extends React.Component {
 
   on_download_data(dl_data) {
     var blob = new Blob([dl_data], {type: "text/csv;charset=utf-8"});
-    FileSaver.saveAs(blob, "maccc_dg_download.csv");
+    FileSaver.saveAs(blob, "maccc_dg_download_"+ this.props.element +".csv");
   }
 
   render () {
