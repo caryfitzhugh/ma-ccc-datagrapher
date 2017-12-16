@@ -476,6 +476,11 @@ class Info extends React.Component {
       //l_obs = <svg width="20" height="20"><circle className={styles.prismDots} r="2" cx="10" cy="10"></circle></svg>,
       l_delta = <svg width="20" height="40"><path className={styles.prismLine} d="M3,0L17,0M10,0L10,40L3,40L17,40"></path></svg>;
 
+    let longUnits = ttUnits;
+    if (longUnits === '"') {
+      longUnits = "Inches";
+    }
+
     return <div className={styles.chartTable} >
       <button onClick={() => this.on_download_data(download_data)}>Download Data</button>
       <table>
@@ -486,7 +491,7 @@ class Info extends React.Component {
       <tr>
         <td className={col1}>{obsYr}</td>
         <td className={col2}>{obs}</td>
-        <td className={col3}>{ttUnits}</td>
+        <td className={col3}>{longUnits}</td>
       </tr>
       <tr>
         <td className={col1}>5-yr Mean</td>
@@ -501,7 +506,7 @@ class Info extends React.Component {
       </tr>
       </tbody>
       <thead>
-      <tr><th colSpan="3">Modeled {ttUnits}</th></tr>
+      <tr><th colSpan="3">Modeled {longUnits}</th></tr>
       <tr><th colSpan="3">{modelYrRng}</th></tr>
       </thead>
       <tbody>
