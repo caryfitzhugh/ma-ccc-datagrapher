@@ -141,6 +141,10 @@
 	justify-content: space-between;
 	align-items: center;
 }
+.chartTable th small {
+  display: block;
+  font-size: 80%;
+}
 .chartTable button {
 	margin: 15px 0px;
 	width: 150px;

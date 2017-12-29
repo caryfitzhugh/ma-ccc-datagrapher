@@ -481,6 +481,15 @@ class Info extends React.Component {
       longUnits = "Inches";
     }
 
+    let addlUnitInfoLine = false;
+    if (ttUnits === 'GDD') {
+      addlUnitInfoLine = <small>Base temp 50&deg;</small>;
+    } else if (ttUnits === 'HDD') {
+      addlUnitInfoLine = <small>Base temp 65&deg;</small>;
+    } else if (ttUnits === 'CDD') {
+      addlUnitInfoLine = <small>Base temp 65&deg;</small>;
+    }
+
     return <div className={styles.chartTable} >
       <button onClick={() => this.on_download_data(download_data)}>Download Data</button>
       <table>
@@ -506,7 +515,12 @@ class Info extends React.Component {
       </tr>
       </tbody>
       <thead>
-      <tr><th colSpan="3">Modeled {longUnits}</th></tr>
+      <tr>
+        <th colSpan="3">
+          Modeled {longUnits}
+          {addlUnitInfoLine ? addlUnitInfoLine : null}
+        </th>
+      </tr>
       <tr><th colSpan="3">{modelYrRng}</th></tr>
       </thead>
       <tbody>
@@ -526,7 +540,7 @@ class Info extends React.Component {
         <td className={col3}>{l_lo}</td>
       </tr>
       <tr>
-        <td colSpan='3' style={{padding: "6px 0 3px 0", borderBottom:"1px solid black", textAlign: "center"}}>Changes from 1971-2000 for: </td>
+        <td colSpan='3' style={{padding: "6px 0 3px 0", borderBottom:"1px solid black", textAlign: "center"}}>Changes from <br/>1971-2000 for: </td>
       </tr>
       {medians}
       </tbody>
