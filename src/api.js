@@ -15,6 +15,13 @@ export let seasons = new Map([
 
 export let elems = new Map([
 // StnPrcp
+  ['condrydays', {
+    label:'Consecutive Dry Days',
+    yLabel: 'Dry Days', ttUnits: 'days',
+    acis: {vX:4, vN:0, reduce:'sum'},
+    grid: {vX:94,maxmissing:0},
+    gridY: {vX:98,maxmissing:0},
+    gYr: [1895,2016]}],
   ['pcpn', {
     label:'Total Precipitation',
     yLabel: 'Precipitation (Inch)', ttUnits: '"',
@@ -284,6 +291,7 @@ export const chartDefs = new Map([
               'tx90','tx95','tx100',
               'tn0','tn32',
               'grow_32',
+              'condrydays',
               // 'tx90_3','tx95_3','tx100_3',
               // 'tn0_3','tn32_3',
               // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
@@ -299,6 +307,7 @@ export const chartDefs = new Map([
             'tx90','tx95','tx100',
             'tn0','tn32',
             'grow_32',
+            'condrydays',
             // 'tx90_3','tx95_3','tx100_3',
             // 'tn0_3','tn32_3',
             // 'tx90_run', 'tx95_run', 'tx100_run', 'tn0_run', 'tn32_run'
