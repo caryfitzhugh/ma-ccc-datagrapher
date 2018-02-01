@@ -1,11 +1,13 @@
 
 .panel {
 	display: flex;
-	flex-flow: row wrap;
-	margin-left: 0px;
+  flex-direction: row;
+  width: 100%;
+	/*margin-left: 0px;
   padding: 0.5em 1em;
 	margin-bottom: 5px;
-	border-bottom: 2px solid #5e5e5e;
+  */
+  border-bottom: 2px solid #5e5e5e;
 }
 
 .sidepanel {
@@ -61,19 +63,16 @@
 
 .chart {
 	display: flex;
-	flex: 1;
-	flex-wrap: nowrap;
-  max-width: 1200px;
+  flex-direction: row;
   margin-left: auto;
   margin-right: auto;
 }
 
 .chartInput {
 	display: flex;
-	flex:1 0 auto;
 	flex-direction: column;
-	justify-content: space-between;
-	padding: 0 10;
+	justify-content: flex-start;
+	padding: 0 0;
 	z-index: 0;
 }
 
@@ -88,7 +87,7 @@
 }
 .miniMap {
 	height: 250px;
-	width: 300px;
+	width: 100%;
 	margin-bottom: 20px;
 }
 .addDelPanels {
@@ -109,14 +108,13 @@
 }
 
 .chartOutput {
-	display: flex;
-	flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .chartBody {
-	display: flex;
-	flex-direction: column;
-	flex: 0 0 auto;
+  margin: 0 25px;
 }
 
 .chartHeader1 {
@@ -140,6 +138,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
+  width: 100%;
 }
 .chartTable th small {
   display: block;

@@ -49,11 +49,11 @@ export default class StnParameters extends React.Component {
       );
     }
 
-    const elemOptions = this.props.shownElems.map((elem) => 
+    const elemOptions = this.props.shownElems.map((elem) =>
       (<option key={elem} value={elem}>{elems.get(elem).label}</option>));
 
     return (
-      <div className="row">
+      <div >
 
         <fieldset style={{border:"none", margin:"25px 0px 5px 0px"}} >
           <select
@@ -103,4 +103,3 @@ export default class StnParameters extends React.Component {
   }
 
 }
-

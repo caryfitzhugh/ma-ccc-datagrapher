@@ -247,13 +247,11 @@ export default class StationChart extends React.Component {
     //}
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
-      <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
-      <div className={styles.chartHeader2}>{stationName}</div>
-      {chart}
-     // {dload}
+        <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
+        <div className={styles.chartHeader2}>{stationName}</div>
+        {chart}
       </div>
       <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
-      //  download={::this.doDownload}
         showInfo={this.props.showInfo}/>
       </div>
   }

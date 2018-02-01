@@ -418,9 +418,9 @@ export default class AreaChart extends React.Component {
 
     return <div className={styles.chartOutput}>
       <div className={styles.chartBody}>
-      <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
-      <div className={styles.chartHeader2}>{stationName}</div>
-      {chart}
+        <div className={styles.chartHeader1}>{titleSeason + ' ' + titleElem}</div>
+        <div className={styles.chartHeader2}>{stationName}</div>
+        {chart}
       </div>
       <Info year={year} element={element} data={data.has(year) ? data.get(year) : {}}
         delta={delta}
