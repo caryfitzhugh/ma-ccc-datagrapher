@@ -189,7 +189,21 @@ export function fetchResults(key) {
         .catch(error => {return {error};});
 
       req = Promise.all([req1,req2])
-        .then(res => {return {data:res[0].data,proj:res[1].data};});
+        .then(res => {
+          if (nParam.season == "DJF") {
+            let first_data = Object.values(res[1].data[0][1]);
+            let all_zero = true;
+            first_data.forEach((row) => {
+              all_zero = all_zero && row[0] === 0 && row[1] === 0 && row[1] === 0;
+            });
+
+            if (all_zero) {
+              console.log("Dropping first datapoint of 0,0,0 on winter");
+              res[1].data.shift();
+            }
+          }
+          return {data:res[0].data,proj:res[1].data};
+        });
     }
     req.then(res => {
       return dispatch(setResult(key,nParam,res));
