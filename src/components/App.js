@@ -30,7 +30,7 @@ export default class App extends Component {
 
   locationChange(location) {
     let c = location.query.c;
-    if (!c) return this.props.history.replaceState(null,window.location.pathname+'?c=Temp/state/maxt/ANN/NY/');
+    if (!c) return this.props.history.pushState(null,window.location.pathname+'?c=Temp/state/maxt/ANN/NY/');
     if (!Array.isArray(c)) c = [c];
     this.actions.changeQueryToParams(c);
   }

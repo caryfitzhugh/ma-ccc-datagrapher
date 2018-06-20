@@ -94,7 +94,7 @@ export function maybeUpdateURL(history,query) {
     dispatch(updateURL(query));
     const loc = window.location.pathname+'?c='+query.join('&c=');
     // ALWAYS replaceState
-    history.replaceState(null,loc);
+    history.pushState(null,loc);
   }
 }
 

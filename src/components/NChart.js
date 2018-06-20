@@ -546,7 +546,7 @@ class Info extends React.Component {
       </tbody>
       </table>
       <button onClick={this.props.showInfo}>About the Source Data</button>
-      <a href="http://necsc.umass.edu"><img className='necsc-logo' src="data/images/NECSC-logo.png"/></a>
+      <a href="http://necsc.umass.edu"><img className='necsc-logo' src="data/images/NECASC.jpg"/></a>
     </div>
   }
 }
