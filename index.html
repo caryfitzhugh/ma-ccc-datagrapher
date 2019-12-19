@@ -11,234 +11,273 @@
       font-size: 14px;
       margin: 0px;
     }
-    header {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      padding: 10px 15px;
-      border-bottom: 2px solid #5690ca;
-    }
-    header:after {
-      content:'';
-      display:block;
-      clear: both;
-    }
-    .img-left {
-      float: left;
-      margin-right: 10px;
-    }
-    .clearfix {
-      clear: both;
-    }
-    form.search {
-      margin-top: 20px;
-      text-align:right;
-      height: 34px;
-      width: 100%;
-    }
-    form.search label.sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
-    }
-    form.search input {
-      width: 60%;
-      height: 34px;
-      font: inherit;
-      padding: 6px 12px;
-      background-color: white;
-      border: 1px solid #cccccc;
-      border-radius: 0px;
-    }
-    form.search button {
-      height: 34px;
-      font: inherit;
-      color: white;
-      background-color: #f27421;
-      border-color: #f27421;
-      border: 1px;
-      border-radius: 0px 4px 4px 0px;
-      padding: 6px 12px;
-      margin: 0px;
-    }
-    button.navbar {
-      float: right;
-      height: 34px;
-      background-color: #f27421;
-      border: 1px solid transparent;
-      border-radius: 4px;
-      padding: 0px 8px;
-      margin-top: 20px;
-      margin-left: 20px;
-      font-size: 11pt;
-    }
-    .header {
-      border-bottom: 10px solid #5e5e5e;
-      margin-bottom: 1em;
-    }
-    img.necsc-logo {
-      max-height: 60px;
-    }
+    .necsc-logo { max-height: 60px; }
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.col {
+  padding-right: 15px;
+    padding-left: 15px;
+    float: left;
+}
+.col-sm-4 {
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+svg:not(:root).svg-inline--fa{overflow:visible;}
+.svg-inline--fa{display:inline-block;font-size:inherit;height:1em;overflow:visible;vertical-align:-0.125em;}
+.svg-inline--fa.fa-w-14{width:0.875em;}
+.svg-inline--fa.fa-w-16{width:1em;}
+/*! CSS Used from: Embedded */
+.orange-text{color:#CA4D00;}
+.slate-text{color:#113f83;}
+.header-wrap .fa-bars{font-weight:300;font-size:2em;color:#113f83;vertical-align:middle;position:relative;}
+.header-wrap .controls{float:right;display:flex;vertical-align:middle;margin-top:2.5em;}
+.header-wrap a:hover,.header-wrap a:active,.header-wrap a:focus,.header-wrap a:visited{text-decoration:none!important;}
+.header{margin-top:1em;display:flex;flex-direction:row;justify-content:space-between;margin-bottom:1em;}
+.header .logo{display:flex;flex-direction:row;}
+.header .logo img{margin-right:1em;width:auto;height:64px;}
+.header .logo .logo-text{font-family:'Raleway', sans-serif;display:flex;flex-direction:column;}
+.header .logo .logo-text h1{font-weight:300;margin-bottom:0;font-size:2.4em;margin-top:0;}
+.header .logo .logo-text h1 span{letter-spacing:-2px;}
+.header .logo .logo-text .tagline{font-weight:500;}
+.header .logo .logo-text small{font-weight:400;font-size:1.0em;}
+.header .logo .logo-text strong{font-weight:700;}
+.header .logo{float:left;}
+.mega-menu-toggle{position:relative;flex-direction:column;text-align:center;display:flex;margin:0;top:-24px;}
+.mega-menu-toggle label{text-transform:uppercase;font-weight: 400; position:relative;color:#113f83;font-size:9px;margin-bottom:0;}
+.search-bar{padding:0;float:right;opacity:0.85;position:relative;top:0px;}
+.search-bar input:focus, .search-bar input {box-shadow:0 0 0;}
+.search-bar input{border:0px;top:-6px;}
+.search-bar .fa-search{font-size:100%;position:relative;top:-2px;}
+.search-bar input[type=text]:focus{width:250px;opacity:1.0;border-color:#113f83;}
+.search-bar input[type=text]{transition:all 0.5s ease;border-bottom:1px solid transparent;width:70px;font-size:80%;margin:0 10px;padding:0;border-radius:0;}
+/*! CSS Used from: Embedded */
+*,*::before,*::after{box-sizing:border-box;}
+h1{margin-top:0;margin-bottom:0.5rem;}
+strong{font-weight:bolder;}
+small{font-size:80%;}
+a{color:#C74D00;text-decoration:none;background-color:transparent;}
+a:hover{color:#7b2f00;text-decoration:underline;}
+img{vertical-align:middle;border-style:none;}
+svg{overflow:hidden;vertical-align:middle;}
+label{display:inline-block;margin-bottom:0.5rem;}
+input{margin:0;font-family:inherit;font-size:inherit;line-height:inherit;}
+input{overflow:visible;}
+h1{margin-bottom:0.5rem;font-weight:500;line-height:1.2;}
+h1{font-size:2.5rem;}
+small{font-size:80%;font-weight:400;}
+.form-control{display:block;width:100%;height:calc(1.5em + 0.75rem + 2px);padding:0.375rem 0.75rem;font-size:1rem;font-weight:400;line-height:1.5;color:#495057;background-color:#fff;background-clip:padding-box;border:1px solid #ced4da;border-radius:0.25rem;transition:border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;}
+@media (prefers-reduced-motion: reduce){
+.form-control{transition:none;}
+}
+.form-control::-ms-expand{background-color:transparent;border:0;}
+.form-control:focus{color:#495057;background-color:#fff;border-color:#ff8f48;outline:0;box-shadow:0 0 0 0.2rem rgba(199, 77, 0, 0.25);}
+.form-control::placeholder{color:#6c757d;opacity:1;}
+.form-control:disabled{background-color:#e9ecef;opacity:1;}
+.input-group{position:relative;display:flex;flex-wrap:wrap;align-items:stretch;width:100%;}
+.input-group > .form-control{position:relative;flex:1 1 auto;width:1%;margin-bottom:0;}
+.input-group > .form-control:focus{z-index:3;}
+.input-group > .form-control:not(:first-child){border-top-left-radius:0;border-bottom-left-radius:0;}
+.input-group-sm > .form-control:not(textarea){height:calc(1.5em + 0.5rem + 2px);}
+.input-group-sm > .form-control{padding:0.25rem 0.5rem;font-size:0.875rem;line-height:1.5;border-radius:0.2rem;}
+.px-5{padding-right:3rem!important;}
+.px-5{padding-left:3rem!important;}
+@media print{
+*,*::before,*::after{text-shadow:none!important;box-shadow:none!important;}
+a:not(.btn){text-decoration:underline;}
+img{page-break-inside:avoid;}
+}
+/*! CSS Used from: Embedded */
+*,*::before,*::after{box-sizing:border-box;}
+h1{margin-top:0;margin-bottom:0.5rem;}
+strong{font-weight:bolder;}
+small{font-size:80%;}
+a{color:#C74D00;text-decoration:none;background-color:transparent;}
+a:hover{color:#7b2f00;text-decoration:underline;}
+img{vertical-align:middle;border-style:none;}
+svg{overflow:hidden;vertical-align:middle;}
+label{display:inline-block;margin-bottom:0.5rem;}
+input{margin:0;font-family:inherit;font-size:inherit;line-height:inherit;}
+input{overflow:visible;}
+h1{margin-bottom:0.5rem;font-weight:500;line-height:1.2;}
+h1{font-size:2.5rem;}
+small{font-size:80%;font-weight:400;}
+.form-control{display:block;width:100%;height:calc(1.5em + 0.75rem + 2px);padding:0.375rem 0.75rem;font-size:1rem;font-weight:400;line-height:1.5;color:#495057;background-color:#fff;background-clip:padding-box;border:1px solid #ced4da;border-radius:0.25rem;transition:border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;}
+@media (prefers-reduced-motion: reduce){
+.form-control{transition:none;}
+}
+.form-control::-ms-expand{background-color:transparent;border:0;}
+.form-control:focus{color:#495057;background-color:#fff;border-color:#ff8f48;outline:0;box-shadow:0 0 0 0.2rem rgba(199, 77, 0, 0.25);}
+.form-control::placeholder{color:#6c757d;opacity:1;}
+.form-control:disabled{background-color:#e9ecef;opacity:1;}
+.input-group{position:relative;display:flex;flex-wrap:wrap;align-items:stretch;width:100%;}
+.input-group > .form-control{position:relative;flex:1 1 auto;width:1%;margin-bottom:0;}
+.input-group > .form-control:focus{z-index:3;}
+.input-group > .form-control:not(:first-child){border-top-left-radius:0;border-bottom-left-radius:0;}
+.input-group-sm > .form-control:not(textarea){height:calc(1.5em + 0.5rem + 2px);}
+.input-group-sm > .form-control{padding:0.25rem 0.5rem;font-size:0.875rem;line-height:1.5;border-radius:0.2rem;}
+.px-5{padding-right:3rem!important;}
+.px-5{padding-left:3rem!important;}
+@media print{
+*,*::before,*::after{text-shadow:none!important;box-shadow:none!important;}
+a:not(.btn){text-decoration:underline;}
+img{page-break-inside:avoid;}
+}
+/*! CSS Used fontfaces */
+@font-face{font-family:'Raleway';font-style:normal;font-weight:100;src:local('Raleway Thin'), local('Raleway-Thin'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptsg8zYS_SKggPNwE44Q4FqL_KWxWMT.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:100;src:local('Raleway Thin'), local('Raleway-Thin'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptsg8zYS_SKggPNwE44TYFqL_KWxQ.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:300;src:local('Raleway Light'), local('Raleway-Light'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwIYqWqhPANqczVsq4A.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:300;src:local('Raleway Light'), local('Raleway-Light'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwIYqWqZPANqczVs.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:400;src:local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptug8zYS_SKggPNyCMIT4ttDfCmxA.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:400;src:local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:500;src:local('Raleway Medium'), local('Raleway-Medium'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwN4rWqhPANqczVsq4A.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:500;src:local('Raleway Medium'), local('Raleway-Medium'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwN4rWqZPANqczVs.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:700;src:local('Raleway Bold'), local('Raleway-Bold'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwJYtWqhPANqczVsq4A.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:700;src:local('Raleway Bold'), local('Raleway-Bold'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwJYtWqZPANqczVs.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:900;src:local('Raleway Black'), local('Raleway-Black'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqhPANqczVsq4A.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Raleway';font-style:normal;font-weight:900;src:local('Raleway Black'), local('Raleway-Black'), url(https://fonts.gstatic.com/s/raleway/v14/1Ptrg8zYS_SKggPNwK4vWqZPANqczVs.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+.container{position:relative;margin-left:auto;margin-right:auto;padding-right:15px;padding-left:15px;}
+@media (min-width:576px){
+.container{padding-right:15px;padding-left:15px;}
+}
+@media (min-width:768px){
+.container{padding-right:15px;padding-left:15px;}
+}
+@media (min-width:992px){
+.container{padding-right:15px;padding-left:15px;}
+}
+@media (min-width:1200px){
+.container{padding-right:15px;padding-left:15px;}
+}
+@media (min-width:576px){
+.container{width:540px;max-width:100%;}
+}
+@media (min-width:768px){
+.container{width:720px;max-width:100%;}
+}
+@media (min-width:992px){
+.container{width:960px;max-width:100%;}
+}
+@media (min-width:1200px){
+.container{width:1140px;max-width:100%;}
+}
 
-    .table {
+/*! CSS Used from: http://uatclimatechange.org/static/css/main.912c9e39.css */
+.header-wrap a:active,.header-wrap a:focus,.header-wrap a:hover,.header-wrap a:visited{text-decoration:none!important;}
+.mega-menu{position:absolute;top:86px;left:0;right:0;z-index:101;background:hsla(0,0%,94%,.9);border:1px solid #113f83;padding:1em 4em; z-index:9999;}
+.mega-menu header h1{font-weight:400;color:#113f83;font-size:1.5rem;margin-bottom:1em;}
 
-    }
+.mega-menu .tool-n-data-col{-ms-flex:0 0 12%;flex:0 0 12%;max-width:12%;min-width:130px;}
+.mega-menu .tool-n-data-col h3,.mega-menu .tool-n-data-col h3>a{font-size:1.05em;}
+.mega-menu .take-action-col{-ms-flex:0 0 40%;flex:0 0 40%;max-width:40%;}
+.mega-menu .learn-col{-ms-flex:0 0 46%;flex:0 0 46%;max-width:46%;}
+.mega-menu hr{border-top:5px solid #ca4d00;margin:0 -5px;}
+.mega-menu h2{color:#113f83;font-weight:700;font-size:1em;}
+.mega-menu section.no-pad-r{padding-right:0;}
+.mega-menu h3{margin:10px 0;}
+.mega-menu h3,.mega-menu h3>a{color:#113f83;font-weight:700;font-size:1.15em;}
+.mega-menu li{list-style-type:none;position:relative;padding-left:5px;margin-top:12px;font-size:14px;}
+.mega-menu ul{-webkit-padding-start:8px;-moz-padding-start:8px;padding-inline-start:8px;list-style-type:circle;}
+.mega-menu li:before{content:"\2022";font-size:35px;position:absolute;top:-17px;left:-11px;color:#ca4d00;}
+@media (max-width:1024px){
+.mega-menu .learn-col,.mega-menu .take-action-col,.mega-menu .tool-n-data-col{width:100%;max-width:100%;min-width:100%;}
+}
 
-    table.table td {
-      padding: 8px 6px;
-        margin: 3px;
-    }
-    table.table th {
-      font-size: 14px;
-      font-weight: normal;
-      color: #039;
-      border-bottom: 2px solid #f27421;
-      padding: 10px 8px;
-    }
-    header {
-      height: 80px;
-    }
+#menu-show h1 a, .menu-show h1 a:hover {
+  color: #113f83;
+  font-size: 24px;
+}
+#menu-show header {
+  height: auto;
+}
+.mega-menu .tool-n-data-col {
+  float: left;
+  -ms-flex: 0 0 12%;
+  flex: 0 0 12%;
+  max-width: 12%;
+  min-width: 130px;
+}
 
-    header .left-side {
-      float: left;
-    }
-    header .left-side h1 {
-      font-size: 4em;
-    }
+.mega-menu .learn-col {
+  float: left;
+  -ms-flex: 0 0 46%;
+  flex: 0 0 46%;
+  max-width: 46%;
+}
+.mega-menu .take-action-col {
+  float: left;
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    max-width: 40%;
+}
 
-    header .left-side h1 a.text {
-      position: relative;
-      top: -12px;
-      text-decoration: none;
-    }
-
-    header .slate-text {
-      color: #113f83;
-      font-weight: 300;
-    }
-    header .orange-text {
-      color: #f27421;
-      font-weight: 700;
-    }
-    header .gray-text {
-      color: rgb(94,94,94);
-      font-weight: 300;
-    }
-    header .left-side img {
-      height: 50px;
-      display: inline-block;
-      position: relative;
-      top: -5px;
-    }
-
-    header .left-side h1 a:hover {
-      text-decoration: none;
-    }
-
-    header .left-side h1 {
-      font-family: Raleway;
-      display: inline-block;
-      margin: 10px 15px;
-      padding: 0;
-    }
-    header .right-side {
-      float: right;
-      position: relative;
-      top: -10px;
-    }
-
-    header .right-side .header-search {
-      padding: 12px;
-    }
-    header .right-side .header-search input {
-      padding: 15px;
-      width: 350px;
-    }
-
-    header .right-side .header-search button {
-      border-radius: 0;
-      position: relative;
-      top: 2px;
-      padding: 12px;
-      color: white;
-      font-size: 20px;
-      background: #f27421;
-
-    }
-
-    header .right-side .header-search .fa-bars {
-      background: #113f83;
-      font-size: 20px;
-      color: white;
-      padding: 10px;
-      margin: 5px;
-      position: relative;
-      cursor: pointer;
-    }
-
-    header .right-side .header-search .fa-bars .menu {
-      display: none;
-      position: absolute;
-      top: 40px;
-      z-index: 9999000;
-      right: 0px;
-      background: white;
-      border: 1px solid #113f83;
-      padding: 15px;
-      box-shadow: 0px 0px 5px #333;
-    }
-
-    header .right-side .header-search .fa-bars .menu ul {
-      padding: 0;
-    }
-
-    header .right-side .header-search .fa-bars .menu.show {
-      display: block;
-    }
-
-
-    header .right-side .header-search .fa-bars .menu li {
-      display: block;
-      font-family: "Raleway";
-      padding: 5px 5px;
-    }
-
-    header .right-side .header-search .fa-bars .menu li a {
-      white-space: nowrap;
-      color: #039;
-      text-decoration: none;
-    }
-
+.mega-menu li:before {
+    content: "\2022";
+    font-size: 35px;
+    position: absolute;
+    top: -17px;
+    left: -11px;
+    color: #ca4d00;
+}
+.mega-menu li a {
+    text-decoration: none!important;
+    cursor: pointer;
+    color: #113f83;
+    font-weight: 400;
+}
     </style>
   </head>
   <body>
-    <header>
-      <div class="left-side">
-        <h1>
-          <a href="/"><img src="img/logo.png" class="img-left"></a>
-          <a class='text' href='/'><strong class="slate-text"> resilient </strong><span class="orange-text">MA</span></a></h1>
+    <header class='hide-printing'>
+      <script type='text/javascript'>
+        function searchKeydown(e) {
+          if (e.key == "Enter") {
+            window.location.href = "/search?query=" + encodeURIComponent(event.target.value);
+          }
+        }
+        function toggleMenuShow(e) {
+            var element = document.getElementById("menu-show");
+            if (element.style.display == 'none') {
+              element.style.display = null;
+            } else {
+              element.style.display = 'none';
+            }
+        }
+      </script>
+      <div id='menu-show' style='display: none'>
+        <div class="mega-menu no-select"><div class="container"><div class="row"><header><h1><!-- react-text: 444 --> <!-- /react-text --><a href="/about">Supporting the Commonwealth through up-to-date climate change science: </a></h1></header><nav class="row"><section class="col tool-n-data-col"><h2> Tools &amp; Data</h2><hr><h3><a href="/data/documents">Documents</a></h3><h3><a href="/data/data">Data</a></h3><h3><a href="/data/maps">Maps</a></h3><h3><a href="/search">Resource Clearinghouse</a></h3></section><section class="col learn-col col-xs-12"><h2>Learn</h2><hr><div class="row"><section class="col col-sm-4 no-pad-r"><h3>Explore Sectors:</h3><ul><li><a href="/sectors/agriculture">Agriculture</a></li><li><a href="/sectors/coastal-zones">Coastal Zones</a></li><li><a href="/sectors/economy">Economy</a></li><li><a href="/sectors/energy">Energy</a></li><li><a href="/sectors/forestry">Forestry</a></li><li><a href="/sectors/infrastructure">Infrastructure</a></li><li><a href="/sectors/local-government">Local Government</a></li></ul></section><section class="col col-sm-4 no-pad-r"><h3>&nbsp;</h3><ul><li><a href="/sectors/natural-resources-habitats">Natural Resources / Habitats</a></li><li><a href="/sectors/public-health">Public Health</a></li><li><a href="/sectors/public-safety-emergency-response">Public Safety / Emergency Response</a></li><li><a href="/sectors/recreation">Recreation</a></li><li><a href="/sectors/transportation">Transportation</a></li><li><a href="/sectors/water-resources">Water Resources</a></li></ul></section><section class="col col-sm-4 no-pad-r"><h3>Identify Changes:</h3><ul><li><a href="/changes/sea-level-rise">Sea Level Rise</a></li><li><a href="/changes/extreme-weather">Extreme Weather</a></li><li><a href="/changes/changes-in-precipitation">Changes in Precipitation</a></li><li><a href="/changes/rising-temperatures">Rising Temperatures</a></li></ul></section></div></section><section class="col take-action-col"><h2>Take Action</h2><hr><div class="row"><section class="col col-sm-4 no-pad-r"><h3>MVP Program:</h3><ul><li><a href="/mvp">MVP Program Information</a></li></ul></section><section class="col col-sm-4 no-pad-r"><h3>State Hazard Mitigation and Climate Adaptation Plan:</h3><ul><li><a href="/shmcap-portal/index.html">Our Plan </a></li><li><a href="/shmcap-portal/index.html#/action-tracker/">Massachusetts State Action Tracker </a></li></ul></section><section class="col col-sm-4 no-pad-r"><h3>Additional Planning Resources:</h3><ul><li><a href="/actions/planning">Plan Development</a></li><li><a href="/actions/implementation">Implementation</a></li><li><a href="/actions/outreach-education">Outreach / Education</a></li></ul></section></div></section></nav></div></div></div>
       </div>
-
-      <div class="right-side">
-        <!-- search -->
-        <form class="header-search" action="/search" method="get">
-          <input type="text" name="query" placeholder="Find maps, data products, reports, articles..."><button type="submit" id="search"><span>Search</span></button>
-          <div class='fa fa-bars' onclick="$('#header_menu').toggleClass('show')">
-            <div class='menu' id='header_menu'>
-              <ul>
-                <li><a href='/sectors'>Explore Sectors</a></li>
-                <li><a href='/changes'>Identify Changes</a></li>
-                <li><a href='/actions'>Take Action</a></li>
-              </ul>
+      </div>
+      <div class='container'>
+        <div class="header-wrap">
+          <div class="px-5 header">
+            <a href="/" class="logo">
+              <img class="hidden-sm-down" src="img/logo.png" alt="logo">
+              <div class="logo-text slate-text">
+                <h1>
+                  <span class="slate-text">resilient</span>
+                  <strong class="orange-text"> MA </strong>
+                </h1>
+                <small class="tagline slate-text">Climate Change Clearinghouse for the Commonwealth</small>
+              </div>
+            </a>
+            <div class="controls">
+              <div class="search-bar ">
+                <div class="input-group input-group-sm">
+                  <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-w-16 fa fa-search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path></svg>
+                  <input id='search_header_input' onkeydown="searchKeydown(event)" type="text" class="form-control" aria-label="Enter search string for resources and press enter to search" placeholder="SEARCH" value="">
+                </div>
+              </div>
+              <div class="mega-menu-toggle no-select show-cursor" onclick="toggleMenuShow(event)">
+                <label> Menu </label>
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" class="svg-inline--fa fa-w-14 fa fa-bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path></svg>
+              </div>
             </div>
           </div>
-        </form>
-      </div>
+        </div>
     </header>
 
     <div id='root'></div>
